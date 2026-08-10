@@ -27,7 +27,7 @@ function CartPage() {
   const { items, subtotal, currency, setQuantity, removeItem, clearCart } = useCart();
 
   return (
-    <div className="pt-[64px] md:pt-[78px]">
+    <div>
       <div className="container-sbs py-10 lg:py-14">
         <Breadcrumbs items={[{ label: "Cart" }]} />
         <div className="mt-6">

@@ -40,7 +40,7 @@ const PRINCIPLES = [
 
 function AboutPage() {
   return (
-    <div className="pt-[64px] md:pt-[78px]">
+    <div>
       <section className="bg-charcoal text-white">
         <div className="container-sbs py-16 lg:py-24">
           <Breadcrumbs items={[{ label: "About" }]} />
