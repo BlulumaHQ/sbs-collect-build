@@ -40,7 +40,10 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-[60] bg-card" onMouseLeave={() => setMegaOpen(false)}>
+      <header
+        className="relative z-[60] bg-card lg:sticky lg:top-0"
+        onMouseLeave={() => setMegaOpen(false)}
+      >
         {/* TIER 1 — utility bar */}
         <div className="bg-charcoal text-white">
           <div className="container-sbs flex h-9 items-center justify-between gap-4">
