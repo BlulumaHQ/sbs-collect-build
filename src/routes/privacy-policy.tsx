@@ -10,12 +10,12 @@ export const Route = createFileRoute("/privacy-policy")({
       {
         name: "description",
         content:
-          "How Secret Builders Society collects, uses and protects your personal information when you shop with us.",
+          "Draft privacy information for the Secret Builders Society storefront prototype, including local storage use and prototype forms.",
       },
       { property: "og:title", content: "Privacy Policy | Secret Builders Society" },
       {
         property: "og:description",
-        content: "How we collect, use and protect your personal information.",
+        content: "Draft privacy information for the SBS storefront prototype.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -28,32 +28,32 @@ export const Route = createFileRoute("/privacy-policy")({
 
 const SECTIONS = [
   {
-    title: "What we collect",
-    body: "Contact and delivery details you provide at checkout, order history, and basic analytics about how the site is used. We never collect or store full payment card numbers — payments are handled by our payment processor.",
+    title: "About this policy",
+    body: "This website is currently a storefront prototype. It does not process online orders and does not take payment card information.",
   },
   {
-    title: "How we use it",
-    body: "To process and ship orders, answer enquiries, manage preorder notifications, prevent fraud, and — only if you opt in — send restock and drop emails.",
+    title: "Information you enter",
+    body: "The contact form and newsletter signup are frontend prototype forms. Information entered into them is not submitted to, or stored by, an external service.",
   },
   {
     title: "Local storage on this site",
     body: "Your cart and recently viewed products are stored in your browser's local storage so the site remembers them between visits. This data stays on your device and is not sent to a server.",
   },
   {
+    title: "Payments",
+    body: "No payment processing takes place on this site and no payment card details are collected or stored.",
+  },
+  {
     title: "Sharing",
-    body: "We share only what is necessary with shipping carriers, our payment processor and our email provider. We never sell personal information.",
+    body: "No personal information collected through this prototype is shared with third parties, and none is sold.",
   },
   {
-    title: "Retention",
-    body: "Order records are retained as required by Canadian tax law. Marketing contact details are kept until you unsubscribe.",
+    title: "Contacting the store directly",
+    body: `If you call ${STORE.phone} or email ${STORE.email}, we use those details only to answer your enquiry.`,
   },
   {
-    title: "Your rights",
-    body: `You can request access to, correction of, or deletion of your personal information at any time by emailing ${STORE.email}.`,
-  },
-  {
-    title: "Security",
-    body: "The site is served over HTTPS and access to order data is limited to staff who need it to fulfil orders.",
+    title: "Before launch",
+    body: "Final privacy language covering the live Shopify storefront, including checkout, order history and email marketing, will be added before the store launches publicly.",
   },
 ];
 
@@ -63,7 +63,10 @@ function PrivacyPage() {
       <Breadcrumbs items={[{ label: "Privacy Policy" }]} />
       <SBSBuildRail index="01" label="Legal" />
       <h1 className="mt-5 font-display text-4xl md:text-5xl">Privacy Policy</h1>
-      <p className="micro mt-4 text-muted-foreground">Last updated: January 2026</p>
+      <p className="mt-4 max-w-3xl border-l-2 border-sbs-red pl-4 text-sm leading-relaxed text-muted-foreground">
+        Draft policy content for design review. Final privacy policy must be reviewed before public
+        launch.
+      </p>
 
       <div className="mt-12 max-w-3xl border-t border-border">
         {SECTIONS.map((section) => (
