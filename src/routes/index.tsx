@@ -108,7 +108,7 @@ function HomePage() {
                       {category.name}
                     </h3>
                     <span className="micro-sm mt-1.5 text-muted-foreground">
-                      {category.count} products
+                      {category.count} {category.count === 1 ? "product" : "products"}
                     </span>
                   </div>
                 </Link>
@@ -209,7 +209,7 @@ function HomePage() {
                   <span className="clamp-1 block font-display text-lg text-white">
                     {entry.name}
                   </span>
-                  <span className="micro-sm mt-1 block text-white/65">{entry.count} products</span>
+                  <span className="micro-sm mt-1 block text-white/65">{entry.count} {entry.count === 1 ? "product" : "products"}</span>
                 </span>
               </Link>
             ))}

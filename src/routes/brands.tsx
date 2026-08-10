@@ -65,7 +65,7 @@ function BrandsPage() {
                   </div>
                   <div className="flex items-center justify-between border-t border-border px-4 py-4">
                     <span className="micro-sm text-muted-foreground">
-                      {vendor.count} products
+                      {vendor.count} {vendor.count === 1 ? "product" : "products"}
                     </span>
                     <span
                       aria-hidden="true"

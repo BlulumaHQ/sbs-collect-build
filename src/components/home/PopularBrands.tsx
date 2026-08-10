@@ -44,7 +44,7 @@ export function PopularBrands() {
                   )}
                 </div>
                 <span className="micro mt-4 text-muted-foreground group-hover:text-sbs-red">
-                  {brand.count} products
+                  {brand.count} {brand.count === 1 ? "product" : "products"}
                 </span>
               </Link>
             );
