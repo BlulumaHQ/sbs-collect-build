@@ -41,8 +41,8 @@ const SERIES_JPG = new Set([
 ]);
 
 export function brandLogo(vendor: string): string | null {
-  const slug = slugify(vendor);
-  return BRAND_LOGO_SLUGS.has(slug) ? `/images/brands/${slug}.svg` : null;
+  const file = BRAND_LOGO_FILES[slugify(vendor)];
+  return file ? `/images/brands/${file}` : null;
 }
 
 export function seriesArtwork(series: string): string {
