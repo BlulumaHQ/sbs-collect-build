@@ -41,7 +41,8 @@ export function SiteHeader() {
         {/* TIER 1 — utility bar */}
         <div className="bg-charcoal text-white">
           <div className="container-sbs flex h-9 items-center justify-between gap-4">
-            <p className="micro truncate text-white/70">{SHIPPING_LINE}</p>
+            <p className="micro hidden truncate text-white/70 sm:block">{SHIPPING_LINE}</p>
+            <p className="micro truncate text-white/70 sm:hidden">Free shipping over $150</p>
             <div className="flex items-center gap-5">
               <span className="micro hidden text-white/55 md:inline">
                 {STORE.city}, {STORE.region}

@@ -213,7 +213,8 @@ function ProductDetailPage() {
       <RecentlyViewed excludeId={product.id} index="03" />
 
       {/* STICKY MOBILE CTA */}
-      <div className="sticky bottom-0 z-50 border-t border-border bg-card/95 backdrop-blur lg:hidden">
+      <div className="h-[78px] lg:hidden" aria-hidden="true" />
+      <div className="fixed inset-x-0 bottom-0 z-[55] border-t border-border bg-card/95 backdrop-blur lg:hidden">
         <div className="container-sbs flex items-center gap-3 py-3">
           <div className="min-w-0 flex-1">
             <p className="clamp-1 text-xs text-muted-foreground">{product.title}</p>
