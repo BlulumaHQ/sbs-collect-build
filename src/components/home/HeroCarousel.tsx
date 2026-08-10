@@ -25,6 +25,8 @@ const SLIDES: Slide[] = [
     body: "Explore Gundam and model kits for builders who care about every panel line, pose and finishing detail.",
     tone: "dark",
     background: "#1a1a1c",
+    artworkLayer: true,
+
     primary: { label: "Shop model kits", to: "/shop/model-kits" },
     secondary: { label: "Explore Gundam", to: "/shop/model-kits?subcategory=Gunpla" },
   },
