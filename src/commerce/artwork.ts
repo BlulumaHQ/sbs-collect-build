@@ -53,31 +53,32 @@ export function seriesArtwork(series: string): string {
 
 export const CATEGORY_ARTWORK: Record<string, { src: string; alt: string }> = {
   Figures: {
-    src: "/images/categories/figures.jpg",
-    alt: "Collector display cabinet filled with posed figures and statues",
+    src: "/images/categories/figures.webp",
+    alt: "Anime figures key art: scale, chibi and action figures posed together",
   },
   "Model Kits": {
-    src: "/images/categories/model-kits.jpg",
-    alt: "Model building workbench with sprues, tools and a partially assembled mecha",
+    src: "/images/categories/model-kits.webp",
+    alt: "Model kits key art: Gundam, mecha and scale kits with sprues and tools",
   },
   Plush: {
-    src: "/images/categories/plush.jpg",
-    alt: "Curated plush display wall in a collectible shop",
+    src: "/images/categories/plush.webp",
+    alt: "Plush key art: soft collectible characters and animal plushies",
   },
   "Blind Boxes": {
-    src: "/images/categories/blind-boxes.jpg",
-    alt: "Mystery box and capsule toy retail wall",
+    src: "/images/categories/blind-boxes.webp",
+    alt: "Blind box key art: designer mystery box series and capsule figures",
   },
   "Hobby Supplies": {
-    src: "/images/categories/hobby-supplies.jpg",
-    alt: "Airbrush, paints, cutting mat and model finishing tools",
+    src: "/images/categories/hobby-supplies.webp",
+    alt: "Hobby supplies key art: airbrush, paints, nippers, files and markers",
   },
   "Character Goods": {
-    src: "/images/categories/character-goods.jpg",
-    alt: "Character goods wall with acrylic stands, keychains and stationery",
+    src: "/images/categories/character-goods.webp",
+    alt: "Character goods key art: acrylic stands, keychains, pins and stationery",
   },
   Apparel: {
-    src: "/images/categories/apparel.jpg",
-    alt: "Collector streetwear rack with graphic tees and hoodies",
+    src: "/images/categories/apparel.webp",
+    alt: "Apparel key art: Japanese-inspired collector tees, hoodies and caps",
   },
 };
+
