@@ -15,6 +15,9 @@ import { CartProvider } from "@/commerce/cart";
 import { SiteHeader } from "@/components/navigation/SiteHeader";
 import { SiteFooter } from "@/components/navigation/SiteFooter";
 import { CartDrawer } from "@/components/navigation/CartDrawer";
+import { RewardsProvider } from "@/components/rewards/RewardsProvider";
+import { RewardsLauncher, RewardsModal } from "@/components/rewards/Rewards";
+
 
 function NotFoundComponent() {
   return (

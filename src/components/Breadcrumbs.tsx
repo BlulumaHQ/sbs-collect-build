@@ -25,7 +25,7 @@ export function Breadcrumbs({ items, tone = "dark" }: { items: Crumb[]; tone?: "
                 {item.label}
               </Link>
             ) : (
-              <span className="text-foreground">{item.label}</span>
+              <span className={active}>{item.label}</span>
             )}
           </li>
         ))}
