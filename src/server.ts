@@ -44,18 +44,37 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
+// STAGING ONLY — REMOVE NOINDEX BEFORE PRODUCTION LAUNCH.
+// _headers only covers static asset responses; Worker-generated SSR HTML needs
+// the directive applied here too. Body, status, statusText and existing headers
+// are preserved.
+const STAGING_ROBOTS_TAG = "noindex, nofollow, noarchive, nosnippet";
+
+function withStagingNoindex(response: Response): Response {
+  const headers = new Headers(response.headers);
+  headers.set("X-Robots-Tag", STAGING_ROBOTS_TAG);
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      return withStagingNoindex(await normalizeCatastrophicSsrResponse(response));
     } catch (error) {
       console.error(error);
-      return new Response(renderErrorPage(), {
-        status: 500,
-        headers: { "content-type": "text/html; charset=utf-8" },
-      });
+      return withStagingNoindex(
+        new Response(renderErrorPage(), {
+          status: 500,
+          headers: { "content-type": "text/html; charset=utf-8" },
+        }),
+      );
     }
   },
 };
+
