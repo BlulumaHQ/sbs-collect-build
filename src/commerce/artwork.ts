@@ -8,24 +8,25 @@ import { slugify } from "./adapter";
  * asset in at the same slug replaces the prototype plate with no code change.
  */
 
-const BRAND_LOGO_SLUGS = new Set([
-  "16-directions",
-  "52toys",
-  "bandai",
-  "bandai-hobby",
-  "bushiroad-creative",
-  "bellfine",
-  "capcom",
-  "good-smile-company",
-  "gsi-creos",
-  "goodsmile-moment",
-  "max-limited",
-  "marimo-craft",
-  "megahouse",
-  "presence-co-ltd",
-  "square-enix",
-  "toptoy",
-]);
+const BRAND_LOGO_FILES: Record<string, string> = {
+  "16-directions": "16-directions-logo.png",
+  "52toys": "52toys-logo.png",
+  bandai: "bandai-logo.svg",
+  "bandai-hobby": "bandai-hobby-logo.svg",
+  "bushiroad-creative": "bushiroad-creative-logo.svg",
+  bellfine: "bellfine-logo.png",
+  capcom: "capcom-logo.svg",
+  "good-smile-company": "good-smile-company-logo.svg",
+  "gsi-creos": "gsi-creos-logo.svg",
+  "goodsmile-moment": "goodsmile-moment-logo.png",
+  "max-limited": "max-limited-logo.png",
+  "marimo-craft": "marimo-craft-logo.png",
+  megahouse: "megahouse-logo.svg",
+  "presence-co-ltd": "presence-logo.png",
+  "square-enix": "square-enix-logo.svg",
+  toptoy: "toptoy-logo.png",
+};
+
 
 /** Series that have photographic franchise key art (jpg); the rest use SVG plates. */
 const SERIES_JPG = new Set([
