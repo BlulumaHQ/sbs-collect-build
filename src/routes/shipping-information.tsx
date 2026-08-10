@@ -10,12 +10,12 @@ export const Route = createFileRoute("/shipping-information")({
       {
         name: "description",
         content:
-          "Canadian and international shipping rates, processing times, preorder handling and in-store pickup for Secret Builders Society orders.",
+          "Shipping methods, rates and delivery options for Secret Builders Society will be finalized and displayed through Shopify checkout before the store launches.",
       },
       { property: "og:title", content: "Shipping Information | Secret Builders Society" },
       {
         property: "og:description",
-        content: "Rates, processing times, preorder handling and pickup options.",
+        content: "Shipping options will be confirmed through Shopify checkout before launch.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -26,12 +26,23 @@ export const Route = createFileRoute("/shipping-information")({
   component: ShippingPage,
 });
 
-const RATES = [
-  { zone: "Ontario & Quebec", time: "1 — 3 business days", cost: "$12.00 CAD" },
-  { zone: "Rest of Canada", time: "3 — 7 business days", cost: "$18.00 CAD" },
-  { zone: "Northern & remote", time: "7 — 14 business days", cost: "Live rate at checkout" },
-  { zone: "United States", time: "5 — 10 business days", cost: "From $24.00 CAD" },
-  { zone: "International", time: "10 — 21 business days", cost: "Live rate at checkout" },
+const SECTIONS = [
+  {
+    title: "Shipping at launch",
+    body: "Available shipping methods, pricing and delivery options will be displayed at checkout when the Shopify storefront launches.",
+  },
+  {
+    title: "Shipping rates",
+    body: "Shipping rates will be calculated using the final Shopify shipping configuration.",
+  },
+  {
+    title: "Preorders",
+    body: "Preorder release dates are estimates and may change before inventory reaches the store. Final preorder shipping and fulfillment rules will be confirmed before launch.",
+  },
+  {
+    title: "Order status",
+    body: "Order tracking and customer order history will become available through Shopify once the live ecommerce system is connected.",
+  },
 ];
 
 function ShippingPage() {
@@ -41,50 +52,29 @@ function ShippingPage() {
       <SBSBuildRail index="01" label="Customer Care" />
       <h1 className="mt-5 font-display text-4xl md:text-5xl">Shipping Information</h1>
       <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-        Shipping options and rates will be provided through the live Shopify checkout. Everything ships from the shop in {STORE.city}, {STORE.region}, packed for
-        collectors — boxed items double-boxed, corner protection on shelf pieces.
+        Shipping methods, rates and delivery options have not yet been finalized. Final shipping
+        options will be displayed through Shopify checkout before the public store launches.
       </p>
 
-      <section className="mt-12">
-        <h2 className="font-display text-2xl">Rates & Delivery Windows</h2>
-        <div className="mt-5 overflow-x-auto">
-          <table className="w-full min-w-[560px] border border-border bg-white text-sm">
-            <thead>
-              <tr className="border-b border-border bg-bone text-left">
-                <th className="micro px-4 py-3 font-normal">Destination</th>
-                <th className="micro px-4 py-3 font-normal">Estimated transit</th>
-                <th className="micro px-4 py-3 font-normal">Cost</th>
-              </tr>
-            </thead>
-            <tbody>
-              {RATES.map((rate) => (
-                <tr key={rate.zone} className="border-b border-border last:border-b-0">
-                  <td className="px-4 py-3">{rate.zone}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{rate.time}</td>
-                  <td className="px-4 py-3">{rate.cost}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="micro mt-3 text-muted-foreground">
-          Demo rates for prototype purposes. Duties and taxes outside Canada are the recipient's
-          responsibility.
-        </p>
-      </section>
+      <div className="mt-14 grid gap-10 md:grid-cols-2">
+        {SECTIONS.map((section) => (
+          <Block key={section.title} title={section.title}>
+            {section.body}
+          </Block>
+        ))}
+      </div>
 
-      <div className="mt-14 grid gap-10 md:grid-cols-3">
-        <Block title="Processing">
-          In-stock orders are picked and packed within one to two business days. Orders placed after
-          15:00 local time are processed the next business day.
-        </Block>
-        <Block title="Preorders">
-          Preorder items ship when the maker releases them. Mixed carts ship together once the last
-          preorder lands unless you request a split shipment at no extra charge.
-        </Block>
-        <Block title="In-store pickup">
-          Free at {STORE.addressLine}, {STORE.city}. We email when your order is ready and hold it
-          for 14 days.
+      <div className="mt-14 max-w-2xl">
+        <Block title="Questions?">
+          Call{" "}
+          <a href={STORE.phoneHref} className="text-sbs-red hover:underline">
+            {STORE.phone}
+          </a>{" "}
+          or email{" "}
+          <a href={`mailto:${STORE.email}`} className="text-sbs-red hover:underline">
+            {STORE.email}
+          </a>
+          .
         </Block>
       </div>
 
@@ -93,7 +83,7 @@ function ShippingPage() {
           Read the FAQ
         </Link>
         <Link to="/contact" className="btn-primary-sbs">
-          Ask about an order
+          Contact the store
         </Link>
       </div>
     </div>

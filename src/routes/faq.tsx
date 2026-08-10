@@ -10,12 +10,12 @@ export const Route = createFileRoute("/faq")({
       {
         name: "description",
         content:
-          "Answers on preorders, shipping, in-store pickup, blind box policy and order changes at Secret Builders Society.",
+          "Answers about the Secret Builders Society storefront prototype, preorders, currency, store visits and upcoming Shopify checkout.",
       },
       { property: "og:title", content: "FAQ | Secret Builders Society" },
       {
         property: "og:description",
-        content: "Common questions about preorders, shipping, pickup and returns.",
+        content: "Common questions about the SBS storefront prototype, preorders and store visits.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -28,36 +28,36 @@ export const Route = createFileRoute("/faq")({
 
 const FAQS = [
   {
+    q: "What currency are prices shown in?",
+    a: "All prices displayed in the current SBS catalogue are shown in Canadian dollars (CAD).",
+  },
+  {
     q: "How do preorders work?",
-    a: "Reserve the item now and we charge when the maker ships it to us. Release windows come straight from the manufacturer and can move by a month or two — we email you whenever a date changes.",
+    a: "Products marked PREORDER represent upcoming products in the current storefront prototype. Release information, when available, is provided as a reference and may change before launch.",
   },
   {
-    q: "When will my order ship?",
-    a: "In-stock orders leave the shop within one to two business days. Orders that mix in-stock and preorder items ship once the preorder lands, unless you ask us to split the shipment.",
+    q: "When will Shopify checkout be available?",
+    a: "The current website is a storefront prototype. Full Shopify checkout will be enabled before the store launches publicly.",
   },
   {
-    q: "How does shipping work?",
-    a: "Shipping options and rates will be provided through the live Shopify checkout once it is configured. Local pickup is available at the Commercial Drive store during opening hours.",
+    q: "How will shipping work?",
+    a: "Available shipping services, rates and delivery options will be shown during Shopify checkout once the live ecommerce system is connected.",
   },
   {
-    q: "Can I pick up in store?",
-    a: `Yes. Choose in-store pickup at checkout and collect at ${STORE.addressLine}, ${STORE.city}. We hold pickups for 14 days.`,
+    q: "Can I visit the store?",
+    a: `Secret Builders Society is located at ${STORE.addressLine}, ${STORE.city}, ${STORE.region}. Store hours are Monday through Saturday, 11:00 AM to 6:00 PM. Sunday is closed.`,
   },
   {
-    q: "Can I choose my blind box figure?",
-    a: "No — blind boxes are sealed and random by design. Full-case purchases guarantee one of each standard figure but never a secret/chase variant.",
+    q: "How can I contact the store?",
+    a: `Call ${STORE.phone} or email ${STORE.email}.`,
   },
   {
-    q: "What is your return policy?",
-    a: "Unopened, undamaged items can be returned within 14 days of delivery. Preorders can be cancelled any time before they ship. Opened blind boxes and used hobby supplies are final sale.",
+    q: "What does Sold Out mean?",
+    a: "Products marked SOLD OUT are currently unavailable in the demo catalogue.",
   },
   {
-    q: "Is a damaged box covered?",
-    a: "Manufacturer boxes can arrive with shelf wear. We photograph and grade anything significant before it ships. If the product itself is damaged in transit, contact us within 48 hours with photos.",
-  },
-  {
-    q: "Do you restock sold-out items?",
-    a: "Where the maker still produces the item, yes. Subscribe to the newsletter for restock and re-release notices.",
+    q: "Can I create a customer account?",
+    a: "Customer accounts will be enabled when the Shopify storefront launches.",
   },
 ];
 
@@ -83,8 +83,7 @@ function FaqPage() {
         <aside className="card-retail h-fit p-6">
           <h2 className="font-display text-xl">Still stuck?</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            The shop answers email within one business day, and someone is always on the floor
-            during opening hours.
+            Call the shop or send an email and someone on the floor will get back to you.
           </p>
           <Link to="/contact" className="btn-primary-sbs mt-6 w-full">
             Contact us
