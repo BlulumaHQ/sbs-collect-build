@@ -119,31 +119,16 @@ export function HeroCarousel() {
               }`}
               style={{ backgroundColor: slide.background }}
             >
-              {slide.artworkLayer ? (
-                <div className="pointer-events-none absolute inset-y-0 right-0 w-full lg:w-[60%]">
-                  <img
-                    src={slide.image}
-                    alt={slide.alt}
-                    loading={i === 0 ? "eager" : "lazy"}
-                    width={1920}
-                    height={1080}
-                    className={`h-full w-full object-cover object-[72%_top] transition-transform duration-[7000ms] ease-out lg:object-contain lg:object-[center_top] ${
-                      active ? "scale-[1.02]" : "scale-100"
-                    }`}
-                  />
-                </div>
-              ) : (
-                <img
-                  src={slide.image}
-                  alt={slide.alt}
-                  loading={i === 0 ? "eager" : "lazy"}
-                  width={1920}
-                  height={1080}
-                  className={`absolute inset-0 h-full w-full object-cover transition-transform duration-[7000ms] ease-out ${
-                    active ? "scale-[1.04]" : "scale-100"
-                  } object-[68%_center] lg:object-center`}
-                />
-              )}
+              <img
+                src={slide.image}
+                alt={slide.alt}
+                loading={i === 0 ? "eager" : "lazy"}
+                width={1920}
+                height={1080}
+                className={`absolute inset-0 h-full w-full object-cover object-top transition-transform duration-[7000ms] ease-out ${
+                  active ? "scale-[1.04]" : "scale-100"
+                }`}
+              />
               <div
                 className="absolute inset-0"
                 style={{
