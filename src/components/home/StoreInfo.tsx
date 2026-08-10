@@ -1,71 +1,81 @@
 import { Link } from "@tanstack/react-router";
+import { STORE, STORE_IMAGE, STORE_IMAGE_CAPTION, UNITY_TATTOO_URL } from "@/config/store";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
-import { STORE } from "@/config/store";
 
 export function StoreInfo() {
   return (
     <section className="section-y border-b border-border bg-white">
-      <div className="container-sbs grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
-        <div className="border border-border bg-bone">
-          <img
-            src="/images/store/sbs-store-interior.jpg"
-            alt="Interior of the Secret Builders Society shop with shelves of boxed model kits and figures"
-            width={1600}
-            height={1104}
-            loading="lazy"
-            className="aspect-[4/3] w-full object-cover"
-          />
-        </div>
+      <div className="container-sbs grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <figure className="m-0">
+          <div className="aspect-[4/3] w-full overflow-hidden bg-bone">
+            <img
+              src={STORE_IMAGE}
+              alt="Shared tattoo studio and collector toy store interior with model kit shelves"
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <figcaption className="micro-sm mt-3 text-muted-foreground">
+            {STORE_IMAGE_CAPTION}
+          </figcaption>
+        </figure>
 
         <div>
-          <SBSBuildRail index="05" label="Visit the Shop" />
-          <h2 className="mt-5 font-display text-3xl md:text-4xl">
-            Built in store. Shipped across Canada.
+          <SBSBuildRail index="09" label="Our Space" />
+          <h2 className="mt-5 font-display text-[32px] leading-[1.06] lg:text-[42px]">
+            Tattoos, toys,
+            <br />
+            and things worth collecting.
           </h2>
-          <p className="mt-5 max-w-lg text-sm leading-relaxed text-muted-foreground">
-            Walk the wall of kits, test a paint chip under real light, and talk to people who
-            actually build. Everything on the shelf is also available online.
+          <p className="mt-6 max-w-xl text-[16px] leading-relaxed text-muted-foreground lg:text-[17px]">
+            Secret Builders Society shares its Commercial Drive space with Unity Tattoo, bringing
+            model kits, figures and collector goods into the same creative environment.
+          </p>
+          <p className="mt-4 max-w-xl text-[16px] leading-relaxed text-muted-foreground lg:text-[17px]">
+            Browse the shelves, discover the next build, or visit Unity Tattoo in the same space.
           </p>
 
-          <div className="mt-8 grid gap-8 sm:grid-cols-2">
+          <dl className="mt-8 grid gap-6 sm:grid-cols-3">
             <div>
-              <h3 className="micro text-sbs-red">Address</h3>
-              <address className="mt-3 not-italic text-sm leading-relaxed">
+              <dt className="micro-sm text-muted-foreground">Address</dt>
+              <dd className="mt-2 text-[15px] leading-relaxed">
                 {STORE.addressLine}
                 <br />
-                {STORE.city}, {STORE.region} {STORE.postal}
-                <br />
-                {STORE.country}
-              </address>
-              <p className="mt-3 text-sm">
-                <a
-                  href={`tel:${STORE.phone.replace(/[^\d+]/g, "")}`}
-                  className="hover:text-sbs-red"
-                >
-                  {STORE.phone}
-                </a>
-              </p>
+                {STORE.city}, {STORE.region}
+              </dd>
             </div>
             <div>
-              <h3 className="micro text-sbs-red">Store Hours</h3>
-              <dl className="mt-3 space-y-1.5 text-sm">
-                {STORE.hours.map((h) => (
-                  <div key={h.day} className="flex justify-between gap-4">
-                    <dt className="text-muted-foreground">{h.day}</dt>
-                    <dd>{h.time}</dd>
-                  </div>
-                ))}
-              </dl>
+              <dt className="micro-sm text-muted-foreground">Phone</dt>
+              <dd className="mt-2 text-[15px]">
+                <a href={STORE.phoneHref} className="hover:text-sbs-red">
+                  {STORE.phone}
+                </a>
+              </dd>
             </div>
-          </div>
+            <div>
+              <dt className="micro-sm text-muted-foreground">Hours</dt>
+              <dd className="mt-2 text-[15px] leading-relaxed">
+                Mon–Sat
+                <br />
+                11:00 AM – 6:00 PM
+                <br />
+                Sunday Closed
+              </dd>
+            </div>
+          </dl>
 
           <div className="mt-9 flex flex-wrap gap-3">
             <Link to="/contact" className="btn-primary-sbs">
-              Contact the shop
+              Visit the store
             </Link>
-            <Link to="/shipping-information" className="btn-ghost-sbs">
-              Shipping information
-            </Link>
+            <a
+              href={UNITY_TATTOO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost-sbs"
+            >
+              Unity Tattoo
+            </a>
           </div>
         </div>
       </div>

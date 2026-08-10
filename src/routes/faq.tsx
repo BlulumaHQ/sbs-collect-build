@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
-import { STORE, SHIPPING_LINE } from "@/config/store";
+import { STORE } from "@/config/store";
 
 export const Route = createFileRoute("/faq")({
   head: () => ({
@@ -36,8 +36,8 @@ const FAQS = [
     a: "In-stock orders leave the shop within one to two business days. Orders that mix in-stock and preorder items ship once the preorder lands, unless you ask us to split the shipment.",
   },
   {
-    q: "Do you offer free shipping?",
-    a: `${SHIPPING_LINE}. Below that, live rates are calculated at checkout based on weight and destination.`,
+    q: "How does shipping work?",
+    a: "Shipping options and rates will be provided through the live Shopify checkout once it is configured. Local pickup is available at the Commercial Drive store during opening hours.",
   },
   {
     q: "Can I pick up in store?",

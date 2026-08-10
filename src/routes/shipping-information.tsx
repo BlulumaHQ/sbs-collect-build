@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
-import { STORE, SHIPPING_LINE } from "@/config/store";
+import { STORE } from "@/config/store";
 
 export const Route = createFileRoute("/shipping-information")({
   head: () => ({
@@ -41,7 +41,7 @@ function ShippingPage() {
       <SBSBuildRail index="01" label="Customer Care" />
       <h1 className="mt-5 font-display text-4xl md:text-5xl">Shipping Information</h1>
       <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-        {SHIPPING_LINE}. Everything ships from the shop in {STORE.city}, {STORE.region}, packed for
+        Shipping options and rates will be provided through the live Shopify checkout. Everything ships from the shop in {STORE.city}, {STORE.region}, packed for
         collectors — boxed items double-boxed, corner protection on shelf pieces.
       </p>
 

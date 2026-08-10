@@ -110,15 +110,22 @@
 
 @utility micro {
   font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@utility micro-sm {
+  font-family: var(--font-mono);
   font-size: 0.6875rem;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 @utility container-sbs {
   width: 100%;
   margin-inline: auto;
-  max-width: 96rem;
+  max-width: 90rem;
   padding-inline: 20px;
 
   @media (min-width: 768px) {
@@ -126,17 +133,33 @@
   }
 
   @media (min-width: 1280px) {
-    padding-inline: 48px;
+    padding-inline: 40px;
+  }
+}
+
+@utility container-wide {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 92.5rem;
+  padding-inline: 20px;
+
+  @media (min-width: 768px) {
+    padding-inline: 32px;
+  }
+
+  @media (min-width: 1280px) {
+    padding-inline: 40px;
   }
 }
 
 @utility section-y {
-  padding-block: 64px;
+  padding-block: 56px;
 
   @media (min-width: 1024px) {
-    padding-block: 104px;
+    padding-block: 88px;
   }
 }
+
 
 @utility clamp-2 {
   display: -webkit-box;
