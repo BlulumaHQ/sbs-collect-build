@@ -231,12 +231,6 @@ function HomePage() {
       {/* 12 — NEWSLETTER */}
       <Newsletter />
 
-      {/* 13 — PAYMENTS */}
-      <section className="border-b border-border bg-white py-10">
-        <div className="container-sbs">
-          <PaymentMethods />
-        </div>
-      </section>
     </>
   );
 }
