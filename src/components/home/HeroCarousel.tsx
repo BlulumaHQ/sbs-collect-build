@@ -115,24 +115,42 @@ export function HeroCarousel() {
               }`}
               style={{ backgroundColor: slide.background }}
             >
-              <img
-                src={slide.image}
-                alt={slide.alt}
-                loading={i === 0 ? "eager" : "lazy"}
-                width={1920}
-                height={1080}
-                className={`absolute inset-0 h-full w-full object-cover transition-transform duration-[7000ms] ease-out ${
-                  active ? "scale-[1.04]" : "scale-100"
-                } object-[68%_center] lg:object-center`}
-              />
+              {slide.artworkLayer ? (
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-full lg:w-[60%]">
+                  <img
+                    src={slide.image}
+                    alt={slide.alt}
+                    loading={i === 0 ? "eager" : "lazy"}
+                    width={1920}
+                    height={1080}
+                    className={`h-full w-full object-cover object-[72%_top] transition-transform duration-[7000ms] ease-out lg:object-contain lg:object-[center_top] ${
+                      active ? "scale-[1.02]" : "scale-100"
+                    }`}
+                  />
+                </div>
+              ) : (
+                <img
+                  src={slide.image}
+                  alt={slide.alt}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  width={1920}
+                  height={1080}
+                  className={`absolute inset-0 h-full w-full object-cover transition-transform duration-[7000ms] ease-out ${
+                    active ? "scale-[1.04]" : "scale-100"
+                  } object-[68%_center] lg:object-center`}
+                />
+              )}
               <div
                 className="absolute inset-0"
                 style={{
                   background: light
                     ? "linear-gradient(90deg, rgba(230,228,224,0.97) 0%, rgba(230,228,224,0.86) 46%, rgba(230,228,224,0.15) 78%)"
-                    : "linear-gradient(90deg, rgba(12,12,13,0.94) 0%, rgba(12,12,13,0.78) 46%, rgba(12,12,13,0.15) 82%)",
+                    : slide.artworkLayer
+                      ? "linear-gradient(90deg, rgba(12,12,13,0.96) 0%, rgba(12,12,13,0.82) 34%, rgba(12,12,13,0.05) 56%)"
+                      : "linear-gradient(90deg, rgba(12,12,13,0.94) 0%, rgba(12,12,13,0.78) 46%, rgba(12,12,13,0.15) 82%)",
                 }}
               />
+
               <div className="container-sbs relative flex h-full items-center">
                 <div className="max-w-[640px] py-12">
                   <p
