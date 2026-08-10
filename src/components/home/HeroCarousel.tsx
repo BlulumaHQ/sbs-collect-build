@@ -18,37 +18,36 @@ interface Slide {
 
 const SLIDES: Slide[] = [
   {
-    image: "/images/hero/hero-gundam.jpg",
+    image: "/images/hero/hero-gundam.webp",
     alt: "Gundam style mecha model kit campaign artwork",
     eyebrow: "Gundam / Model Kit Feature",
     title: ["Built for the workbench.", "Made for the shelf."],
     body: "Explore Gundam and model kits for builders who care about every panel line, pose and finishing detail.",
     tone: "dark",
-    background: "#1a1a1c",
-    artworkLayer: true,
+    background: "#0d1017",
 
     primary: { label: "Shop model kits", to: "/shop/model-kits" },
     secondary: { label: "Explore Gundam", to: "/shop/model-kits?subcategory=Gunpla" },
   },
   {
-    image: "/images/hero/hero-zoids-ultra-saurus.jpg",
+    image: "/images/hero/hero-zoids.webp",
     alt: "Mechanical beast model kit campaign artwork on a black background",
     eyebrow: "Preorder Spotlight",
     title: ["Big builds are", "worth the wait."],
     body: "Browse upcoming collector releases and reserve the kits you do not want to miss.",
     tone: "dark",
-    background: "#000000",
+    background: "#0b0b0c",
     primary: { label: "View preorders", to: "/preorders" },
     secondary: { label: "Shop model kits", to: "/shop/model-kits" },
   },
   {
-    image: "/images/hero/hero-sci-fi-model.jpg",
+    image: "/images/hero/hero-spacecraft.webp",
     alt: "Blue and red spacecraft model kit on a light grey background",
     eyebrow: "Sci-Fi Model Kits",
     title: ["Every detail", "earns its place."],
     body: "From character kits to detailed machines, discover builds made to move from the bench to the display shelf.",
     tone: "light",
-    background: "#E6E4E0",
+    background: "#EDEDED",
     primary: { label: "Explore model kits", to: "/shop/model-kits" },
   },
 ];
