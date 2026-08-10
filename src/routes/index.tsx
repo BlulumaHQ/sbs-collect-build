@@ -17,7 +17,6 @@ import { PopularBrands } from "@/components/home/PopularBrands";
 import { StoreInfo } from "@/components/home/StoreInfo";
 import { Testimonials } from "@/components/home/Testimonials";
 import { Newsletter } from "@/components/home/Newsletter";
-import { PaymentMethods } from "@/components/home/PaymentMethods";
 import { RewardsTeaser } from "@/components/home/RewardsTeaser";
 
 export const Route = createFileRoute("/")({
