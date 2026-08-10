@@ -36,7 +36,7 @@ const FAQS = [
     a: "In-stock orders leave the shop within one to two business days. Orders that mix in-stock and preorder items ship once the preorder lands, unless you ask us to split the shipment.",
   },
   {
-    q: "Do you offer free shipping?",
+    q: "How does shipping work?",
     a: "Shipping options and rates will be provided through the live Shopify checkout once it is configured. Local pickup is available at the Commercial Drive store during opening hours.",
   },
   {
