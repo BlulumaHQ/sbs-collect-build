@@ -50,7 +50,7 @@ function MobileAccordion({
   children,
 }: {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <details className="group border-b border-white/12 lg:hidden">
