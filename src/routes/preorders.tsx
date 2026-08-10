@@ -28,7 +28,7 @@ function PreordersPage() {
   const products = getPreorderProducts();
 
   return (
-    <div className="pt-[64px] md:pt-[78px]">
+    <div>
       <div className="container-sbs py-10 lg:py-14">
         <Breadcrumbs items={[{ label: "Preorders" }]} />
         <div className="mt-6">

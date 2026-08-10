@@ -27,7 +27,7 @@ function CartPage() {
   const { items, subtotal, currency, setQuantity, removeItem, clearCart } = useCart();
 
   return (
-    <div className="pt-[64px] md:pt-[78px]">
+    <div>
       <div className="container-sbs py-10 lg:py-14">
         <Breadcrumbs items={[{ label: "Cart" }]} />
         <div className="mt-6">
@@ -66,7 +66,7 @@ function CartPage() {
                         {item.title}
                       </Link>
                       <div className="mt-2">
-                        <ProductStatusBadge status={item.status} />
+                        {item.status === "preorder" ? <ProductStatusBadge badge="preorder" /> : null}
                       </div>
                       <p className="micro mt-2 text-muted-foreground">
                         {formatPrice(item.price, item.currency)} each

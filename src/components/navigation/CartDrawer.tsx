@@ -40,7 +40,7 @@ export function CartDrawer() {
                     <p className="micro text-muted-foreground">{item.vendor}</p>
                     <p className="clamp-2 text-sm text-foreground">{item.title}</p>
                     <div className="mt-1">
-                      <ProductStatusBadge status={item.status} />
+                      {item.status === "preorder" ? <ProductStatusBadge badge="preorder" /> : null}
                     </div>
                     <div className="mt-2 flex items-center justify-between gap-3">
                       <div className="flex items-center border border-border">

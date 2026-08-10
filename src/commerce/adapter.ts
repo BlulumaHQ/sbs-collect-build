@@ -32,6 +32,7 @@ interface RawProduct {
   sku?: string | null;
   upc?: string | null;
   estimatedRelease?: string | null;
+  compareAtPrice?: number | null;
   image: string;
 }
 
@@ -81,8 +82,30 @@ const products: CommerceProduct[] = (rawProducts as RawProduct[]).map((p) => ({
   sku: clean(p.sku),
   upc: clean(p.upc),
   estimatedRelease: clean(p.estimatedRelease),
+  compareAtPrice: p.compareAtPrice ?? undefined,
   image: p.image,
+  images: [p.image],
 }));
+
+/** Curated brand rail for the storefront. */
+export const POPULAR_BRANDS = [
+  "BANDAI",
+  "GOOD SMILE COMPANY",
+  "GSI Creos",
+  "SQUARE ENIX",
+  "MegaHouse",
+  "52TOYS",
+  "BellFine",
+  "CAPCOM",
+] as const;
+
+export function getSaleProducts(): CommerceProduct[] {
+  return products.filter((p) => p.compareAtPrice && p.compareAtPrice > p.price);
+}
+
+export function getNewArrivals(limit = 8): CommerceProduct[] {
+  return products.filter((p) => p.status !== "sold-out").slice(0, limit);
+}
 
 export function getAllProducts(): CommerceProduct[] {
   return products;

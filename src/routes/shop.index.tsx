@@ -29,14 +29,14 @@ export const Route = createFileRoute("/shop/")({
 
 function ShopPage() {
   const search = Route.useSearch();
-  const navigate = useNavigate({ from: "/shop" });
+  const navigate = useNavigate({ from: "/shop/" });
 
   const onChange = (next: ShopSearch) => {
     navigate({ to: ".", search: next });
   };
 
   return (
-    <div className="pt-[64px] md:pt-[78px]">
+    <div>
       <div className="container-sbs py-10 lg:py-14">
         <Breadcrumbs items={[{ label: "Shop" }]} />
         <div className="mt-6">

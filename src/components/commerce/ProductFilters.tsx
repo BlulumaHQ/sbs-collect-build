@@ -1,6 +1,13 @@
 import type { CommerceProduct } from "@/types/commerce";
 import type { ShopSearch } from "@/commerce/search-schema";
-import { STATUS_LABEL, formatPrice } from "@/commerce/format";
+import { formatPrice } from "@/commerce/format";
+
+const FILTER_STATUS_LABEL: Record<string, string> = {
+  available: "IN STOCK",
+  "last-one": "LAST ONE",
+  preorder: "PREORDER",
+  "sold-out": "SOLD OUT",
+};
 import { CATEGORY_ORDER, categorySlug } from "@/commerce/adapter";
 import type { ProductStatus } from "@/types/commerce";
 
@@ -129,7 +136,7 @@ export function ProductFilters({
           {statuses.map((status) => (
             <Option
               key={status}
-              label={STATUS_LABEL[status]}
+              label={FILTER_STATUS_LABEL[status] ?? status}
               count={countBy((p) => p.status === status)}
               active={search.status === status}
               onClick={() => toggle("status", status)}

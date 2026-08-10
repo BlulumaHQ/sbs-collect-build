@@ -44,7 +44,7 @@ function CategoryPage() {
   };
 
   return (
-    <div className="pt-[64px] md:pt-[78px]">
+    <div>
       <div className="container-sbs py-10 lg:py-14">
         <Breadcrumbs items={[{ label: "Shop", to: "/shop" }, { label: category.name }]} />
         <div className="mt-6">

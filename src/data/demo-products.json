@@ -137,7 +137,8 @@
     "sourceUrl": "https://anitoy.ca/products/pokemon-xerneas-bandai-hobby",
     "sourceImageUrl": "https://anitoy.ca/i/ff81b5e324589d32704da575.webp",
     "demoOnly": true,
-    "priceNote": "AniToy displayed price captured for UI prototype only; not Yu-Wei retail pricing."
+    "priceNote": "AniToy displayed price captured for UI prototype only; not Yu-Wei retail pricing.",
+    "compareAtPrice": 21.88
   },
   {
     "id": "model-kits-04",
@@ -198,7 +199,8 @@
     "sourceUrl": "https://anitoy.ca/products/blue-lock-pote-mascot-plush",
     "sourceImageUrl": "https://anitoy.ca/i/ax7voxgthiftw3wmy0slkui9.webp",
     "demoOnly": true,
-    "priceNote": "AniToy displayed price captured for UI prototype only; not Yu-Wei retail pricing."
+    "priceNote": "AniToy displayed price captured for UI prototype only; not Yu-Wei retail pricing.",
+    "compareAtPrice": 22.95
   },
   {
     "id": "plush-03",
@@ -306,7 +308,8 @@
     "sourceUrl": "https://anitoy.ca/products/my-melody-classic-series-toptoy",
     "sourceImageUrl": "https://anitoy.ca/i/f0s08xw39hlw9ldlbhcz3qfp.webp",
     "demoOnly": true,
-    "priceNote": "AniToy displayed price captured for UI prototype only; not Yu-Wei retail pricing."
+    "priceNote": "AniToy displayed price captured for UI prototype only; not Yu-Wei retail pricing.",
+    "compareAtPrice": 15.0
   },
   {
     "id": "blind-boxes-04",
@@ -389,7 +392,8 @@
     "sourceUrl": "https://anitoy.ca/products/mr-color-132-earth-green-flat-tank",
     "sourceImageUrl": "https://anitoy.ca/i/321c5ddc4cdf6199ec7d8a68.webp",
     "demoOnly": true,
-    "priceNote": "AniToy displayed price captured for UI prototype only; not Yu-Wei retail pricing."
+    "priceNote": "AniToy displayed price captured for UI prototype only; not Yu-Wei retail pricing.",
+    "compareAtPrice": 3.65
   },
   {
     "id": "hobby-supplies-04",
@@ -509,7 +513,8 @@
     "sourceUrl": "https://anitoy.ca/products/kaiju-no-8-bottled-t-shirt",
     "sourceImageUrl": "https://anitoy.ca/i/0fd88564423577294ec8d779.webp",
     "demoOnly": true,
-    "priceNote": "AniToy displayed price captured for UI prototype only; not Yu-Wei retail pricing."
+    "priceNote": "AniToy displayed price captured for UI prototype only; not Yu-Wei retail pricing.",
+    "compareAtPrice": 32.19
   },
   {
     "id": "apparel-02",

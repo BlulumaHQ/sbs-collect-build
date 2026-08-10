@@ -27,7 +27,7 @@ function BrandsPage() {
   const vendors = getVendors();
 
   return (
-    <div className="pt-[64px] md:pt-[78px]">
+    <div>
       <div className="container-sbs py-10 lg:py-14">
         <Breadcrumbs items={[{ label: "Brands" }]} />
         <div className="mt-6">
@@ -36,22 +36,27 @@ function BrandsPage() {
         <h1 className="mt-5 font-display text-4xl md:text-6xl">Brands</h1>
         <p className="micro mt-4 text-muted-foreground">{vendors.length} makers in the demo catalogue</p>
 
-        <ul className="mt-12 border-t border-charcoal/20">
+        <ul className="mt-10 grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-3 lg:grid-cols-4">
           {vendors.map((vendor) => (
-            <li key={vendor.name} className="border-b border-border">
+            <li key={vendor.name}>
               <Link
                 to="/shop"
                 search={{ sort: "featured", vendor: vendor.name }}
-                className="group flex items-center justify-between gap-6 py-6 transition-colors duration-200 hover:text-sbs-red"
+                className="group flex h-32 flex-col items-center justify-center gap-2 bg-white px-4 text-center transition-colors duration-200 hover:bg-bone"
               >
-                <span className="font-display text-2xl md:text-4xl">{vendor.name}</span>
-                <span className="micro shrink-0 text-muted-foreground">
+                <span className="font-display text-sm uppercase tracking-[0.18em] text-charcoal/75 transition-colors duration-200 group-hover:text-sbs-red">
+                  {vendor.name}
+                </span>
+                <span className="micro text-muted-foreground">
                   {vendor.count} {vendor.count === 1 ? "product" : "products"}
                 </span>
               </Link>
             </li>
           ))}
         </ul>
+        <p className="micro mt-6 text-muted-foreground/70">
+          Maker logotypes are trademarked and were not supplied; typographic lockups are shown.
+        </p>
       </div>
     </div>
   );

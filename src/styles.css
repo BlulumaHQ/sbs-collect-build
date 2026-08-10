@@ -42,11 +42,15 @@
   --color-bone: var(--bone);
   --color-bone-deep: var(--bone-deep);
   --color-sbs-red: var(--sbs-red);
+  --color-sbs-amber: var(--sbs-amber);
+  --color-sbs-red-deep: var(--sbs-red-deep);
 }
 
 :root {
   --radius: 2px;
   --sbs-red: oklch(0.4405 0.157 18.5);
+  --sbs-red-deep: oklch(0.3705 0.132 18.5);
+  --sbs-amber: oklch(0.7205 0.152 68);
   --charcoal: oklch(0.3502 0 0);
   --charcoal-soft: oklch(0.3082 0 0);
   --bone: oklch(0.9601 0.0116 88.5);
@@ -114,7 +118,7 @@
 @utility container-sbs {
   width: 100%;
   margin-inline: auto;
-  max-width: 88rem;
+  max-width: 96rem;
   padding-inline: 20px;
 
   @media (min-width: 768px) {
@@ -149,4 +153,87 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+@utility clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@utility clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Retail card surface — pure white, hairline rule, lift on hover */
+@utility card-retail {
+  background-color: #fff;
+  border: 1px solid var(--color-border);
+  transition:
+    box-shadow 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease;
+
+  &:hover {
+    border-color: color-mix(in oklab, var(--charcoal) 35%, transparent);
+    box-shadow: 0 14px 34px -22px color-mix(in oklab, var(--charcoal) 85%, transparent);
+  }
+}
+
+@utility btn-primary-sbs {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--sbs-red);
+  color: #fff;
+  border: 1px solid var(--sbs-red);
+  padding: 14px 26px;
+  transition: background-color 200ms ease, border-color 200ms ease;
+
+  &:hover {
+    background-color: var(--sbs-red-deep);
+    border-color: var(--sbs-red-deep);
+  }
+}
+
+@utility btn-ghost-sbs {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--charcoal);
+  color: var(--charcoal);
+  padding: 14px 26px;
+  transition: background-color 200ms ease, color 200ms ease;
+
+  &:hover {
+    background-color: var(--charcoal);
+    color: #fff;
+  }
+}
+
+@keyframes sbs-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-slide-in {
+  animation: sbs-fade-up 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
