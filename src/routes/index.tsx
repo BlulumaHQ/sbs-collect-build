@@ -160,7 +160,7 @@ function HomePage() {
                   search={{ sort: "featured" }}
                   className="group relative flex flex-col justify-between border border-border bg-card transition-colors duration-200 hover:border-charcoal/40 md:col-span-3"
                 >
-                  <div className="aspect-[16/10] bg-bone md:aspect-[16/9]">
+                  <div className="h-[220px] shrink-0 bg-bone md:h-[280px]">
                     <img
                       src={art.src}
                       alt={art.alt}
