@@ -11,24 +11,27 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { CartProvider } from "@/commerce/cart";
+import { SiteHeader } from "@/components/navigation/SiteHeader";
+import { SiteFooter } from "@/components/navigation/SiteFooter";
+import { CartDrawer } from "@/components/navigation/CartDrawer";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-[70vh] items-center justify-center px-5">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+        <p className="micro text-sbs-red">404</p>
+        <h1 className="mt-4 font-display text-4xl">Page not found</h1>
+        <p className="mt-3 text-sm text-muted-foreground">
+          This page does not exist in the Secret Builders Society prototype.
         </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
-        </div>
+        <Link
+          to="/shop"
+          search={{ sort: "featured" }}
+          className="micro mt-8 inline-block border border-charcoal bg-charcoal px-6 py-3 text-white transition-colors duration-200 hover:border-sbs-red hover:bg-sbs-red"
+        >
+          Back to shop
+        </Link>
       </div>
     </div>
   );
@@ -42,13 +45,11 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-[70vh] items-center justify-center px-5">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+        <h1 className="font-display text-3xl">This page didn't load</h1>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Something went wrong. Try again or head back home.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -56,14 +57,11 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="micro border border-charcoal bg-charcoal px-6 py-3 text-white hover:bg-sbs-red hover:border-sbs-red"
           >
             Try again
           </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
+          <a href="/" className="micro border border-charcoal px-6 py-3 text-charcoal">
             Go home
           </a>
         </div>
@@ -77,21 +75,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      // STAGING ONLY — REMOVE NOINDEX BEFORE PRODUCTION LAUNCH.
+      { name: "robots", content: "noindex, nofollow, noarchive, nosnippet" },
+      { name: "googlebot", content: "noindex, nofollow, noarchive, nosnippet" },
+      { title: "Secret Builders Society | Figures, Model Kits & Collector Goods" },
+      { property: "og:site_name", content: "Secret Builders Society" },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "/images/og-image.png" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:image", content: "/images/og-image.png" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
     ],
   }),
   shellComponent: RootShell,
@@ -119,8 +121,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <CartProvider>
+        <SiteHeader />
+        <main id="main">
+          <Outlet />
+        </main>
+        <SiteFooter />
+        <CartDrawer />
+      </CartProvider>
     </QueryClientProvider>
   );
 }

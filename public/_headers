@@ -1,0 +1,4 @@
+# STAGING ONLY — REMOVE THIS RULE BEFORE PRODUCTION LAUNCH.
+# Applies to Cloudflare Pages static responses, including product images.
+/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
