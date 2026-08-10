@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { STORE, STORE_IMAGE, STORE_IMAGE_CAPTION, UNITY_TATTOO_URL } from "@/config/store";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -9,81 +10,138 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "Secret Builders Society is being designed as a collector-first storefront for figures, model kits, plush, blind boxes, hobby supplies, character goods, and apparel.",
+          "Secret Builders Society is a collector-focused toy and model kit store sharing its Commercial Drive space in Vancouver with Unity Tattoo.",
       },
       { property: "og:title", content: "About | Secret Builders Society" },
       {
         property: "og:description",
-        content: "A collector-first storefront for figures, model kits and hobby supplies.",
+        content:
+          "A collector-focused hobby shop inside a shared creative space with Unity Tattoo on Commercial Drive.",
       },
-      { property: "og:url", content: "/about" },
     ],
-    links: [{ rel: "canonical", href: "/about" }],
   }),
   component: AboutPage,
 });
 
 const PRINCIPLES = [
   {
+    index: "01",
     title: "Discover clearly",
-    body: "Move between categories, series, makers, and search without digging through unnecessary clutter.",
+    body: "Category, series and brand navigation built so collectors can find the exact piece they came for — and the one they did not know existed.",
   },
   {
+    index: "02",
     title: "Build confidently",
-    body: "Keep model kits and hobby supplies easy to find alongside the figures and character goods collectors already follow.",
+    body: "Kits sit beside the tools, paints and finishing supplies that complete them, so a build never stalls halfway through.",
   },
   {
+    index: "03",
     title: "Collect your way",
-    body: "Browse across different product types without forcing every collector into the same path.",
+    body: "Preorders, in-stock shelves and character goods presented plainly, with honest status on every product.",
   },
 ];
 
 function AboutPage() {
   return (
-    <div>
-      <section className="bg-charcoal text-white">
-        <div className="container-sbs py-16 lg:py-24">
-          <Breadcrumbs items={[{ label: "About" }]} />
-          <div className="mt-8">
-            <SBSBuildRail index="00" label="Secret Builders Society" tone="light" />
-          </div>
-          <h1 className="mt-6 font-display text-4xl md:text-6xl">Built for collectors.</h1>
-          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-white/70 md:text-base">
-            Secret Builders Society is being designed as a collector-first storefront for figures, model
-            kits, plush, blind boxes, hobby supplies, character goods, and apparel.
+    <>
+      {/* 01 — compact charcoal hero */}
+      <section className="bg-charcoal py-14 text-white lg:py-20">
+        <div className="container-sbs">
+          <Breadcrumbs items={[{ label: "About" }]} tone="light" />
+          <p className="micro mt-6 text-white/60">Secret Builders Society</p>
+          <h1 className="mt-5 font-display text-[40px] text-white lg:text-[54px]">
+            Built for collectors.
+          </h1>
+          <p className="mt-6 max-w-2xl text-[16px] leading-relaxed text-white/70 lg:text-[17px]">
+            Secret Builders Society is a collector-focused shop for figures, model kits, plush,
+            blind boxes, hobby supplies, character goods and apparel — curated for people who care
+            about what ends up on the shelf.
           </p>
         </div>
       </section>
 
-      <section className="section-y">
-        <div className="container-sbs grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
-          <h2 className="font-display text-3xl md:text-4xl">A clearer way to explore the hobby.</h2>
-          <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
-            The store experience is organized around the way collectors actually browse: by product
-            category, series, maker, availability, and the items they are actively looking for.
-          </p>
-        </div>
-
-        <div className="container-sbs mt-14 grid gap-px border border-border bg-border md:grid-cols-3">
-          {PRINCIPLES.map((principle, index) => (
-            <div key={principle.title} className="bg-card p-8">
-              <span className="micro text-sbs-red">0{index + 1}</span>
-              <h3 className="mt-4 font-display text-xl uppercase tracking-tight">{principle.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{principle.body}</p>
+      {/* 02 — shared space */}
+      <section className="section-y border-b border-border bg-white">
+        <div className="container-sbs grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <figure className="m-0">
+            <div className="aspect-[4/3] w-full overflow-hidden bg-bone">
+              <img
+                src={STORE_IMAGE}
+                alt="Shared tattoo studio and collector toy store interior with Gundam model kits"
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
             </div>
-          ))}
-        </div>
-
-        <div className="container-sbs mt-16">
-          <Link
-            to="/shop"
-            search={{ sort: "featured" }}
-            className="micro inline-block border border-sbs-red bg-sbs-red px-7 py-4 text-white transition-colors duration-200 hover:bg-transparent hover:text-sbs-red"
-          >
-            Explore the catalogue
-          </Link>
+            <figcaption className="micro-sm mt-3 text-muted-foreground">
+              Concept visualization. {STORE_IMAGE_CAPTION}
+            </figcaption>
+          </figure>
+          <div>
+            <SBSBuildRail index="02" label="Our Space" />
+            <h2 className="mt-5 font-display text-[32px] leading-[1.06] lg:text-[42px]">
+              A different kind of hobby shop.
+            </h2>
+            <p className="mt-6 max-w-xl text-[16px] leading-relaxed text-muted-foreground lg:text-[17px]">
+              Secret Builders Society brings collector toys and model kits into the same Commercial
+              Drive space as Unity Tattoo — combining two creative communities under one roof.
+            </p>
+            <dl className="mt-8 grid gap-6 sm:grid-cols-2">
+              <div>
+                <dt className="micro-sm text-muted-foreground">Address</dt>
+                <dd className="mt-2 text-[15px] leading-relaxed">
+                  {STORE.addressLine}
+                  <br />
+                  {STORE.city}, {STORE.region}
+                </dd>
+              </div>
+              <div>
+                <dt className="micro-sm text-muted-foreground">Hours</dt>
+                <dd className="mt-2 text-[15px] leading-relaxed">
+                  Mon–Sat 11:00 AM – 6:00 PM
+                  <br />
+                  Sunday Closed
+                </dd>
+              </div>
+            </dl>
+          </div>
         </div>
       </section>
-    </div>
+
+      {/* 03 — principles */}
+      <section className="section-y border-b border-border bg-bone">
+        <div className="container-sbs">
+          <h2 className="font-display text-[32px] lg:text-[38px]">How we work</h2>
+          <div className="mt-9 grid gap-5 lg:grid-cols-3">
+            {PRINCIPLES.map((p) => (
+              <article key={p.index} className="card-retail p-7">
+                <p className="micro-sm text-sbs-red">{p.index}</p>
+                <h3 className="mt-4 font-display text-[22px]">{p.title}</h3>
+                <p className="mt-3 text-[16px] leading-relaxed text-muted-foreground">{p.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 04 — CTA */}
+      <section className="bg-white py-14 lg:py-16">
+        <div className="container-sbs flex flex-wrap items-center justify-between gap-6">
+          <h2 className="font-display text-[28px] lg:text-[34px]">Come see the shelves.</h2>
+          <div className="flex flex-wrap gap-3">
+            <Link to="/contact" className="btn-primary-sbs">
+              Visit Secret Builders Society
+            </Link>
+            <a
+              href={UNITY_TATTOO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-ghost-sbs"
+            >
+              Visit Unity Tattoo
+            </a>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
