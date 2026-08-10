@@ -36,25 +36,27 @@ function CollectionsPage() {
         <h1 className="mt-5 font-display text-4xl md:text-6xl">Collections</h1>
         <p className="micro mt-4 text-muted-foreground">{series.length} series in the demo catalogue</p>
 
-        <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
           {series.map((entry) => (
             <Link
               key={entry.name}
               to="/shop"
               search={{ sort: "featured", series: entry.name }}
-              className="group flex flex-col border border-border bg-card transition-colors duration-200 hover:border-charcoal/40"
+              className="card-retail group flex flex-col"
             >
-              <div className="aspect-square bg-bone">
+              <div className="relative aspect-square w-full overflow-hidden bg-white">
                 <img
                   src={entry.image}
                   alt={entry.name}
                   loading="lazy"
-                  className="h-full w-full object-contain p-5 transition-transform duration-200 group-hover:scale-[1.03]"
+                  className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.06]"
                 />
               </div>
-              <div className="flex items-center justify-between gap-2 border-t border-border px-3 py-3">
-                <span className="truncate text-sm font-medium">{entry.name}</span>
-                <span className="micro text-muted-foreground">{entry.count}</span>
+              <div className="flex h-[62px] items-center justify-between gap-2 border-t border-border px-3">
+                <span className="truncate text-sm font-medium transition-colors duration-200 group-hover:text-sbs-red">
+                  {entry.name}
+                </span>
+                <span className="micro shrink-0 text-muted-foreground">{entry.count}</span>
               </div>
             </Link>
           ))}
