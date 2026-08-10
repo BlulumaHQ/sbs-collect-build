@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { getVendors } from "@/commerce/adapter";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { brandLogo } from "@/commerce/artwork";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/brands")({
   head: () => ({
@@ -9,16 +10,15 @@ export const Route = createFileRoute("/brands")({
       { title: "Brands | Secret Builders Society" },
       {
         name: "description",
-        content: "Makers represented in the Secret Builders Society demo catalogue.",
+        content:
+          "Browse collector brands stocked by Secret Builders Society — Bandai, Good Smile Company, Square Enix, MegaHouse, GSI Creos and more.",
       },
       { property: "og:title", content: "Brands | Secret Builders Society" },
       {
         property: "og:description",
-        content: "Makers represented in the Secret Builders Society demo catalogue.",
+        content: "Shop by maker across the Secret Builders Society catalogue.",
       },
-      { property: "og:url", content: "/brands" },
     ],
-    links: [{ rel: "canonical", href: "/brands" }],
   }),
   component: BrandsPage,
 });
@@ -27,37 +27,64 @@ function BrandsPage() {
   const vendors = getVendors();
 
   return (
-    <div>
-      <div className="container-sbs py-10 lg:py-14">
-        <Breadcrumbs items={[{ label: "Brands" }]} />
-        <div className="mt-6">
-          <SBSBuildRail index="06" label="Maker Index" />
+    <>
+      <section className="border-b border-border bg-white py-12 lg:py-16">
+        <div className="container-sbs">
+          <Breadcrumbs items={[{ label: "Brands" }]} />
+          <SBSBuildRail index="01" label="Brand Directory" />
+          <h1 className="mt-5 font-display text-[38px] lg:text-[50px]">Brands</h1>
+          <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-muted-foreground lg:text-[17px]">
+            Shop by maker across {vendors.length} manufacturers represented in the catalogue.
+          </p>
         </div>
-        <h1 className="mt-5 font-display text-4xl md:text-6xl">Brands</h1>
-        <p className="micro mt-4 text-muted-foreground">{vendors.length} makers in the demo catalogue</p>
+      </section>
 
-        <ul className="mt-10 grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-3 lg:grid-cols-4">
-          {vendors.map((vendor) => (
-            <li key={vendor.name}>
-              <Link
-                to="/shop"
-                search={{ sort: "featured", vendor: vendor.name }}
-                className="group flex h-32 flex-col items-center justify-center gap-2 bg-white px-4 text-center transition-colors duration-200 hover:bg-bone"
-              >
-                <span className="font-display text-sm uppercase tracking-[0.18em] text-charcoal/75 transition-colors duration-200 group-hover:text-sbs-red">
-                  {vendor.name}
-                </span>
-                <span className="micro text-muted-foreground">
-                  {vendor.count} {vendor.count === 1 ? "product" : "products"}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <p className="micro mt-6 text-muted-foreground/70">
-          Maker logotypes are trademarked and were not supplied; typographic lockups are shown.
-        </p>
-      </div>
-    </div>
+      <section className="section-y bg-bone">
+        <div className="container-sbs">
+          <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
+            {vendors.map((vendor) => {
+              const logo = brandLogo(vendor.name);
+              return (
+                <Link
+                  key={vendor.name}
+                  to="/shop"
+                  search={{ sort: "featured", vendor: vendor.name }}
+                  className="card-retail group flex flex-col"
+                >
+                  <div className="flex h-[140px] items-center justify-center bg-white px-6">
+                    {logo ? (
+                      <img
+                        src={logo}
+                        alt={vendor.name}
+                        loading="lazy"
+                        className="max-h-[96px] w-auto max-w-[85%] object-contain transition-transform duration-200 group-hover:scale-[1.04]"
+                      />
+                    ) : (
+                      <span className="text-center font-display text-xl">{vendor.name}</span>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between border-t border-border px-4 py-4">
+                    <span className="micro-sm text-muted-foreground">
+                      {vendor.count} products
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="text-lg text-charcoal/40 transition-colors duration-200 group-hover:text-sbs-red"
+                    >
+                      →
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+
+          <p className="micro-sm mt-8 text-muted-foreground">
+            Brand marks shown are prototype plates — official manufacturer logos will replace them
+            once supplied.
+          </p>
+        </div>
+      </section>
+    </>
   );
 }
