@@ -77,7 +77,7 @@ function PrivacyPage() {
       <address className="mt-10 not-italic text-sm text-muted-foreground">
         {STORE.legalName}
         <br />
-        {STORE.addressLine}, {STORE.city}, {STORE.region} {STORE.postal}
+        {STORE.addressLine}, {STORE.city}, {STORE.region}
       </address>
     </div>
   );

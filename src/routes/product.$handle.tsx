@@ -10,7 +10,7 @@ import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { ProductStatusBadge } from "@/components/commerce/ProductStatusBadge";
 import { ProductCard } from "@/components/commerce/ProductCard";
 import { RecentlyViewed } from "@/components/commerce/RecentlyViewed";
-import { SHIPPING_LINE, STORE } from "@/config/store";
+import { STORE } from "@/config/store";
 
 export const Route = createFileRoute("/product/$handle")({
   loader: ({ params }) => {
@@ -176,7 +176,7 @@ function ProductDetailPage() {
             </button>
 
             <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
-              <li>{SHIPPING_LINE}.</li>
+              <li>Shipping options and rates will be provided through the live Shopify checkout.</li>
               <li>In-store pickup available in {STORE.city}, {STORE.region}.</li>
               {product.status === "preorder" ? (
                 <li>Preorders are charged when the item ships from the maker.</li>
