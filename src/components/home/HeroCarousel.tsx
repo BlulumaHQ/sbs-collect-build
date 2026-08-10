@@ -9,9 +9,12 @@ interface Slide {
   body: string;
   tone: "dark" | "light";
   background: string;
+  /** Render the artwork as a contained right-side layer instead of a full-bleed cover crop. */
+  artworkLayer?: boolean;
   primary: { label: string; to: string };
   secondary?: { label: string; to: string };
 }
+
 
 const SLIDES: Slide[] = [
   {
