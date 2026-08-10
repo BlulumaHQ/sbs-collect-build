@@ -16,7 +16,7 @@ export function ProductGrid({
   }
   const lg = columns === 4 ? "lg:grid-cols-4" : "lg:grid-cols-3";
   return (
-    <div className={`grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 ${lg}`}>
+    <div className={`grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5 ${lg}`}>
       {products.map((product, i) => (
         <ProductCard key={product.id} product={product} eager={i < 4} />
       ))}

@@ -1,18 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  CATEGORY_ORDER,
-  categorySlug,
   getAllProducts,
   getCategories,
   getPreorderProducts,
-  getProductsByCategorySlug,
   getProductsByIds,
+  getSaleProducts,
   getSeries,
-  getVendors,
 } from "@/commerce/adapter";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
-import { ProductCard } from "@/components/commerce/ProductCard";
 import { ProductGrid } from "@/components/commerce/ProductGrid";
+import { RecentlyViewed } from "@/components/commerce/RecentlyViewed";
+import { HeroCarousel } from "@/components/home/HeroCarousel";
+import { InfoStrip } from "@/components/home/InfoStrip";
+import { PopularBrands } from "@/components/home/PopularBrands";
+import { StoreInfo } from "@/components/home/StoreInfo";
+import { Testimonials } from "@/components/home/Testimonials";
+import { Newsletter } from "@/components/home/Newsletter";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,13 +24,16 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Explore figures, model kits, plush, blind boxes, hobby supplies, character goods and apparel in a modern collector-first storefront from Secret Builders Society.",
+          "Shop figures, model kits, plush, blind boxes, hobby supplies, character goods and apparel. Collector-first retail, shipped across Canada.",
       },
-      { property: "og:title", content: "Secret Builders Society | Figures, Model Kits & Collector Goods" },
+      {
+        property: "og:title",
+        content: "Secret Builders Society | Figures, Model Kits & Collector Goods",
+      },
       {
         property: "og:description",
         content:
-          "Explore figures, model kits, plush, blind boxes, hobby supplies, character goods and apparel in a modern collector-first storefront from Secret Builders Society.",
+          "Shop figures, model kits, plush, blind boxes, hobby supplies, character goods and apparel. Collector-first retail, shipped across Canada.",
       },
       { property: "og:url", content: "/" },
     ],
@@ -36,21 +42,8 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const HERO_IMAGES = [
-  { src: "/images/products/figures-01-pop-up-parade-kirby.webp", alt: "POP UP PARADE Kirby" },
-  {
-    src: "/images/products/model-kits-02-one-piece-oro-jackson.webp",
-    alt: "ONE PIECE Oro Jackson model kit",
-  },
-  { src: "/images/products/plush-03-oshi-no-ko-ai-plushie.webp", alt: "【OSHI NO KO】Ai plushie" },
-  { src: "/images/products/blind-boxes-01-hazbin-hotel.webp", alt: "Hazbin Hotel blind box" },
-];
-
 const CATEGORY_IMAGE: Record<string, { src: string; alt: string }> = {
-  Figures: {
-    src: "/images/products/figures-02-nendoroid-bruce-lee.webp",
-    alt: "Nendoroid Bruce Lee",
-  },
+  Figures: { src: "/images/products/figures-02-nendoroid-bruce-lee.webp", alt: "Nendoroid Bruce Lee" },
   "Model Kits": {
     src: "/images/products/model-kits-01-nier-automata-2b-9s.webp",
     alt: "NieR:Automata 2B & 9S model kit",
@@ -88,69 +81,32 @@ function HomePage() {
     "character-goods-01",
     "apparel-04",
   ]);
-  const hobby = getProductsByCategorySlug("hobby-supplies");
-  const preorders = getPreorderProducts();
-  const series = getSeries().slice(0, 8);
-  const vendors = getVendors();
+  const preorders = getPreorderProducts().slice(0, 4);
+  const onSale = getSaleProducts().slice(0, 4);
   const categories = getCategories();
+  const series = getSeries().slice(0, 10);
   const total = getAllProducts().length;
 
   return (
     <>
-      {/* SECTION 1 — HERO */}
-      <section className="bg-charcoal pt-[64px] text-white md:pt-[78px]">
-        <div className="container-sbs grid gap-10 py-14 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:gap-16 lg:py-24">
-          <div>
-            <SBSBuildRail index="00" label="Secret Builders Society / Collector Store" tone="light" />
-            <h1 className="mt-7 max-w-[14ch] font-display text-[2.6rem] leading-[1.02] sm:text-5xl xl:text-6xl">
-              Build the collection
-              <br />
-              you actually want.
-            </h1>
-            <p className="mt-6 max-w-xl text-sm leading-relaxed text-white/70 md:text-base">
-              Figures, model kits, plush, blind boxes, hobby supplies, character goods, and apparel —
-              organized for collectors, not clutter.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link
-                to="/shop"
-                search={{ sort: "featured" }}
-                className="micro border border-sbs-red bg-sbs-red px-7 py-4 text-white transition-colors duration-200 hover:bg-transparent"
-              >
-                Shop the collection
-              </Link>
-              <Link
-                to="/preorders"
-                className="micro border border-white/35 px-7 py-4 text-white transition-colors duration-200 hover:border-white hover:bg-white hover:text-charcoal"
-              >
-                Browse preorders
-              </Link>
-            </div>
-            <p className="micro mt-10 text-white/40">{total} demo products / 7 categories</p>
-          </div>
+      <HeroCarousel />
+      <InfoStrip />
 
-          {/* Editorial product window — composed in CSS, not a merged image */}
-          <div className="grid grid-cols-2 gap-3 md:gap-4">
-            <div className="col-span-1 flex flex-col gap-3 md:gap-4">
-              <HeroTile image={HERO_IMAGES[0]!} className="aspect-[4/5]" />
-              <HeroTile image={HERO_IMAGES[2]!} className="aspect-square" />
-            </div>
-            <div className="col-span-1 flex flex-col gap-3 pt-8 md:gap-4 md:pt-14">
-              <HeroTile image={HERO_IMAGES[1]!} className="aspect-square" />
-              <HeroTile image={HERO_IMAGES[3]!} className="hidden aspect-[4/5] sm:block" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 2 — SHOP BY CATEGORY */}
+      {/* SHOP BY CATEGORY */}
       <section className="section-y border-b border-border">
         <div className="container-sbs">
-          <SBSBuildRail index="01" label="Category Index" />
-          <h2 className="mt-5 font-display text-3xl md:text-5xl">Shop by Category</h2>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <SBSBuildRail index="02" label="Category Index" />
+              <h2 className="mt-5 font-display text-3xl md:text-4xl">Shop by Category</h2>
+            </div>
+            <Link to="/shop" search={{ sort: "featured" }} className="micro text-sbs-red hover:underline">
+              View all {total} products
+            </Link>
+          </div>
 
-          <div className="mt-10 grid gap-3 md:grid-cols-6 md:gap-4">
-            {categories.slice(0, 2).map((category) => {
+          <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5 lg:grid-cols-7">
+            {categories.map((category) => {
               const art = CATEGORY_IMAGE[category.name]!;
               return (
                 <Link
@@ -158,202 +114,119 @@ function HomePage() {
                   to="/shop/$category"
                   params={{ category: category.slug }}
                   search={{ sort: "featured" }}
-                  className="group relative flex flex-col justify-between border border-border bg-card transition-colors duration-200 hover:border-charcoal/40 md:col-span-3"
+                  className="card-retail group flex flex-col"
                 >
-                  <div className="h-[220px] shrink-0 bg-bone md:h-[280px]">
+                  <div className="relative aspect-square w-full overflow-hidden bg-white">
                     <img
                       src={art.src}
                       alt={art.alt}
                       loading="lazy"
-                      className="h-full w-full object-contain p-6 transition-transform duration-200 group-hover:scale-[1.03]"
+                      className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.06]"
                     />
                   </div>
-                  <div className="flex items-end justify-between gap-4 border-t border-border px-5 py-5">
-                    <div>
-                      <span className="micro text-sbs-red">{category.count} products</span>
-                      <h3 className="mt-2 font-display text-2xl md:text-4xl">{category.name}</h3>
-                    </div>
-                    <span className="micro text-muted-foreground">View</span>
-                  </div>
-                </Link>
-              );
-            })}
-
-            {categories.slice(2).map((category, index) => {
-              const art = CATEGORY_IMAGE[category.name]!;
-              return (
-                <Link
-                  key={category.slug}
-                  to="/shop/$category"
-                  params={{ category: category.slug }}
-                  search={{ sort: "featured" }}
-                  className={`group flex flex-col border border-border bg-card transition-colors duration-200 hover:border-charcoal/40 ${
-                    index >= 3 ? "md:col-span-3" : "md:col-span-2"
-                  }`}
-                >
-                  <div className="h-[200px] shrink-0 bg-bone">
-                    <img
-                      src={art.src}
-                      alt={art.alt}
-                      loading="lazy"
-                      className="h-full w-full object-contain p-5 transition-transform duration-200 group-hover:scale-[1.03]"
-                    />
-                  </div>
-                  <div className="mt-auto flex items-center justify-between border-t border-border px-4 py-3">
-                    <h3 className="font-display text-lg">{category.name}</h3>
-                    <span className="micro text-muted-foreground">{category.count}</span>
+                  <div className="flex h-[74px] flex-col justify-center border-t border-border px-3 text-center">
+                    <h3 className="font-display text-sm leading-tight transition-colors duration-200 group-hover:text-sbs-red">
+                      {category.name}
+                    </h3>
+                    <span className="micro mt-1.5 text-muted-foreground">
+                      {category.count} items
+                    </span>
                   </div>
                 </Link>
               );
             })}
           </div>
-
         </div>
       </section>
 
-      {/* SECTION 3 — FEATURED PICKS */}
-      <section className="section-y border-b border-border">
+      {/* FEATURED */}
+      <section className="section-y border-b border-border bg-white">
         <div className="container-sbs">
-          <SBSBuildRail index="02" label="Featured Picks" />
-          <h2 className="mt-5 font-display text-3xl md:text-5xl">Selected from the Catalogue</h2>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <SBSBuildRail index="03" label="Featured Picks" />
+              <h2 className="mt-5 font-display text-3xl md:text-4xl">Selected from the Shelf</h2>
+            </div>
+            <Link to="/shop" search={{ sort: "featured" }} className="micro text-sbs-red hover:underline">
+              Shop all
+            </Link>
+          </div>
           <div className="mt-10">
             <ProductGrid products={featured} />
           </div>
         </div>
       </section>
 
-      {/* SECTION 4 — BUILD BENCH */}
-      <section className="bg-charcoal text-white">
-        <div className="container-sbs section-y grid gap-10 lg:grid-cols-[0.8fr_2fr] lg:gap-16">
-          <div>
-            <SBSBuildRail index="03" label="Build Bench" tone="light" />
-            <h2 className="mt-5 font-display text-3xl md:text-4xl">Tools for the Build</h2>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/65">
-              Paints, tools and airbrush support kept alongside the kits they belong with.
-            </p>
-            <Link
-              to="/shop/$category"
-              params={{ category: "hobby-supplies" }}
-              search={{ sort: "featured" }}
-              className="micro mt-8 inline-block border border-white/35 px-6 py-3 text-white transition-colors duration-200 hover:border-white hover:bg-white hover:text-charcoal"
-            >
-              Shop hobby supplies
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-            {hobby.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
+      <PopularBrands />
+      <StoreInfo />
 
-      {/* SECTION 5 — PREORDERS */}
+      {/* ON SALE */}
+      {onSale.length > 0 ? (
+        <section className="section-y border-b border-border">
+          <div className="container-sbs">
+            <SBSBuildRail index="07" label="Marked Down" />
+            <h2 className="mt-5 font-display text-3xl md:text-4xl">On Sale Now</h2>
+            <div className="mt-10">
+              <ProductGrid products={onSale} />
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <Testimonials />
+
+      {/* PREORDERS */}
+      {preorders.length > 0 ? (
+        <section className="section-y border-b border-border bg-white">
+          <div className="container-sbs">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <SBSBuildRail index="09" label="Preorder Window" />
+                <h2 className="mt-5 font-display text-3xl md:text-4xl">Coming Soon</h2>
+              </div>
+              <Link to="/preorders" className="micro text-sbs-red hover:underline">
+                All preorders
+              </Link>
+            </div>
+            <div className="mt-10">
+              <ProductGrid products={preorders} />
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <RecentlyViewed index="10" />
+
+      {/* SERIES */}
       <section className="section-y border-b border-border">
         <div className="container-sbs">
-          <SBSBuildRail index="04" label="Preorders" />
-          <div className="mt-5 flex flex-wrap items-end justify-between gap-4">
-            <h2 className="font-display text-3xl md:text-5xl">On the Horizon</h2>
-            <Link
-              to="/preorders"
-              className="micro border border-charcoal px-5 py-3 transition-colors duration-200 hover:bg-charcoal hover:text-white"
-            >
-              View all preorders
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <SBSBuildRail index="11" label="Series Directory" />
+              <h2 className="mt-5 font-display text-3xl md:text-4xl">Shop by Series</h2>
+            </div>
+            <Link to="/collections" className="micro text-sbs-red hover:underline">
+              All collections
             </Link>
           </div>
-          <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {preorders.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 6 — SERIES */}
-      <section className="section-y border-b border-border bg-bone-deep">
-        <div className="container-sbs">
-          <SBSBuildRail index="05" label="Series Index" />
-          <h2 className="mt-5 font-display text-3xl md:text-5xl">Explore by Series</h2>
-          <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
+          <ul className="mt-9 flex flex-wrap gap-2.5">
             {series.map((entry) => (
-              <Link
-                key={entry.name}
-                to="/shop"
-                search={{ sort: "featured", series: entry.name }}
-                className="group flex flex-col border border-border bg-card transition-colors duration-200 hover:border-charcoal/40"
-              >
-                <div className="aspect-square bg-bone">
-                  <img
-                    src={entry.image}
-                    alt={entry.name}
-                    loading="lazy"
-                    className="h-full w-full object-contain p-5 transition-transform duration-200 group-hover:scale-[1.03]"
-                  />
-                </div>
-                <div className="flex items-center justify-between gap-2 border-t border-border px-3 py-3">
-                  <span className="truncate text-sm font-medium">{entry.name}</span>
-                  <span className="micro text-muted-foreground">{entry.count}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 7 — BRANDS */}
-      <section className="section-y">
-        <div className="container-sbs">
-          <SBSBuildRail index="06" label="Maker Index" />
-          <div className="mt-5 flex flex-wrap items-end justify-between gap-4">
-            <h2 className="font-display text-3xl md:text-5xl">Brands in the Demo Catalogue</h2>
-            <Link
-              to="/brands"
-              className="micro border border-charcoal px-5 py-3 transition-colors duration-200 hover:bg-charcoal hover:text-white"
-            >
-              View all brands
-            </Link>
-          </div>
-          <ul className="mt-10 grid gap-x-8 border-t border-border sm:grid-cols-2 lg:grid-cols-3">
-            {vendors.map((vendor) => (
-              <li key={vendor.name} className="border-b border-border">
+              <li key={entry.name}>
                 <Link
                   to="/shop"
-                  search={{ sort: "featured", vendor: vendor.name }}
-                  className="flex items-baseline justify-between gap-4 py-4 transition-colors duration-200 hover:text-sbs-red"
+                  search={{ sort: "featured", series: entry.name }}
+                  className="micro inline-flex items-center gap-2 border border-border bg-white px-4 py-2.5 transition-colors duration-200 hover:border-sbs-red hover:text-sbs-red"
                 >
-                  <span className="font-display text-lg md:text-xl">{vendor.name}</span>
-                  <span className="micro text-muted-foreground">{vendor.count}</span>
+                  {entry.name}
+                  <span className="text-muted-foreground">{entry.count}</span>
                 </Link>
               </li>
             ))}
           </ul>
-          <p className="micro mt-8 text-muted-foreground">
-            {CATEGORY_ORDER.map((c) => c).join(" · ")}
-          </p>
         </div>
       </section>
+
+      <Newsletter />
     </>
   );
 }
-
-function HeroTile({
-  image,
-  className,
-}: {
-  image: { src: string; alt: string };
-  className: string;
-}) {
-  return (
-    <div className={`bg-bone ${className}`}>
-      <img
-        src={image.src}
-        alt={image.alt}
-        width={600}
-        height={600}
-        className="h-full w-full object-contain p-4 md:p-6"
-      />
-    </div>
-  );
-}
-
-export { categorySlug };

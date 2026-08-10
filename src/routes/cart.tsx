@@ -66,7 +66,7 @@ function CartPage() {
                         {item.title}
                       </Link>
                       <div className="mt-2">
-                        <ProductStatusBadge status={item.status} />
+                        {item.status === "preorder" ? <ProductStatusBadge badge="preorder" /> : null}
                       </div>
                       <p className="micro mt-2 text-muted-foreground">
                         {formatPrice(item.price, item.currency)} each
