@@ -191,7 +191,7 @@ function HomePage() {
                     index >= 3 ? "md:col-span-3" : "md:col-span-2"
                   }`}
                 >
-                  <div className="aspect-[4/3] bg-bone">
+                  <div className="h-[200px] shrink-0 bg-bone">
                     <img
                       src={art.src}
                       alt={art.alt}
@@ -199,7 +199,7 @@ function HomePage() {
                       className="h-full w-full object-contain p-5 transition-transform duration-200 group-hover:scale-[1.03]"
                     />
                   </div>
-                  <div className="flex items-center justify-between border-t border-border px-4 py-3">
+                  <div className="mt-auto flex items-center justify-between border-t border-border px-4 py-3">
                     <h3 className="font-display text-lg">{category.name}</h3>
                     <span className="micro text-muted-foreground">{category.count}</span>
                   </div>
