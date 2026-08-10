@@ -102,10 +102,11 @@ export function SiteHeader() {
               <img
                 src="/images/brand/sbs-horizontal-light-bg.svg"
                 alt="Secret Builders Society"
-                width={285}
-                height={80}
-                className="h-11 w-[160px] object-contain md:h-16 lg:w-[275px]"
+                width={310}
+                height={87}
+                className="h-12 w-[168px] object-contain object-left md:h-[68px] md:w-[240px] lg:h-[86px] lg:w-[310px]"
               />
+
             </Link>
 
             <form

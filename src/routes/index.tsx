@@ -17,7 +17,6 @@ import { PopularBrands } from "@/components/home/PopularBrands";
 import { StoreInfo } from "@/components/home/StoreInfo";
 import { Testimonials } from "@/components/home/Testimonials";
 import { Newsletter } from "@/components/home/Newsletter";
-import { PaymentMethods } from "@/components/home/PaymentMethods";
 import { RewardsTeaser } from "@/components/home/RewardsTeaser";
 
 export const Route = createFileRoute("/")({
@@ -231,12 +230,6 @@ function HomePage() {
       {/* 12 — NEWSLETTER */}
       <Newsletter />
 
-      {/* 13 — PAYMENTS */}
-      <section className="border-b border-border bg-white py-10">
-        <div className="container-sbs">
-          <PaymentMethods />
-        </div>
-      </section>
     </>
   );
 }
