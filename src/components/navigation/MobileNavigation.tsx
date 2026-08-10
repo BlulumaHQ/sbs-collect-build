@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { PRIMARY_CATEGORIES } from "./taxonomy";
 import { STORE } from "@/config/store";
+import { useRewards } from "@/components/rewards/RewardsProvider";
 
 const NAV = [
   { label: "Preorders", to: "/preorders" as const },
@@ -9,7 +10,7 @@ const NAV = [
   { label: "Brands", to: "/brands" as const },
   { label: "About", to: "/about" as const },
   { label: "Contact", to: "/contact" as const },
-  { label: "Account", to: "/account" as const },
+  { label: "My Account", to: "/account" as const },
 ];
 
 const SUPPORT = [
@@ -21,6 +22,7 @@ const SUPPORT = [
 
 export function MobileNavigation({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [shopOpen, setShopOpen] = useState(true);
+  const { openRewards } = useRewards();
   if (!open) return null;
 
   return (
@@ -30,7 +32,7 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
           <img
             src="/images/brand/sbs-horizontal-light-bg.svg"
             alt="Secret Builders Society"
-            className="h-8 w-auto"
+            className="h-9 w-[170px] object-contain"
           />
           <button type="button" onClick={onClose} className="micro text-muted-foreground">
             Close
@@ -53,7 +55,7 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
                 to="/shop"
                 search={{ sort: "featured" }}
                 onClick={onClose}
-                className="py-1.5 text-sm text-sbs-red"
+                className="py-1.5 text-[15px] text-sbs-red"
               >
                 All Products
               </Link>
@@ -64,7 +66,7 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
                   params={{ category: category.slug }}
                   search={{ sort: "featured" }}
                   onClick={onClose}
-                  className="py-1.5 text-sm text-charcoal/80"
+                  className="py-1.5 text-[15px] text-charcoal/80"
                 >
                   {category.name}
                 </Link>
@@ -83,12 +85,23 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
             </Link>
           ))}
 
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              openRewards();
+            }}
+            className="block w-full border-b border-border py-3 text-left font-display text-2xl text-sbs-red"
+          >
+            Rewards
+          </button>
+
           <div className="mt-8">
             <h2 className="micro text-muted-foreground">Customer Care</h2>
             <ul className="mt-3 space-y-2">
               {SUPPORT.map((item) => (
                 <li key={item.to}>
-                  <Link to={item.to} onClick={onClose} className="text-sm text-charcoal/80">
+                  <Link to={item.to} onClick={onClose} className="text-[15px] text-charcoal/80">
                     {item.label}
                   </Link>
                 </li>
@@ -98,14 +111,20 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
 
           <div className="mt-8 border-t border-border pt-6">
             <p className="micro text-muted-foreground">Visit the shop</p>
-            <p className="mt-2 text-sm">
+            <p className="mt-2 text-[15px]">
               {STORE.addressLine}
               <br />
-              {STORE.city}, {STORE.region} {STORE.postal}
+              {STORE.city}, {STORE.region}
             </p>
-            <a href={`tel:${STORE.phone.replace(/[^\d+]/g, "")}`} className="mt-2 block text-sm text-sbs-red">
+            <a href={STORE.phoneHref} className="mt-2 block text-[15px] text-sbs-red">
               {STORE.phone}
             </a>
+            <p className="mt-3 text-[15px] text-muted-foreground">
+              Mon–Sat 11:00 AM – 6:00 PM
+              <br />
+              Sunday Closed
+            </p>
+            <p className="micro-sm mt-4 text-muted-foreground">{STORE.currencyLabel}</p>
           </div>
         </div>
       </div>

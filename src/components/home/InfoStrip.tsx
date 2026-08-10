@@ -1,37 +1,60 @@
-import { STORE, SHIPPING_LINE } from "@/config/store";
-
-const ITEMS = [
-  {
-    title: "Free Canadian shipping",
-    body: SHIPPING_LINE.replace("Free shipping across Canada on ", "On "),
-  },
-  {
-    title: "Preorder protection",
-    body: "Reserve upcoming releases with no charge until the item ships from the maker.",
-  },
-  {
-    title: "Collector-grade packing",
-    body: "Boxed items double-boxed, sleeves and corner protection on every shelf piece.",
-  },
-  {
-    title: "Shop in person",
-    body: `Visit us in ${STORE.city}, ${STORE.region} — open seven days a week.`,
-  },
-];
+import { Link } from "@tanstack/react-router";
+import { Clock, MapPin, Phone, Truck } from "lucide-react";
+import { STORE } from "@/config/store";
 
 export function InfoStrip() {
   return (
-    <section aria-label="Store promises" className="border-b border-border bg-white">
-      <div className="container-sbs grid gap-px sm:grid-cols-2 lg:grid-cols-4">
-        {ITEMS.map((item) => (
-          <div key={item.title} className="flex gap-4 py-7 lg:px-6 lg:first:pl-0 lg:last:pr-0">
-            <span className="mt-1.5 block h-px w-8 shrink-0 bg-sbs-red" aria-hidden="true" />
-            <div>
-              <h3 className="font-display text-base">{item.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
-            </div>
-          </div>
-        ))}
+    <section className="border-b border-border bg-white" aria-label="Store information">
+      <div className="container-sbs grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
+        <div className="bg-white px-6 py-8">
+          <MapPin className="text-sbs-red" size={22} aria-hidden="true" />
+          <h2 className="mt-4 font-display text-lg">Vancouver Store</h2>
+          <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+            {STORE.addressLine}
+            <br />
+            {STORE.city}, {STORE.region}
+          </p>
+          <Link to="/contact" className="micro mt-4 inline-block text-sbs-red hover:underline">
+            Store info
+          </Link>
+        </div>
+
+        <div className="bg-white px-6 py-8">
+          <Clock className="text-sbs-red" size={22} aria-hidden="true" />
+          <h2 className="mt-4 font-display text-lg">Store Hours</h2>
+          <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+            Mon–Sat 11 AM–6 PM
+            <br />
+            Sunday Closed
+          </p>
+        </div>
+
+        <div className="bg-white px-6 py-8">
+          <Truck className="text-sbs-red" size={22} aria-hidden="true" />
+          <h2 className="mt-4 font-display text-lg">Shipping Information</h2>
+          <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+            Shipping options and rates will be provided through the live Shopify checkout.
+          </p>
+          <Link
+            to="/shipping-information"
+            className="micro mt-4 inline-block text-sbs-red hover:underline"
+          >
+            Learn more
+          </Link>
+        </div>
+
+        <div className="bg-white px-6 py-8">
+          <Phone className="text-sbs-red" size={22} aria-hidden="true" />
+          <h2 className="mt-4 font-display text-lg">Need Help?</h2>
+          <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+            <a href={STORE.phoneHref} className="hover:text-sbs-red">
+              {STORE.phone}
+            </a>
+          </p>
+          <Link to="/contact" className="micro mt-4 inline-block text-sbs-red hover:underline">
+            Contact us
+          </Link>
+        </div>
       </div>
     </section>
   );
