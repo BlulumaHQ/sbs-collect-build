@@ -29,7 +29,7 @@ export const Route = createFileRoute("/shop/")({
 
 function ShopPage() {
   const search = Route.useSearch();
-  const navigate = useNavigate({ from: "/shop" });
+  const navigate = useNavigate({ from: "/shop/" });
 
   const onChange = (next: ShopSearch) => {
     navigate({ to: ".", search: next });
