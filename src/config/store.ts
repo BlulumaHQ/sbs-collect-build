@@ -32,7 +32,7 @@ export const UNITY_TATTOO_URL = "https://unity-tattoo.com/";
 
 /** Real Unity Tattoo assets supplied by the store owner. */
 export const UNITY_TATTOO_LOGO = "/images/store/unity-tattoo-logo.png";
-export const UNITY_TATTOO_INTERIOR_PHOTO = "/images/store/unity-tattoo-interior.jpg";
+export const UNITY_TATTOO_INTERIOR_PHOTO = "/images/store/unity-tattoo-interior.webp";
 export const UNITY_TATTOO_STOREFRONT_PHOTO = "/images/store/unity-tattoo-storefront.jpg";
 
 export const STORE_IMAGE = "/images/store/sbs-unity-shared-store-concept.webp";
