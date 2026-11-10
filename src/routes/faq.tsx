@@ -10,12 +10,12 @@ export const Route = createFileRoute("/faq")({
       {
         name: "description",
         content:
-          "Answers about the Secret Builders Society storefront prototype, preorders, currency, store visits and upcoming Shopify checkout.",
+          "Answers about the Secret Builders Society storefront prototype, preorders, currency, local pickup in Vancouver, store visits and online ordering plans.",
       },
       { property: "og:title", content: "FAQ | Secret Builders Society" },
       {
         property: "og:description",
-        content: "Common questions about the SBS storefront prototype, preorders and store visits.",
+        content: "Common questions about SBS preorders, local pickup in Vancouver and store visits.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -33,15 +33,19 @@ const FAQS = [
   },
   {
     q: "How do preorders work?",
-    a: "Products marked PREORDER represent upcoming products in the current storefront prototype. Release information, when available, is provided as a reference and may change before launch.",
+    a: "Products marked PREORDER represent upcoming products in the current storefront prototype. Release information, when available, is an estimate and may change. Preorder payment timing and pickup arrangements will be confirmed before launch.",
   },
   {
-    q: "When will Shopify checkout be available?",
-    a: "The current website is a storefront prototype. Full Shopify checkout will be enabled before the store launches publicly.",
+    q: "Can I order online now?",
+    a: "Not yet. The current website is a storefront preview and does not take orders or payments. Online ordering will be enabled before the store launches publicly.",
   },
   {
-    q: "How will shipping work?",
-    a: "Available shipping services, rates and delivery options will be shown during Shopify checkout once the live ecommerce system is connected.",
+    q: "Do you ship or deliver orders?",
+    a: `No. Secret Builders Society is local pickup only from ${STORE.addressLine}, ${STORE.city}, ${STORE.region}. We do not offer shipping or delivery, including within Canada or to the US.`,
+  },
+  {
+    q: "How will pickup work?",
+    a: "Orders will be collected in person at the store during store hours. The details of how pickup orders are confirmed will be published before online ordering launches.",
   },
   {
     q: "Can I visit the store?",
@@ -88,8 +92,8 @@ function FaqPage() {
           <Link to="/contact" className="btn-primary-sbs mt-6 w-full">
             Contact us
           </Link>
-          <Link to="/shipping-information" className="btn-ghost-sbs mt-3 w-full">
-            Shipping information
+          <Link to="/pickup-information" className="btn-ghost-sbs mt-3 w-full">
+            Pickup information
           </Link>
         </aside>
       </div>

@@ -15,7 +15,7 @@ const NAV = [
 
 const SUPPORT = [
   { label: "FAQ", to: "/faq" as const },
-  { label: "Shipping Information", to: "/shipping-information" as const },
+  { label: "Pickup Information", to: "/pickup-information" as const },
   { label: "Terms & Conditions", to: "/terms-and-conditions" as const },
   { label: "Privacy Policy", to: "/privacy-policy" as const },
 ];

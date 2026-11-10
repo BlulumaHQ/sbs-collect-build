@@ -52,8 +52,8 @@ const SECTIONS = [
     body: "No payments are processed through this prototype. Accepted payment methods and payment capture timing will be confirmed before public launch and shown before checkout.",
   },
   {
-    title: "Shipping",
-    body: "Shipping services, rates and delivery options have not been finalized and will be shown at checkout when the live store launches.",
+    title: "Pickup only",
+    body: `Secret Builders Society does not offer shipping or delivery. Orders will be local pickup only from ${STORE.addressLine}, ${STORE.city}, ${STORE.region}. Pickup procedures will be confirmed before public launch.`,
   },
   {
     title: "Returns and Cancellations",

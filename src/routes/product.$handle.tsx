@@ -164,7 +164,7 @@ function ProductDetailPage() {
                 </>
               ) : null}
             </div>
-            <p className="micro mt-2 text-muted-foreground">Priced in {STORE.currency}. Taxes at checkout.</p>
+            <p className="micro mt-2 text-muted-foreground">Priced in {STORE.currency}.</p>
 
             <button
               type="button"
@@ -176,11 +176,19 @@ function ProductDetailPage() {
             </button>
 
             <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
-              <li>Shipping options and rates will be provided through the live Shopify checkout.</li>
-              <li>In-store pickup available in {STORE.city}, {STORE.region}.</li>
+              <li>
+                Local pickup only at {STORE.addressLine}, {STORE.city}, {STORE.region}. No shipping or
+                delivery.
+              </li>
+              <li>Online ordering isn’t live yet — this cart is a storefront preview.</li>
               {product.status === "preorder" ? (
-                <li>Preorders are charged when the item ships from the maker.</li>
+                <li>Release dates are estimates. Preorder payment and pickup details are still to be confirmed.</li>
               ) : null}
+              <li>
+                <Link to="/pickup-information" className="text-sbs-red hover:underline">
+                  Pickup information
+                </Link>
+              </li>
             </ul>
 
             <dl className="mt-10 border-t border-border">

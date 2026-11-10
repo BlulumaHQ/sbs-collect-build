@@ -74,10 +74,10 @@ export function SiteHeader() {
 
             <div className="flex shrink-0 items-center gap-5">
               <Link
-                to="/shipping-information"
+                to="/pickup-information"
                 className="hidden text-[13px] text-white/75 hover:text-white md:inline"
               >
-                Shipping Information
+                Local Pickup Only
               </Link>
               <span className="hidden text-[13px] text-white/50 lg:inline">
                 {STORE.currencyLabel}

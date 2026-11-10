@@ -126,10 +126,10 @@ function CartPage() {
                 disabled
                 className="micro mt-6 w-full cursor-not-allowed border border-border bg-muted px-5 py-4 text-muted-foreground"
               >
-                Checkout available at Shopify launch
+                Online checkout not live yet
               </button>
               <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-                This prototype uses a local demo cart. Shopify checkout will be connected before launch.
+                This is a storefront preview with a local demo cart — no order is placed. Orders will be local pickup only from our Vancouver store; no shipping or delivery.
               </p>
             </aside>
           </div>

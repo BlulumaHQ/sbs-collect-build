@@ -17,6 +17,8 @@ import { Route as CartRouteImport } from './routes/cart'
 import { Route as CollectionsRouteImport } from './routes/collections'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as GundamRouteImport } from './routes/gundam'
+import { Route as PickupInformationRouteImport } from './routes/pickup-information'
 import { Route as PreordersRouteImport } from './routes/preorders'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as SearchRouteImport } from './routes/search'
@@ -68,6 +70,16 @@ const ContactRoute = ContactRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GundamRoute = GundamRouteImport.update({
+  id: '/gundam',
+  path: '/gundam',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PickupInformationRoute = PickupInformationRouteImport.update({
+  id: '/pickup-information',
+  path: '/pickup-information',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PreordersRoute = PreordersRouteImport.update({
@@ -143,6 +155,8 @@ export interface FileRoutesByFullPath {
   '/collections': typeof CollectionsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/gundam': typeof GundamRoute
+  '/pickup-information': typeof PickupInformationRoute
   '/preorders': typeof PreordersRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/search': typeof SearchRoute
@@ -165,6 +179,8 @@ export interface FileRoutesByTo {
   '/collections': typeof CollectionsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/gundam': typeof GundamRoute
+  '/pickup-information': typeof PickupInformationRoute
   '/preorders': typeof PreordersRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/search': typeof SearchRoute
@@ -188,6 +204,8 @@ export interface FileRoutesById {
   '/collections': typeof CollectionsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/gundam': typeof GundamRoute
+  '/pickup-information': typeof PickupInformationRoute
   '/preorders': typeof PreordersRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/search': typeof SearchRoute
@@ -212,6 +230,8 @@ export interface FileRouteTypes {
     | '/collections'
     | '/contact'
     | '/faq'
+    | '/gundam'
+    | '/pickup-information'
     | '/preorders'
     | '/privacy-policy'
     | '/search'
@@ -234,6 +254,8 @@ export interface FileRouteTypes {
     | '/collections'
     | '/contact'
     | '/faq'
+    | '/gundam'
+    | '/pickup-information'
     | '/preorders'
     | '/privacy-policy'
     | '/search'
@@ -256,6 +278,8 @@ export interface FileRouteTypes {
     | '/collections'
     | '/contact'
     | '/faq'
+    | '/gundam'
+    | '/pickup-information'
     | '/preorders'
     | '/privacy-policy'
     | '/search'
@@ -279,6 +303,8 @@ export interface RootRouteChildren {
   CollectionsRoute: typeof CollectionsRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
+  GundamRoute: typeof GundamRoute
+  PickupInformationRoute: typeof PickupInformationRoute
   PreordersRoute: typeof PreordersRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   SearchRoute: typeof SearchRoute
@@ -349,6 +375,20 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gundam': {
+      id: '/gundam'
+      path: '/gundam'
+      fullPath: '/gundam'
+      preLoaderRoute: typeof GundamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pickup-information': {
+      id: '/pickup-information'
+      path: '/pickup-information'
+      fullPath: '/pickup-information'
+      preLoaderRoute: typeof PickupInformationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/preorders': {
@@ -447,6 +487,8 @@ const rootRouteChildren: RootRouteChildren = {
   CollectionsRoute: CollectionsRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
+  GundamRoute: GundamRoute,
+  PickupInformationRoute: PickupInformationRoute,
   PreordersRoute: PreordersRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   SearchRoute: SearchRoute,
