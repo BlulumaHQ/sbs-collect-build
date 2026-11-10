@@ -45,21 +45,12 @@ export function GundamGrades({ index }: { index: string }) {
                   {SCALE[g.code]} · {BLURB[g.code]}
                 </span>
                 <span className="micro-sm mt-5 block text-sbs-red">
-                  {n > 0 ? `Shop ${n} ${n === 1 ? "kit" : "kits"} →` : "Learn about this grade →"}
+                  {n > 0 ? `Shop ${n} ${n === 1 ? "kit" : "kits"} →` : `Shop ${g.code} →`}
                 </span>
               </>
             );
-            return n > 0 ? (
+            return (
               <Link key={g.code} to="/gundam" search={{ sort: "featured", grade: g.code }} className="group bg-white p-6 transition-colors hover:bg-bone">
-                {inner}
-              </Link>
-            ) : (
-              <Link
-                key={g.code}
-                to="/guides/gunpla-grades-explained"
-                hash={`grade-${g.code.toLowerCase()}`}
-                className="group bg-white p-6 transition-colors hover:bg-bone"
-              >
                 {inner}
               </Link>
             );
@@ -67,7 +58,8 @@ export function GundamGrades({ index }: { index: string }) {
         </div>
         {scope.length === 0 ? (
           <p className="mt-4 text-sm text-muted-foreground">
-            Gundam kits aren’t in the demo catalogue yet, so each grade links to our guide for now.
+            Gundam kits aren’t in the demo catalogue yet. New to Gunpla?{" "}
+            <Link to="/guides/gunpla-grades-explained" className="text-sbs-red underline">Learn about grades</Link>.
           </p>
         ) : null}
       </div>

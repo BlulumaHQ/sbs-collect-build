@@ -96,21 +96,18 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
               </Link>
               <p className="micro-sm mt-3 text-muted-foreground">Shop by grade</p>
               <div className="mt-2 grid grid-cols-4 gap-2">
-                {GUNPLA_GRADES.filter((g) => g.code !== "OTHER").map((g) =>
-                  gundam.some((p) => p.grade === g.code) ? (
-                    <Link key={g.code} to="/gundam" search={{ sort: "featured", grade: g.code }} onClick={onClose} className="micro border border-border py-2 text-center">
-                      {g.code}
-                    </Link>
-                  ) : (
-                    <Link key={g.code} to="/guides/gunpla-grades-explained" hash={`grade-${g.code.toLowerCase()}`} onClick={onClose} className="micro border border-border py-2 text-center text-muted-foreground">
-                      {g.code}
-                    </Link>
-                  ),
-                )}
+                {GUNPLA_GRADES.filter((g) => g.code !== "OTHER").map((g) => (
+                  <Link key={g.code} to="/gundam" search={{ sort: "featured", grade: g.code }} onClick={onClose} className="micro border border-border py-2 text-center">
+                    {g.code}
+                  </Link>
+                ))}
               </div>
               {gundam.length === 0 ? (
-                <p className="mt-2 text-xs text-muted-foreground">No Gundam kits listed yet — grades open our guide.</p>
+                <p className="mt-2 text-xs text-muted-foreground">No Gundam kits listed yet.</p>
               ) : null}
+              <Link to="/guides/gunpla-grades-explained" onClick={onClose} className="micro-sm mt-3 block text-sbs-red">
+                Learn about grades →
+              </Link>
               <p className="micro-sm mt-4 text-muted-foreground">Build &amp; learn</p>
               {GUIDES.map((g) => (
                 <Link key={g.slug} to={g.path} onClick={onClose} className="block py-1.5 text-[15px] text-charcoal/80">

@@ -10,8 +10,8 @@ function Count({ n }: { n: number }) {
 }
 
 /**
- * Gundam mega menu. Grade/series links become live catalogue filters only when
- * products carry that metadata; otherwise grades point to the educational guide.
+ * Gundam mega menu. Grade/series links are always URL-backed catalogue filters;
+ * counts reflect products carrying that metadata.
  */
 export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
   const scope = getGundamProducts();
@@ -32,25 +32,18 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
           {GUNPLA_GRADES.map((g) => {
             const n = count((p) => p.grade === g.code);
             const label = g.code === "OTHER" ? g.name : `${g.code} · ${g.name}`;
-            return n > 0 ? (
+            return (
               <Link key={g.code} to="/gundam" search={{ sort: "featured", grade: g.code }} onClick={onNavigate} className={linkCls}>
                 {label} <Count n={n} />
               </Link>
-            ) : (
-              <Link
-                key={g.code}
-                to="/guides/gunpla-grades-explained"
-                hash={`grade-${g.code.toLowerCase()}`}
-                onClick={onNavigate}
-                className={linkCls}
-              >
-                {label} <span className="micro-sm text-muted-foreground">Guide</span>
-              </Link>
             );
           })}
+          <Link to="/guides/gunpla-grades-explained" onClick={onNavigate} className="micro-sm mt-3 text-foreground hover:text-sbs-red">
+            Learn about grades →
+          </Link>
           {scope.length === 0 ? (
             <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-              No Gundam kits are listed in the demo catalogue yet — grade links open our guide.
+              No Gundam kits are listed in the demo catalogue yet.
             </p>
           ) : null}
         </div>
