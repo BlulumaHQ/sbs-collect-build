@@ -81,6 +81,14 @@ function GundamPage() {
           );
         })}
       </nav>
+      {activeLabel ? (
+        <p className="mt-4 text-sm text-muted-foreground" aria-live="polite">
+          Showing: <span className="font-medium text-foreground">{activeLabel}</span>{" "}
+          <Link to="/gundam" search={{ sort: "featured" }} className="ml-2 text-sbs-red underline">
+            Clear filters
+          </Link>
+        </p>
+      ) : null}
 
       <div className="mt-10">
         <CatalogueBrowser
@@ -91,17 +99,16 @@ function GundamPage() {
             <div className="border border-border bg-card px-6 py-16 text-center">
               <p className="micro text-sbs-red">Nothing listed yet</p>
               <p className="mx-auto mt-4 max-w-xl font-display text-2xl">
-                {scope.length === 0
-                  ? "No Gundam kits are listed in the current demo catalogue."
-                  : `No Gundam kits match “${activeLabel}” right now.`}
+                {activeLabel
+                  ? `No Gundam kits match “${activeLabel}” right now.`
+                  : "No Gundam kits are listed in the current demo catalogue."}
               </p>
               <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
-                The live Gunpla range will appear here once the store catalogue is connected. In the meantime,
-                our guides explain each grade and what you need for a first build.
+                The live Gunpla range will appear here once the store catalogue is connected.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
-                <Link to="/guides" className="btn-primary-sbs">
-                  Read the guides
+                <Link to="/gundam" search={{ sort: "featured" }} className="btn-primary-sbs">
+                  All Gundam
                 </Link>
                 <Link
                   to="/shop/$category"
