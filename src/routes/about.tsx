@@ -1,7 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { STORE, STORE_IMAGE, STORE_IMAGE_CAPTION, UNITY_TATTOO_URL } from "@/config/store";
+import {
+  STORE,
+  STORE_IMAGE,
+  STORE_IMAGE_CAPTION,
+  UNITY_TATTOO_LOGO,
+  UNITY_TATTOO_URL,
+} from "@/config/store";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
