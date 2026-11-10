@@ -28,6 +28,11 @@ export function filterProducts(products: CommerceProduct[], search: ShopSearch) 
     if (search.status && p.status !== search.status) return false;
     if (search.vendor && p.vendor !== search.vendor) return false;
     if (search.series && p.series !== search.series) return false;
+    if (search.grade && p.grade !== search.grade) return false;
+    if (search.scale && p.scale !== search.scale) return false;
+    if (search.gseries && p.gundamSeries !== search.gseries) return false;
+    if (search.sale && !(p.compareAtPrice && p.compareAtPrice > p.price)) return false;
+    if (search.new && !p.newArrival) return false;
     if (search.minPrice !== undefined && p.price < search.minPrice) return false;
     if (search.maxPrice !== undefined && p.price > search.maxPrice) return false;
     return true;
@@ -39,7 +44,9 @@ export function CatalogueBrowser({
   search,
   onChange,
   showCategoryFilter = false,
+  emptyState,
 }: {
+  emptyState?: React.ReactNode;
   scope: CommerceProduct[];
   search: ShopSearch;
   onChange: (next: ShopSearch) => void;
@@ -82,7 +89,7 @@ export function CatalogueBrowser({
           </div>
         </div>
 
-        <ProductGrid products={results} />
+        {results.length === 0 && emptyState ? emptyState : <ProductGrid products={results} />}
       </div>
 
       {mobileFiltersOpen ? (
