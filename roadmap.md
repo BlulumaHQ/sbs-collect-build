@@ -1,8 +1,8 @@
 - [x] Domain-aware indexing policy (platform hosts noindex).
-- [ ] Pickup-only copy everywhere; /shipping-information → /pickup-information redirect.
-- [ ] Grade / scale / Gundam series / new-arrival dimensions + URL filters.
-- [ ] Gundam nav entry + mega menu, Guides in nav (desktop + mobile).
-- [ ] Homepage: Shop Gundam by Grade, Beginner's Corner; remove demo reviews/rewards teaser.
-- [ ] Guides index + 3 guides with SEO, breadcrumbs, JSON-LD.
-- [ ] Category SEO copy; breadcrumb JSON-LD on product pages.
-- [ ] Verify tests, build, links, mobile.
+- [x] Pickup-only copy everywhere; /shipping-information → /pickup-information redirect.
+- [x] Grade / scale / Gundam series / new-arrival dimensions + URL filters.
+- [x] Gundam nav entry + mega menu, Guides in nav (desktop + mobile).
+- [x] Homepage: Shop Gundam by Grade, Beginner's Corner; remove demo reviews/rewards teaser.
+- [x] Guides index + 3 guides with SEO, breadcrumbs, JSON-LD.
+- [x] Category SEO copy; breadcrumb JSON-LD on product pages.
+- [x] Verify tests, build, links, mobile.

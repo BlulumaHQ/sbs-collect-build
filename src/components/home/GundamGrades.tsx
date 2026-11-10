@@ -7,7 +7,7 @@ const SCALE: Record<string, string> = { EG: "1/144", HG: "1/144", RG: "1/144", M
 const BLURB: Record<string, string> = {
   EG: "Simplest first build",
   HG: "The classic starting point",
-  RG: "1/144 with high detail",
+  RG: "High detail, small parts",
   MG: "Larger, with inner frame",
   PG: "The ultimate centrepiece",
   SD: "Compact & stylised",
