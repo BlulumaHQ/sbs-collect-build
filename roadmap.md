@@ -1,3 +1,8 @@
-- [x] Inspect framework, deployment configuration, existing SEO and verified domains.
-- [x] Replace global staging noindex with request-host-specific HTML response headers.
-- [x] Verify policy tests, local SSR responses, build results and public-host limitations (live app HTML cannot be verified before publication; preview access is platform-controlled).
+- [x] Domain-aware indexing policy (platform hosts noindex).
+- [ ] Pickup-only copy everywhere; /shipping-information → /pickup-information redirect.
+- [ ] Grade / scale / Gundam series / new-arrival dimensions + URL filters.
+- [ ] Gundam nav entry + mega menu, Guides in nav (desktop + mobile).
+- [ ] Homepage: Shop Gundam by Grade, Beginner's Corner; remove demo reviews/rewards teaser.
+- [ ] Guides index + 3 guides with SEO, breadcrumbs, JSON-LD.
+- [ ] Category SEO copy; breadcrumb JSON-LD on product pages.
+- [ ] Verify tests, build, links, mobile.
