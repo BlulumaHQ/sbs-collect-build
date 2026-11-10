@@ -13,13 +13,15 @@ export const Route = createFileRoute("/shop/")({
       {
         name: "description",
         content:
-          "Browse the complete Secret Builders Society demo catalogue across figures, model kits, plush, blind boxes, hobby supplies, character goods, and apparel.",
+          "Shop figures, model kits, Gunpla, plush, blind boxes, hobby supplies, character goods and apparel at Secret Builders Society in Vancouver. Prices in CAD, local pickup only.",
       },
       { property: "og:title", content: "Shop | Secret Builders Society" },
       {
         property: "og:description",
-        content: "Browse the complete Secret Builders Society demo catalogue.",
+        content: "Figures, model kits, Gunpla and collector goods from Secret Builders Society, Vancouver.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { property: "og:url", content: "/shop" },
     ],
     links: [{ rel: "canonical", href: "/shop" }],
