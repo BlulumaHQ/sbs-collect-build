@@ -227,7 +227,7 @@ function HomePage() {
       {/* 09 — SHARED STORE */}
       <StoreInfo />
 
-      <RecentlyViewed index="09" />
+      <RecentlyViewed index="10" />
 
       {/* NEWSLETTER */}
       <Newsletter />
