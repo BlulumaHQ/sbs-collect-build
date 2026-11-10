@@ -1,4 +1,5 @@
-import { describe, expect, test } from "bun:test";
+import { describe, test } from "node:test";
+import { strict as assert } from "node:assert";
 import { isPlatformHostname, withDomainNoindex } from "./indexing-policy";
 
 describe("domain-aware HTML indexing", () => {
@@ -11,10 +12,10 @@ describe("domain-aware HTML indexing", () => {
             const response = withDomainNoindex(request, new Response("<html>public</html>", {
               status, headers: { "content-type": "text/html; charset=utf-8", "x-existing": "preserved" },
             }));
-            expect(response.headers.get("X-Robots-Tag")).toBe("noindex");
-            expect(response.headers.get("x-existing")).toBe("preserved");
-            expect(response.status).toBe(status);
-            expect(await response.text()).toBe("<html>public</html>");
+            assert.equal(response.headers.get("X-Robots-Tag"), "noindex");
+            assert.equal(response.headers.get("x-existing"), "preserved");
+            assert.equal(response.status, status);
+            assert.equal(await response.text(), "<html>public</html>");
           }
         }
       }
@@ -29,30 +30,30 @@ describe("domain-aware HTML indexing", () => {
         if (robots) headers.set("X-Robots-Tag", robots);
         const original = new Response("custom", { headers });
         const result = withDomainNoindex(new Request(`https://${host}/shop`), original);
-        expect(result).toBe(original);
-        expect(result.headers.get("X-Robots-Tag")).toBe(robots ?? null);
+        assert.equal(result, original);
+        assert.equal(result.headers.get("X-Robots-Tag"), robots ?? null);
       }
     }
   });
 
   test("hostname is case-insensitive, trailing-dot safe and ignores spoofed forwarding", () => {
-    expect(isPlatformHostname("SBS.LOVABLE.APP.")).toBe(true);
+    assert.equal(isPlatformHostname("SBS.LOVABLE.APP."), true);
     const request = new Request("https://sbs.lovable.app/", { headers: { "x-forwarded-host": "store.invalid" } });
     const response = withDomainNoindex(request, new Response("public", { headers: { "content-type": "text/html" } }));
-    expect(response.headers.get("X-Robots-Tag")).toBe("noindex");
+    assert.equal(response.headers.get("X-Robots-Tag"), "noindex");
   });
 
   test("non-HTML assets and crawler discovery remain untouched", () => {
     for (const type of ["text/plain", "application/xml", "application/json", "image/webp"]) {
       const original = new Response("asset", { headers: { "content-type": type } });
-      expect(withDomainNoindex(new Request("https://sbs.pages.dev/robots.txt"), original)).toBe(original);
+      assert.equal(withDomainNoindex(new Request("https://sbs.pages.dev/robots.txt"), original), original);
     }
   });
 
   test("XHTML and HEAD HTML receive noindex without replacing existing directives", () => {
     const response = withDomainNoindex(new Request("https://sbs.workers.dev/faq", { method: "HEAD" }),
       new Response(null, { headers: { "content-type": "application/xhtml+xml", "X-Robots-Tag": "nofollow" } }));
-    expect(response.headers.get("X-Robots-Tag")).toBe("nofollow, noindex");
-    expect(response.body).toBeNull();
+    assert.equal(response.headers.get("X-Robots-Tag"), "nofollow, noindex");
+    assert.equal(response.body, null);
   });
 });
