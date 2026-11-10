@@ -91,6 +91,23 @@ function AboutPage() {
               Secret Builders Society brings collector toys and model kits into the same Commercial
               Drive space as Unity Tattoo — combining two creative communities under one roof.
             </p>
+            <a
+              href={UNITY_TATTOO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-4 border border-border bg-white px-5 py-4 transition-colors hover:border-sbs-red"
+              aria-label="Visit Unity Tattoo (opens in a new tab)"
+            >
+              <img
+                src={UNITY_TATTOO_LOGO}
+                alt="Unity Tattoo logo"
+                loading="lazy"
+                className="h-10 w-auto lg:h-12"
+              />
+              <span className="micro-sm text-muted-foreground">
+                Our neighbours in the space →
+              </span>
+            </a>
             <dl className="mt-8 grid gap-6 sm:grid-cols-2">
               <div>
                 <dt className="micro-sm text-muted-foreground">Address</dt>
