@@ -8,6 +8,9 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
   tanstackStart: {
+    // Host-specific crawler headers must be evaluated per request, not frozen
+    // into HTML shared between platform hosts and a production custom domain.
+    prerender: { enabled: false },
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },

@@ -1,0 +1,3 @@
+- [x] Inspect framework, deployment configuration, existing SEO and verified domains.
+- [x] Replace global staging noindex with request-host-specific HTML response headers.
+- [ ] Verify policy tests, SSR responses, build results and public-host limitations.

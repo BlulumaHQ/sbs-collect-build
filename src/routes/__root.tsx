@@ -78,9 +78,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      // STAGING ONLY — REMOVE NOINDEX BEFORE PRODUCTION LAUNCH.
-      { name: "robots", content: "noindex, nofollow, noarchive, nosnippet" },
-      { name: "googlebot", content: "noindex, nofollow, noarchive, nosnippet" },
       { title: "Secret Builders Society | Figures, Model Kits & Collector Goods" },
       { property: "og:site_name", content: "Secret Builders Society" },
       { property: "og:type", content: "website" },
