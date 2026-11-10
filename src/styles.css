@@ -261,3 +261,50 @@
 @utility animate-slide-in {
   animation: sbs-fade-up 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
+/* Long-form guide typography */
+.guide-prose {
+  max-width: 46rem;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--color-foreground);
+}
+.guide-prose h2 {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--color-sbs-red);
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+.guide-prose h3 {
+  margin-top: 1.75rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+}
+.guide-prose p,
+.guide-prose ul,
+.guide-prose ol {
+  margin-top: 1rem;
+  color: var(--color-muted-foreground);
+}
+.guide-prose ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.guide-prose ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+.guide-prose li + li {
+  margin-top: 0.4rem;
+}
+.guide-prose strong {
+  color: var(--color-foreground);
+  font-weight: 600;
+}
+.guide-prose a {
+  color: var(--color-sbs-red);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

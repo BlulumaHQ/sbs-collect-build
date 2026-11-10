@@ -9,6 +9,7 @@ const FILTER_STATUS_LABEL: Record<string, string> = {
   "sold-out": "SOLD OUT",
 };
 import { CATEGORY_ORDER, categorySlug } from "@/commerce/adapter";
+import { GUNPLA_GRADES, GUNDAM_SERIES } from "@/commerce/attributes";
 import type { ProductStatus } from "@/types/commerce";
 
 function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
@@ -70,6 +71,9 @@ export function ProductFilters({
   const statuses = [...new Set(scope.map((p) => p.status))] as ProductStatus[];
   const vendors = [...new Set(scope.map((p) => p.vendor))].sort();
   const seriesList = [...new Set(scope.map((p) => p.series).filter(Boolean))].sort() as string[];
+  const grades = GUNPLA_GRADES.filter((g) => scope.some((p) => p.grade === g.code));
+  const scales = [...new Set(scope.map((p) => p.scale).filter(Boolean))].sort() as string[];
+  const gundamSeries = GUNDAM_SERIES.filter((s) => scope.some((p) => p.gundamSeries === s.code));
   const prices = scope.map((p) => p.price);
   const min = Math.floor(Math.min(...prices, 0));
   const max = Math.ceil(Math.max(...prices, 0));
@@ -82,7 +86,10 @@ export function ProductFilters({
   ].filter((band) => scope.some((p) => p.price >= band.min && p.price <= band.max));
 
   const hasActive =
-    Boolean(search.subcategory || search.status || search.vendor || search.series || search.category) ||
+    Boolean(
+      search.subcategory || search.status || search.vendor || search.series || search.category ||
+        search.grade || search.scale || search.gseries || search.sale || search.new,
+    ) ||
     search.minPrice !== undefined ||
     search.maxPrice !== undefined;
 
@@ -112,6 +119,48 @@ export function ProductFilters({
               count={countBy((p) => p.category === name)}
               active={search.category === categorySlug(name)}
               onClick={() => toggle("category", categorySlug(name))}
+            />
+          ))}
+        </FilterGroup>
+      ) : null}
+
+      {grades.length > 0 ? (
+        <FilterGroup title="Grade">
+          {grades.map((g) => (
+            <Option
+              key={g.code}
+              label={g.code === "OTHER" ? g.name : `${g.code} · ${g.name}`}
+              count={countBy((p) => p.grade === g.code)}
+              active={search.grade === g.code}
+              onClick={() => toggle("grade", g.code)}
+            />
+          ))}
+        </FilterGroup>
+      ) : null}
+
+      {gundamSeries.length > 0 ? (
+        <FilterGroup title="Gundam Series">
+          {gundamSeries.map((s) => (
+            <Option
+              key={s.code}
+              label={s.name}
+              count={countBy((p) => p.gundamSeries === s.code)}
+              active={search.gseries === s.code}
+              onClick={() => toggle("gseries", s.code)}
+            />
+          ))}
+        </FilterGroup>
+      ) : null}
+
+      {scales.length > 0 ? (
+        <FilterGroup title="Scale">
+          {scales.map((scale) => (
+            <Option
+              key={scale}
+              label={scale}
+              count={countBy((p) => p.scale === scale)}
+              active={search.scale === scale}
+              onClick={() => toggle("scale", scale)}
             />
           ))}
         </FilterGroup>

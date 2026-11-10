@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Clock, MapPin, Phone, Truck } from "lucide-react";
+import { Clock, MapPin, Phone, Store } from "lucide-react";
 import { STORE } from "@/config/store";
 
 export function InfoStrip() {
@@ -28,13 +28,13 @@ export function InfoStrip() {
           </div>
 
           <div className="lg:border-l lg:border-border lg:px-8">
-            <Truck className="text-sbs-red" size={20} aria-hidden="true" />
-            <h2 className="mt-3 font-display text-[17px] leading-tight">Shipping Information</h2>
+            <Store className="text-sbs-red" size={20} aria-hidden="true" />
+            <h2 className="mt-3 font-display text-[17px] leading-tight">Local Pickup Only</h2>
             <p className="mt-1.5 text-[15px] leading-relaxed text-muted-foreground">
-              Shipping options and rates will be provided through the live Shopify checkout.
+              Pickup in store on Commercial Drive. No shipping or delivery. Prices in CAD.
             </p>
             <Link
-              to="/shipping-information"
+              to="/pickup-information"
               className="micro-sm mt-2 inline-block text-sbs-red hover:underline"
             >
               Learn more

@@ -17,11 +17,17 @@ import { Route as CartRouteImport } from './routes/cart'
 import { Route as CollectionsRouteImport } from './routes/collections'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as GundamRouteImport } from './routes/gundam'
+import { Route as PickupInformationRouteImport } from './routes/pickup-information'
 import { Route as PreordersRouteImport } from './routes/preorders'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ShippingInformationRouteImport } from './routes/shipping-information'
 import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
+import { Route as GuidesIndexRouteImport } from './routes/guides.index'
+import { Route as GuidesEssentialGunplaToolsRouteImport } from './routes/guides.essential-gunpla-tools'
+import { Route as GuidesGunplaGradesExplainedRouteImport } from './routes/guides.gunpla-grades-explained'
+import { Route as GuidesHowToBuildYourFirstGundamRouteImport } from './routes/guides.how-to-build-your-first-gundam'
 import { Route as ProductHandleRouteImport } from './routes/product.$handle'
 import { Route as ShopIndexRouteImport } from './routes/shop.index'
 import { Route as ShopCategoryRouteImport } from './routes/shop.$category'
@@ -66,6 +72,16 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GundamRoute = GundamRouteImport.update({
+  id: '/gundam',
+  path: '/gundam',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PickupInformationRoute = PickupInformationRouteImport.update({
+  id: '/pickup-information',
+  path: '/pickup-information',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PreordersRoute = PreordersRouteImport.update({
   id: '/preorders',
   path: '/preorders',
@@ -91,6 +107,29 @@ const TermsAndConditionsRoute = TermsAndConditionsRouteImport.update({
   path: '/terms-and-conditions',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GuidesIndexRoute = GuidesIndexRouteImport.update({
+  id: '/guides/',
+  path: '/guides/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesEssentialGunplaToolsRoute =
+  GuidesEssentialGunplaToolsRouteImport.update({
+    id: '/guides/essential-gunpla-tools',
+    path: '/guides/essential-gunpla-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const GuidesGunplaGradesExplainedRoute =
+  GuidesGunplaGradesExplainedRouteImport.update({
+    id: '/guides/gunpla-grades-explained',
+    path: '/guides/gunpla-grades-explained',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const GuidesHowToBuildYourFirstGundamRoute =
+  GuidesHowToBuildYourFirstGundamRouteImport.update({
+    id: '/guides/how-to-build-your-first-gundam',
+    path: '/guides/how-to-build-your-first-gundam',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ProductHandleRoute = ProductHandleRouteImport.update({
   id: '/product/$handle',
   path: '/product/$handle',
@@ -116,13 +155,19 @@ export interface FileRoutesByFullPath {
   '/collections': typeof CollectionsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/gundam': typeof GundamRoute
+  '/pickup-information': typeof PickupInformationRoute
   '/preorders': typeof PreordersRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/search': typeof SearchRoute
   '/shipping-information': typeof ShippingInformationRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
+  '/guides/essential-gunpla-tools': typeof GuidesEssentialGunplaToolsRoute
+  '/guides/gunpla-grades-explained': typeof GuidesGunplaGradesExplainedRoute
+  '/guides/how-to-build-your-first-gundam': typeof GuidesHowToBuildYourFirstGundamRoute
   '/product/$handle': typeof ProductHandleRoute
   '/shop/$category': typeof ShopCategoryRoute
+  '/guides/': typeof GuidesIndexRoute
   '/shop/': typeof ShopIndexRoute
 }
 export interface FileRoutesByTo {
@@ -134,13 +179,19 @@ export interface FileRoutesByTo {
   '/collections': typeof CollectionsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/gundam': typeof GundamRoute
+  '/pickup-information': typeof PickupInformationRoute
   '/preorders': typeof PreordersRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/search': typeof SearchRoute
   '/shipping-information': typeof ShippingInformationRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
+  '/guides/essential-gunpla-tools': typeof GuidesEssentialGunplaToolsRoute
+  '/guides/gunpla-grades-explained': typeof GuidesGunplaGradesExplainedRoute
+  '/guides/how-to-build-your-first-gundam': typeof GuidesHowToBuildYourFirstGundamRoute
   '/product/$handle': typeof ProductHandleRoute
   '/shop/$category': typeof ShopCategoryRoute
+  '/guides': typeof GuidesIndexRoute
   '/shop': typeof ShopIndexRoute
 }
 export interface FileRoutesById {
@@ -153,13 +204,19 @@ export interface FileRoutesById {
   '/collections': typeof CollectionsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/gundam': typeof GundamRoute
+  '/pickup-information': typeof PickupInformationRoute
   '/preorders': typeof PreordersRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/search': typeof SearchRoute
   '/shipping-information': typeof ShippingInformationRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
+  '/guides/essential-gunpla-tools': typeof GuidesEssentialGunplaToolsRoute
+  '/guides/gunpla-grades-explained': typeof GuidesGunplaGradesExplainedRoute
+  '/guides/how-to-build-your-first-gundam': typeof GuidesHowToBuildYourFirstGundamRoute
   '/product/$handle': typeof ProductHandleRoute
   '/shop/$category': typeof ShopCategoryRoute
+  '/guides/': typeof GuidesIndexRoute
   '/shop/': typeof ShopIndexRoute
 }
 export interface FileRouteTypes {
@@ -173,13 +230,19 @@ export interface FileRouteTypes {
     | '/collections'
     | '/contact'
     | '/faq'
+    | '/gundam'
+    | '/pickup-information'
     | '/preorders'
     | '/privacy-policy'
     | '/search'
     | '/shipping-information'
     | '/terms-and-conditions'
+    | '/guides/essential-gunpla-tools'
+    | '/guides/gunpla-grades-explained'
+    | '/guides/how-to-build-your-first-gundam'
     | '/product/$handle'
     | '/shop/$category'
+    | '/guides/'
     | '/shop/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -191,13 +254,19 @@ export interface FileRouteTypes {
     | '/collections'
     | '/contact'
     | '/faq'
+    | '/gundam'
+    | '/pickup-information'
     | '/preorders'
     | '/privacy-policy'
     | '/search'
     | '/shipping-information'
     | '/terms-and-conditions'
+    | '/guides/essential-gunpla-tools'
+    | '/guides/gunpla-grades-explained'
+    | '/guides/how-to-build-your-first-gundam'
     | '/product/$handle'
     | '/shop/$category'
+    | '/guides'
     | '/shop'
   id:
     | '__root__'
@@ -209,13 +278,19 @@ export interface FileRouteTypes {
     | '/collections'
     | '/contact'
     | '/faq'
+    | '/gundam'
+    | '/pickup-information'
     | '/preorders'
     | '/privacy-policy'
     | '/search'
     | '/shipping-information'
     | '/terms-and-conditions'
+    | '/guides/essential-gunpla-tools'
+    | '/guides/gunpla-grades-explained'
+    | '/guides/how-to-build-your-first-gundam'
     | '/product/$handle'
     | '/shop/$category'
+    | '/guides/'
     | '/shop/'
   fileRoutesById: FileRoutesById
 }
@@ -228,13 +303,19 @@ export interface RootRouteChildren {
   CollectionsRoute: typeof CollectionsRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
+  GundamRoute: typeof GundamRoute
+  PickupInformationRoute: typeof PickupInformationRoute
   PreordersRoute: typeof PreordersRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   SearchRoute: typeof SearchRoute
   ShippingInformationRoute: typeof ShippingInformationRoute
   TermsAndConditionsRoute: typeof TermsAndConditionsRoute
+  GuidesEssentialGunplaToolsRoute: typeof GuidesEssentialGunplaToolsRoute
+  GuidesGunplaGradesExplainedRoute: typeof GuidesGunplaGradesExplainedRoute
+  GuidesHowToBuildYourFirstGundamRoute: typeof GuidesHowToBuildYourFirstGundamRoute
   ProductHandleRoute: typeof ProductHandleRoute
   ShopCategoryRoute: typeof ShopCategoryRoute
+  GuidesIndexRoute: typeof GuidesIndexRoute
   ShopIndexRoute: typeof ShopIndexRoute
 }
 
@@ -296,6 +377,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gundam': {
+      id: '/gundam'
+      path: '/gundam'
+      fullPath: '/gundam'
+      preLoaderRoute: typeof GundamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pickup-information': {
+      id: '/pickup-information'
+      path: '/pickup-information'
+      fullPath: '/pickup-information'
+      preLoaderRoute: typeof PickupInformationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/preorders': {
       id: '/preorders'
       path: '/preorders'
@@ -331,6 +426,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsAndConditionsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/guides/': {
+      id: '/guides/'
+      path: '/guides'
+      fullPath: '/guides/'
+      preLoaderRoute: typeof GuidesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/essential-gunpla-tools': {
+      id: '/guides/essential-gunpla-tools'
+      path: '/guides/essential-gunpla-tools'
+      fullPath: '/guides/essential-gunpla-tools'
+      preLoaderRoute: typeof GuidesEssentialGunplaToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/gunpla-grades-explained': {
+      id: '/guides/gunpla-grades-explained'
+      path: '/guides/gunpla-grades-explained'
+      fullPath: '/guides/gunpla-grades-explained'
+      preLoaderRoute: typeof GuidesGunplaGradesExplainedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/how-to-build-your-first-gundam': {
+      id: '/guides/how-to-build-your-first-gundam'
+      path: '/guides/how-to-build-your-first-gundam'
+      fullPath: '/guides/how-to-build-your-first-gundam'
+      preLoaderRoute: typeof GuidesHowToBuildYourFirstGundamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/product/$handle': {
       id: '/product/$handle'
       path: '/product/$handle'
@@ -364,13 +487,19 @@ const rootRouteChildren: RootRouteChildren = {
   CollectionsRoute: CollectionsRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
+  GundamRoute: GundamRoute,
+  PickupInformationRoute: PickupInformationRoute,
   PreordersRoute: PreordersRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   SearchRoute: SearchRoute,
   ShippingInformationRoute: ShippingInformationRoute,
   TermsAndConditionsRoute: TermsAndConditionsRoute,
+  GuidesEssentialGunplaToolsRoute: GuidesEssentialGunplaToolsRoute,
+  GuidesGunplaGradesExplainedRoute: GuidesGunplaGradesExplainedRoute,
+  GuidesHowToBuildYourFirstGundamRoute: GuidesHowToBuildYourFirstGundamRoute,
   ProductHandleRoute: ProductHandleRoute,
   ShopCategoryRoute: ShopCategoryRoute,
+  GuidesIndexRoute: GuidesIndexRoute,
   ShopIndexRoute: ShopIndexRoute,
 }
 export const routeTree = rootRouteImport

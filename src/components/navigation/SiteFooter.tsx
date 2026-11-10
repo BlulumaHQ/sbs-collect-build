@@ -7,7 +7,9 @@ import { PaymentMethods } from "@/components/home/PaymentMethods";
 import { useRewards } from "@/components/rewards/RewardsProvider";
 
 const EXPLORE_LINKS = [
+  { label: "Gundam", to: "/gundam" as const },
   { label: "Preorders", to: "/preorders" as const },
+  { label: "Guides", to: "/guides" as const },
   { label: "Collections", to: "/collections" as const },
   { label: "Brands", to: "/brands" as const },
   { label: "About", to: "/about" as const },
@@ -16,7 +18,7 @@ const EXPLORE_LINKS = [
 
 const CARE_LINKS = [
   { label: "FAQ", to: "/faq" as const },
-  { label: "Shipping", to: "/shipping-information" as const },
+  { label: "Pickup Info", to: "/pickup-information" as const },
   { label: "Terms", to: "/terms-and-conditions" as const },
   { label: "Privacy", to: "/privacy-policy" as const },
   { label: "Account", to: "/account" as const },

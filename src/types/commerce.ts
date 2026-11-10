@@ -12,6 +12,16 @@ export interface CommerceProduct {
   subcategory?: string | undefined;
   series?: string | undefined;
   character?: string | undefined;
+  /** Franchise line, e.g. "Gundam". Only set when explicit or unambiguous. */
+  franchise?: string | undefined;
+  /** Gunpla grade code (EG/HG/RG/MG/PG/SD/OTHER). Never inferred from descriptions. */
+  grade?: string | undefined;
+  /** Model scale such as "1/144". */
+  scale?: string | undefined;
+  /** Gundam timeline/series code (uc/seed/00/ibo/wfm/other). */
+  gundamSeries?: string | undefined;
+  /** True only when the source explicitly flags the item as a new arrival. */
+  newArrival?: boolean | undefined;
   status: ProductStatus;
   price: number;
   /** Original price when the item is discounted — drives the SALE badge. */

@@ -6,6 +6,7 @@ import type {
   CommerceVendor,
   ProductStatus,
 } from "@/types/commerce";
+import { deriveGrade, deriveGundamSeries, deriveScale, isGundamTitle } from "./attributes";
 
 /**
  * DemoCommerceAdapter
@@ -34,6 +35,12 @@ interface RawProduct {
   estimatedRelease?: string | null;
   compareAtPrice?: number | null;
   image: string;
+  /** Optional explicit attributes — a Shopify adapter maps metafields here. */
+  franchise?: string | null;
+  grade?: string | null;
+  scale?: string | null;
+  gundamSeries?: string | null;
+  newArrival?: boolean | null;
 }
 
 export const CATEGORY_ORDER = [
@@ -64,14 +71,22 @@ function clean(value: string | null | undefined): string | undefined {
   return trimmed ? trimmed : undefined;
 }
 
-const products: CommerceProduct[] = (rawProducts as RawProduct[]).map((p) => ({
+function normalize(p: RawProduct): CommerceProduct {
+  const subcategory = clean(p.subcategory);
+  const isGundam = clean(p.franchise)?.toLowerCase() === "gundam" || isGundamTitle(p.title, subcategory);
+  return {
   id: p.id,
   handle: p.handle,
   title: p.title,
   vendor: p.vendor,
   category: p.category,
   categorySlug: categorySlug(p.category),
-  subcategory: clean(p.subcategory),
+  subcategory,
+  franchise: clean(p.franchise) ?? (isGundam ? "Gundam" : undefined),
+  grade: deriveGrade({ grade: p.grade, title: p.title, category: p.category, subcategory }),
+  scale: deriveScale({ scale: p.scale, title: p.title }),
+  gundamSeries: deriveGundamSeries({ gundamSeries: p.gundamSeries, title: p.title, isGundam }),
+  newArrival: p.newArrival === true ? true : undefined,
   series: clean(p.series),
   character: clean(p.character),
   status: p.status as ProductStatus,
@@ -85,7 +100,10 @@ const products: CommerceProduct[] = (rawProducts as RawProduct[]).map((p) => ({
   compareAtPrice: p.compareAtPrice ?? undefined,
   image: p.image,
   images: [p.image],
-}));
+  };
+}
+
+const products: CommerceProduct[] = (rawProducts as RawProduct[]).map(normalize);
 
 /** Curated brand rail for the storefront. */
 export const POPULAR_BRANDS = [
@@ -170,6 +188,10 @@ export function getSubcategories(scope: CommerceProduct[] = products): string[] 
   return [...new Set(scope.map((p) => p.subcategory).filter((v): v is string => Boolean(v)))].sort();
 }
 
+export function getGundamProducts(): CommerceProduct[] {
+  return products.filter((p) => p.franchise === "Gundam");
+}
+
 export function getPreorderProducts(): CommerceProduct[] {
   return products.filter((p) => p.status === "preorder");
 }
@@ -178,7 +200,7 @@ export function searchProducts(query: string): CommerceProduct[] {
   const q = query.trim().toLowerCase();
   if (!q) return [];
   return products.filter((p) =>
-    [p.title, p.vendor, p.category, p.subcategory, p.series, p.character, p.sku, p.upc]
+    [p.title, p.vendor, p.category, p.subcategory, p.series, p.character, p.franchise, p.grade, p.scale, p.sku, p.upc]
       .filter(Boolean)
       .some((field) => String(field).toLowerCase().includes(q)),
   );
