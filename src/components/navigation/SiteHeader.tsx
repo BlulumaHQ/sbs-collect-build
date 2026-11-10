@@ -2,32 +2,37 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { MapPin, Phone, Search, ShoppingBag } from "lucide-react";
 import { MegaMenu } from "./MegaMenu";
+import { GundamMegaMenu } from "./GundamMegaMenu";
 import { MobileNavigation } from "./MobileNavigation";
 import { useCart } from "@/commerce/cart";
 import { formatMoneyCAD } from "@/commerce/format";
 import { PRIMARY_CATEGORIES } from "./taxonomy";
 import { STORE } from "@/config/store";
 
-const CATEGORY_NAV = PRIMARY_CATEGORIES.slice(0, 5);
+const CATEGORY_NAV = PRIMARY_CATEGORIES.filter((c) =>
+  ["figures", "model-kits", "hobby-supplies"].includes(c.slug),
+);
 
 const NAV = [
   { label: "Preorders", to: "/preorders" as const },
-  { label: "Collections", to: "/collections" as const },
   { label: "Brands", to: "/brands" as const },
+  { label: "Guides", to: "/guides" as const },
   { label: "About", to: "/about" as const },
   { label: "Contact", to: "/contact" as const },
 ];
 
+type MegaKey = "shop" | "gundam" | null;
+
 export function SiteHeader() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
-  const [megaOpen, setMegaOpen] = useState(false);
+  const [mega, setMega] = useState<MegaKey>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [query, setQuery] = useState("");
   const { count, subtotal, openDrawer } = useCart();
 
   useEffect(() => {
-    setMegaOpen(false);
+    setMega(null);
     setMobileOpen(false);
   }, [pathname]);
 
@@ -42,7 +47,7 @@ export function SiteHeader() {
     <>
       <header
         className="relative z-[60] bg-card lg:sticky lg:top-0"
-        onMouseLeave={() => setMegaOpen(false)}
+        onMouseLeave={() => setMega(null)}
       >
         {/* TIER 1 — utility bar */}
         <div className="bg-charcoal text-white">
@@ -180,14 +185,25 @@ export function SiteHeader() {
           <div className="container-sbs flex h-[50px] items-center gap-6 xl:gap-7">
             <button
               type="button"
-              aria-expanded={megaOpen}
-              onClick={() => setMegaOpen((v) => !v)}
-              onMouseEnter={() => setMegaOpen(true)}
+              aria-expanded={mega === "shop"}
+              onClick={() => setMega((v) => (v === "shop" ? null : "shop"))}
+              onMouseEnter={() => setMega("shop")}
               className={`text-[14px] font-medium uppercase tracking-wide transition-colors duration-200 ${
-                megaOpen ? "text-sbs-red" : "hover:text-sbs-red"
+                mega === "shop" ? "text-sbs-red" : "hover:text-sbs-red"
               }`}
             >
               Shop All
+            </button>
+            <button
+              type="button"
+              aria-expanded={mega === "gundam"}
+              onClick={() => setMega((v) => (v === "gundam" ? null : "gundam"))}
+              onMouseEnter={() => setMega("gundam")}
+              className={`text-[14px] font-semibold uppercase tracking-wide transition-colors duration-200 ${
+                mega === "gundam" || pathname === "/gundam" ? "text-sbs-red" : "text-sbs-red/90 hover:text-sbs-red"
+              }`}
+            >
+              Gundam
             </button>
             {CATEGORY_NAV.map((c) => (
               <Link
@@ -195,7 +211,7 @@ export function SiteHeader() {
                 to="/shop/$category"
                 params={{ category: c.slug }}
                 search={{ sort: "featured" }}
-                onMouseEnter={() => setMegaOpen(false)}
+                onMouseEnter={() => setMega(null)}
                 className="whitespace-nowrap text-[14px] font-medium uppercase tracking-wide transition-colors duration-200 hover:text-sbs-red"
                 activeProps={{ className: "text-sbs-red" }}
               >
@@ -207,7 +223,7 @@ export function SiteHeader() {
               <Link
                 key={item.to}
                 to={item.to}
-                onMouseEnter={() => setMegaOpen(false)}
+                onMouseEnter={() => setMega(null)}
                 className="whitespace-nowrap text-[14px] font-medium uppercase tracking-wide transition-colors duration-200 hover:text-sbs-red"
                 activeProps={{ className: "text-sbs-red" }}
               >
@@ -217,9 +233,14 @@ export function SiteHeader() {
           </div>
         </div>
 
-        {megaOpen ? (
+        {mega === "shop" ? (
           <div className="hidden lg:block">
-            <MegaMenu onNavigate={() => setMegaOpen(false)} />
+            <MegaMenu onNavigate={() => setMega(null)} />
+          </div>
+        ) : null}
+        {mega === "gundam" ? (
+          <div className="hidden lg:block">
+            <GundamMegaMenu onNavigate={() => setMega(null)} />
           </div>
         ) : null}
       </header>
