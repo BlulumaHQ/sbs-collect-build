@@ -11,6 +11,17 @@ import { ProductStatusBadge } from "@/components/commerce/ProductStatusBadge";
 import { ProductCard } from "@/components/commerce/ProductCard";
 import { RecentlyViewed } from "@/components/commerce/RecentlyViewed";
 import { STORE } from "@/config/store";
+import { gradeName, gundamSeriesName } from "@/commerce/attributes";
+
+/** Factual one-line summary built only from verified catalogue attributes. */
+function productSummary(p: CommerceProduct): string {
+  const parts = [p.grade && p.grade !== "OTHER" ? `${gradeName(p.grade)} (${p.grade})` : null, p.scale ? `${p.scale} scale` : null]
+    .filter(Boolean)
+    .join(", ");
+  const kind = p.subcategory ?? p.category;
+  const from = p.series ? ` from ${p.series}` : "";
+  return `${p.title} by ${p.vendor}${parts ? ` — ${parts}` : ""}. ${kind}${from}, priced in ${p.currency}. Local pickup in ${STORE.city}, ${STORE.region}.`;
+}
 
 export const Route = createFileRoute("/product/$handle")({
   loader: ({ params }) => {
@@ -29,7 +40,7 @@ export const Route = createFileRoute("/product/$handle")({
       };
     }
     const title = `${product.title} | Secret Builders Society`;
-    const description = `${product.title} by ${product.vendor} — ${product.category} at Secret Builders Society.`;
+    const description = productSummary(product);
     return {
       meta: [
         { title },
@@ -40,6 +51,22 @@ export const Route = createFileRoute("/product/$handle")({
         { property: "og:url", content: `/product/${params.handle}` },
       ],
       links: [{ rel: "canonical", href: `/product/${params.handle}` }],
+      // Product schema is intentionally omitted: demo pricing/availability are not verified offers.
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+              { "@type": "ListItem", position: 2, name: "Shop", item: "/shop" },
+              { "@type": "ListItem", position: 3, name: product.category, item: `/shop/${product.categorySlug}` },
+              { "@type": "ListItem", position: 4, name: product.title },
+            ],
+          }),
+        },
+      ],
     };
   },
   notFoundComponent: ProductNotFound,
@@ -74,7 +101,12 @@ function ProductDetailPage() {
   const gallery = product.images.length > 0 ? product.images : [product.image];
 
   const metadata: { label: string; value: string }[] = [
+    { label: "Brand", value: product.vendor },
     { label: "Category", value: product.category },
+    ...(product.franchise ? [{ label: "Franchise", value: product.franchise }] : []),
+    ...(product.grade ? [{ label: "Grade", value: product.grade === "OTHER" ? gradeName(product.grade) : `${product.grade} · ${gradeName(product.grade)}` }] : []),
+    ...(product.scale ? [{ label: "Scale", value: product.scale }] : []),
+    ...(product.gundamSeries ? [{ label: "Gundam Series", value: gundamSeriesName(product.gundamSeries) }] : []),
     ...(product.subcategory ? [{ label: "Subcategory", value: product.subcategory }] : []),
     ...(product.series ? [{ label: "Series", value: product.series }] : []),
     ...(product.character ? [{ label: "Character", value: product.character }] : []),
@@ -93,7 +125,11 @@ function ProductDetailPage() {
     <>
       <div className="container-sbs py-8 lg:py-12">
         <Breadcrumbs
-          items={[{ label: "Shop", to: "/shop" }, { label: product.category }, { label: product.title }]}
+          items={[
+            { label: "Shop", to: "/shop" },
+            { label: product.category, to: `/shop/${product.categorySlug}` },
+            { label: product.title },
+          ]}
         />
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
@@ -191,7 +227,9 @@ function ProductDetailPage() {
               </li>
             </ul>
 
-            <dl className="mt-10 border-t border-border">
+            <p className="mt-8 text-[15px] leading-relaxed text-muted-foreground">{productSummary(product)}</p>
+
+            <dl className="mt-6 border-t border-border">
               {metadata.map((row) => (
                 <div
                   key={row.label}

@@ -90,6 +90,9 @@ export function CartDrawer() {
           >
             View cart
           </Link>
+          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+            Storefront preview — no order is placed. Local pickup only in Vancouver.
+          </p>
         </footer>
       </aside>
     </div>
