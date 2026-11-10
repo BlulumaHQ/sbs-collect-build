@@ -15,9 +15,9 @@ import { HeroCarousel } from "@/components/home/HeroCarousel";
 import { InfoStrip } from "@/components/home/InfoStrip";
 import { PopularBrands } from "@/components/home/PopularBrands";
 import { StoreInfo } from "@/components/home/StoreInfo";
-import { Testimonials } from "@/components/home/Testimonials";
+import { GundamGrades } from "@/components/home/GundamGrades";
+import { BeginnersCorner } from "@/components/home/BeginnersCorner";
 import { Newsletter } from "@/components/home/Newsletter";
-import { RewardsTeaser } from "@/components/home/RewardsTeaser";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Collector store on Commercial Drive in Vancouver. Figures, model kits, plush, blind boxes, hobby supplies, character goods and apparel.",
+          "Collector store on Commercial Drive in Vancouver. Gundam model kits, figures, plush, blind boxes and hobby supplies. Prices in CAD, local pickup only.",
       },
       {
         property: "og:title",
@@ -37,6 +37,8 @@ export const Route = createFileRoute("/")({
         content:
           "Collector store on Commercial Drive in Vancouver. Figures, model kits, plush, blind boxes, hobby supplies, character goods and apparel.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { property: "og:url", content: "/" },
     ],
     links: [{ rel: "canonical", href: "/" }],
@@ -71,7 +73,7 @@ function HomePage() {
         <div className="container-sbs">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <SBSBuildRail index="03" label="Category Index" />
+              <SBSBuildRail index="02" label="Category Index" />
               <h2 className="mt-5 font-display text-[32px] lg:text-[38px]">Shop by Category</h2>
             </div>
             <Link
@@ -117,15 +119,15 @@ function HomePage() {
         </div>
       </section>
 
-      {/* 04 — POPULAR BRANDS */}
-      <PopularBrands />
+      {/* 03 — GUNDAM BY GRADE */}
+      <GundamGrades index="03" />
 
       {/* 05 — SELECTED FROM THE SHELF */}
       <section className="section-y border-b border-border bg-bone">
         <div className="container-sbs">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <SBSBuildRail index="05" label="Featured Picks" />
+              <SBSBuildRail index="04" label="Featured Picks" />
               <h2 className="mt-5 font-display text-[32px] lg:text-[38px]">
                 Selected from the Shelf
               </h2>
@@ -150,7 +152,7 @@ function HomePage() {
           <div className="container-sbs">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <SBSBuildRail index="06" label="Preorder Window" />
+                <SBSBuildRail index="05" label="Preorder Window" />
                 <h2 className="mt-5 font-display text-[32px] lg:text-[38px]">Coming Soon</h2>
               </div>
               <Link to="/preorders" className="micro text-sbs-red hover:underline">
@@ -175,6 +177,12 @@ function HomePage() {
           </div>
         </section>
       ) : null}
+
+      {/* 06 — BEGINNER'S CORNER */}
+      <BeginnersCorner index="06" />
+
+      {/* 07 — POPULAR BRANDS */}
+      <PopularBrands />
 
       {/* 08 — EXPLORE COLLECTIONS */}
       <section className="section-y border-b border-border bg-white">
@@ -219,15 +227,9 @@ function HomePage() {
       {/* 09 — SHARED STORE */}
       <StoreInfo />
 
-      {/* 10 — REVIEWS */}
-      <Testimonials />
+      <RecentlyViewed index="09" />
 
-      <RecentlyViewed index="11" />
-
-      {/* 11 — REWARDS TEASER */}
-      <RewardsTeaser />
-
-      {/* 12 — NEWSLETTER */}
+      {/* NEWSLETTER */}
       <Newsletter />
 
     </>
