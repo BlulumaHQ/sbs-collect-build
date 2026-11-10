@@ -7,6 +7,8 @@ import {
   MAPS_DIRECTIONS_URL,
   MAPS_EMBED_SRC,
   STORE,
+  UNITY_TATTOO_INTERIOR_PHOTO,
+  UNITY_TATTOO_STOREFRONT_PHOTO,
   UNITY_TATTOO_URL,
 } from "@/config/store";
 
@@ -249,6 +251,34 @@ function ContactPage() {
             <p className="mt-3 max-w-xl text-[16px] leading-relaxed text-muted-foreground">
               Secret Builders Society shares its Commercial Drive location with Unity Tattoo.
             </p>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <figure className="m-0">
+                <div className="aspect-[4/3] w-full overflow-hidden border border-border bg-bone">
+                  <img
+                    src={UNITY_TATTOO_STOREFRONT_PHOTO}
+                    alt="Unity Tattoo storefront on Commercial Drive with lettering on the window"
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <figcaption className="micro-sm mt-2 text-muted-foreground">
+                  Unity Tattoo storefront, Commercial Drive
+                </figcaption>
+              </figure>
+              <figure className="m-0">
+                <div className="aspect-[4/3] w-full overflow-hidden border border-border bg-bone">
+                  <img
+                    src={UNITY_TATTOO_INTERIOR_PHOTO}
+                    alt="Inside Unity Tattoo — framed tattoo art on the walls and a treatment bed"
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <figcaption className="micro-sm mt-2 text-muted-foreground">
+                  Inside the Unity Tattoo studio
+                </figcaption>
+              </figure>
+            </div>
             <a
               href={UNITY_TATTOO_URL}
               target="_blank"
