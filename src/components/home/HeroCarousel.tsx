@@ -4,51 +4,22 @@ import { useCallback, useEffect, useRef, useState } from "react";
 interface Slide {
   image: string;
   alt: string;
-  eyebrow: string;
-  title: string[];
-  body: string;
   tone: "dark" | "light";
   background: string;
-  /** Render the artwork as a contained right-side layer instead of a full-bleed cover crop. */
-  artworkLayer?: boolean;
-  primary: { label: string; to: string };
-  secondary?: { label: string; to: string };
 }
-
 
 const SLIDES: Slide[] = [
   {
-    image: "/images/hero/hero-gundam.webp",
-    alt: "Gundam style mecha model kit campaign artwork",
-    eyebrow: "Gundam / Model Kit Feature",
-    title: ["Built for the workbench.", "Made for the shelf."],
-    body: "Explore Gundam and model kits for builders who care about every panel line, pose and finishing detail.",
-    tone: "dark",
-    background: "#0d1017",
-
-    primary: { label: "Shop model kits", to: "/shop/model-kits" },
-    secondary: { label: "Explore Gundam", to: "/shop/model-kits?subcategory=Gunpla" },
-  },
-  {
-    image: "/images/hero/hero-zoids.webp",
-    alt: "Mechanical beast model kit campaign artwork on a black background",
-    eyebrow: "Preorder Spotlight",
-    title: ["Big builds are", "worth the wait."],
-    body: "Browse upcoming collector releases and reserve the kits you do not want to miss.",
+    image: "/images/uploads/20261114-levi-ackerman-preorder-spotlight-1.webp",
+    alt: "Levi Ackerman preorder spotlight",
     tone: "dark",
     background: "#0b0b0c",
-    primary: { label: "View preorders", to: "/preorders" },
-    secondary: { label: "Shop model kits", to: "/shop/model-kits" },
   },
   {
-    image: "/images/hero/hero-spacecraft.webp",
-    alt: "Blue and red spacecraft model kit on a light grey background",
-    eyebrow: "Sci-Fi Model Kits",
-    title: ["Every detail", "earns its place."],
-    body: "From character kits to detailed machines, discover builds made to move from the bench to the display shelf.",
-    tone: "light",
-    background: "#EDEDED",
-    primary: { label: "Explore model kits", to: "/shop/model-kits" },
+    image: "/images/uploads/20261114-levi-ackerman-preorder-spotlight-2.webp",
+    alt: "Levi Ackerman preorder spotlight",
+    tone: "dark",
+    background: "#0b0b0c",
   },
 ];
 
@@ -106,10 +77,10 @@ export function HeroCarousel() {
         touchX.current = null;
       }}
     >
+      <h1 className="sr-only">Featured campaigns</h1>
       <div className="relative h-[520px] w-full sm:h-[580px] lg:h-[640px]">
         {SLIDES.map((slide, i) => {
           const active = i === index;
-          const light = slide.tone === "light";
           return (
             <div
               key={slide.image}
@@ -129,59 +100,6 @@ export function HeroCarousel() {
                   active ? "scale-[1.04]" : "scale-100"
                 }`}
               />
-              <div
-                className="absolute inset-0"
-                style={{
-                  background: light
-                    ? "linear-gradient(90deg, rgba(230,228,224,0.97) 0%, rgba(230,228,224,0.86) 46%, rgba(230,228,224,0.15) 78%)"
-                    : slide.artworkLayer
-                      ? "linear-gradient(90deg, rgba(12,12,13,0.96) 0%, rgba(12,12,13,0.82) 34%, rgba(12,12,13,0.05) 56%)"
-                      : "linear-gradient(90deg, rgba(12,12,13,0.94) 0%, rgba(12,12,13,0.78) 46%, rgba(12,12,13,0.15) 82%)",
-                }}
-              />
-
-              <div className="container-sbs relative flex h-full items-center">
-                <div className="max-w-[640px] py-12">
-                  <p
-                    className={`micro ${light ? "text-sbs-red" : "text-white/70"}`}
-                  >
-                    {slide.eyebrow}
-                  </p>
-                  <h1
-                    className={`mt-6 font-display text-[38px] leading-[1.05] sm:text-[46px] lg:text-[62px] ${
-                      light ? "text-charcoal" : "text-white"
-                    }`}
-                  >
-                    {slide.title[0]}
-                    <br />
-                    {slide.title[1]}
-                  </h1>
-                  <p
-                    className={`mt-6 max-w-xl text-[16px] leading-relaxed lg:text-[17px] ${
-                      light ? "text-charcoal/75" : "text-white/75"
-                    }`}
-                  >
-                    {slide.body}
-                  </p>
-                  <div className="mt-9 flex flex-wrap gap-3">
-                    <a href={slide.primary.to} className="btn-primary-sbs">
-                      {slide.primary.label}
-                    </a>
-                    {slide.secondary ? (
-                      <a
-                        href={slide.secondary.to}
-                        className={`micro inline-flex items-center border px-6 py-3.5 transition-colors duration-200 ${
-                          light
-                            ? "border-charcoal text-charcoal hover:bg-charcoal hover:text-white"
-                            : "border-white/50 text-white hover:bg-white hover:text-charcoal"
-                        }`}
-                      >
-                        {slide.secondary.label}
-                      </a>
-                    ) : null}
-                  </div>
-                </div>
-              </div>
             </div>
           );
         })}
