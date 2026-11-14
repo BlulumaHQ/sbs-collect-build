@@ -16,8 +16,8 @@ const SLIDES: Slide[] = [
     background: "#0b0b0c",
   },
   {
-    image: "/images/uploads/20261114-levi-ackerman-preorder-spotlight-13.webp",
-    alt: "Levi Ackerman preorder spotlight",
+    image: "/images/uploads/20261114-sbs_godzilla_hero_02_dark_1900x675.png",
+    alt: "Godzilla hero",
     tone: "dark",
     background: "#0b0b0c",
   },
