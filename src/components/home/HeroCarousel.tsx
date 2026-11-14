@@ -10,13 +10,13 @@ interface Slide {
 
 const SLIDES: Slide[] = [
   {
-    image: "/images/uploads/20261114-levi-ackerman-preorder-spotlight-1.webp",
+    image: "/images/uploads/20261114-levi-ackerman-preorder-spotlight-12.webp",
     alt: "Levi Ackerman preorder spotlight",
     tone: "dark",
     background: "#0b0b0c",
   },
   {
-    image: "/images/uploads/20261114-levi-ackerman-preorder-spotlight-2.webp",
+    image: "/images/uploads/20261114-levi-ackerman-preorder-spotlight-13.webp",
     alt: "Levi Ackerman preorder spotlight",
     tone: "dark",
     background: "#0b0b0c",
