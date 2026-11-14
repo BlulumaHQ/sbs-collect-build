@@ -35,6 +35,8 @@ export interface CommerceProduct {
   image: string;
   /** Ordered gallery. Always contains at least `image`. */
   images: string[];
+  /** Shopify variant id (live catalogue only). */
+  variantId?: string | undefined;
 }
 
 export interface CommerceCategory {
@@ -66,4 +68,5 @@ export interface CommerceCartItem {
   currency: string;
   status: ProductStatus;
   quantity: number;
+  variantId?: string | undefined;
 }

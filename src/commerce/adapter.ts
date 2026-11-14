@@ -1,4 +1,5 @@
-import rawProducts from "@/data/demo-products.json";
+import demoProducts from "@/data/demo-products.json";
+import shopifyCatalog from "@/data/shopify-products.json";
 import type {
   CommerceCategory,
   CommerceProduct,
@@ -9,11 +10,13 @@ import type {
 import { deriveGrade, deriveGundamSeries, deriveScale, isGundamTitle } from "./attributes";
 
 /**
- * DemoCommerceAdapter
+ * Commerce adapter
  *
- * Normalizes the local demo catalogue into CommerceProduct objects.
- * A future ShopifyCommerceAdapter will expose the same surface so the
- * UI layer does not change when Shopify Storefront API is connected.
+ * Normalizes the catalogue into CommerceProduct objects. When
+ * src/data/shopify-products.json holds products (written by
+ * scripts/sync-shopify-catalog.mjs from the Shopify Storefront API), that
+ * snapshot is the catalogue; otherwise the local demo catalogue is used.
+ * The exported surface is identical either way, so the UI does not change.
  */
 
 interface RawProduct {
@@ -35,6 +38,9 @@ interface RawProduct {
   estimatedRelease?: string | null;
   compareAtPrice?: number | null;
   image: string;
+  images?: string[] | null;
+  /** Shopify variant id — present for the live catalogue, drives checkout. */
+  variantId?: string | null;
   /** Optional explicit attributes — a Shopify adapter maps metafields here. */
   franchise?: string | null;
   grade?: string | null;
@@ -99,11 +105,38 @@ function normalize(p: RawProduct): CommerceProduct {
   estimatedRelease: clean(p.estimatedRelease),
   compareAtPrice: p.compareAtPrice ?? undefined,
   image: p.image,
-  images: [p.image],
+  images: p.images?.length ? p.images : [p.image],
+  variantId: clean(p.variantId),
   };
 }
 
-const products: CommerceProduct[] = (rawProducts as RawProduct[]).map(normalize);
+interface ShopifyCatalog {
+  shopDomain: string;
+  generatedAt: string | null;
+  products: RawProduct[];
+}
+
+const catalog = shopifyCatalog as unknown as ShopifyCatalog;
+
+/** True when the storefront is serving the Shopify catalogue snapshot. */
+export const IS_SHOPIFY_CATALOG = catalog.products.length > 0;
+
+const products: CommerceProduct[] = (
+  IS_SHOPIFY_CATALOG ? catalog.products : (demoProducts as RawProduct[])
+).map(normalize);
+
+/**
+ * Shopify cart permalink for checkout (https://shop/cart/variant:qty,...).
+ * Returns null while the demo catalogue is active or an item has no variant id.
+ */
+export function getCheckoutUrl(
+  items: { variantId?: string | undefined; quantity: number }[],
+): string | null {
+  if (!IS_SHOPIFY_CATALOG || !catalog.shopDomain || items.length === 0) return null;
+  if (items.some((i) => !i.variantId)) return null;
+  const lines = items.map((i) => `${i.variantId}:${i.quantity}`).join(",");
+  return `https://${catalog.shopDomain}/cart/${lines}`;
+}
 
 /** Curated brand rail for the storefront. */
 export const POPULAR_BRANDS = [

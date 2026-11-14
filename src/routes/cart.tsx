@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCart } from "@/commerce/cart";
 import { formatPrice } from "@/commerce/format";
+import { getCheckoutUrl } from "@/commerce/adapter";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { ProductStatusBadge } from "@/components/commerce/ProductStatusBadge";
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/cart")({
 
 function CartPage() {
   const { items, subtotal, currency, setQuantity, removeItem, clearCart } = useCart();
+  const checkoutUrl = getCheckoutUrl(items);
 
   return (
     <div>
@@ -121,15 +123,26 @@ function CartPage() {
                 <span className="micro">Subtotal</span>
                 <span className="font-display text-2xl">{formatPrice(subtotal, currency)}</span>
               </div>
-              <button
-                type="button"
-                disabled
-                className="micro mt-6 w-full cursor-not-allowed border border-border bg-muted px-5 py-4 text-muted-foreground"
-              >
-                Online checkout not live yet
-              </button>
+              {checkoutUrl ? (
+                <a
+                  href={checkoutUrl}
+                  className="micro mt-6 block w-full border border-charcoal bg-charcoal px-5 py-4 text-center text-white transition-colors duration-200 hover:border-sbs-red hover:bg-sbs-red"
+                >
+                  Checkout
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  className="micro mt-6 w-full cursor-not-allowed border border-border bg-muted px-5 py-4 text-muted-foreground"
+                >
+                  Online checkout not live yet
+                </button>
+              )}
               <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-                This is a storefront preview with a local demo cart — no order is placed. Orders will be local pickup only from our Vancouver store; no shipping or delivery.
+                {checkoutUrl
+                  ? "Secure checkout on Shopify. Orders are local pickup only from our Vancouver store — we email you when your order is ready."
+                  : "This is a storefront preview with a local demo cart — no order is placed. Orders will be local pickup only from our Vancouver store; no shipping or delivery."}
               </p>
             </aside>
           </div>

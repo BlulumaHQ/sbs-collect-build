@@ -59,6 +59,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           currency: product.currency,
           status: product.status,
           quantity,
+          variantId: product.variantId,
         },
       ];
     });
