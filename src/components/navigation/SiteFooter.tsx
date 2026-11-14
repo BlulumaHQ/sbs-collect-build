@@ -283,7 +283,7 @@ export function SiteFooter() {
       <div className="border-t border-white/12">
         <div className="container-sbs flex flex-col items-center gap-2 py-4 lg:flex-row lg:justify-between lg:gap-3 lg:py-6">
           <p className="text-center text-[12px] text-white/55 lg:text-left lg:text-[13px]">
-            © 2028 Secret Builders Society. All rights reserved. | Web Design by{" "}
+            © 2026 Secret Builders Society. All rights reserved. | Web Design by{" "}
             <a
               href="https://bluluma.com"
               target="_blank"
