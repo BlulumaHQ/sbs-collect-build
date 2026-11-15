@@ -119,9 +119,9 @@ function AboutPage() {
               <div>
                 <dt className="micro-sm text-muted-foreground">Hours</dt>
                 <dd className="mt-2 text-[15px] leading-relaxed">
-                  Mon–Sat 11:00 AM – 6:00 PM
+                  Fri–Sun 12:00 PM – 7:00 PM
                   <br />
-                  Sunday Closed
+                  Mon–Thu Closed
                 </dd>
               </div>
             </dl>

@@ -49,7 +49,7 @@ const FAQS = [
   },
   {
     q: "Can I visit the store?",
-    a: `Secret Builders Society is located at ${STORE.addressLine}, ${STORE.city}, ${STORE.region}. Store hours are Monday through Saturday, 11:00 AM to 6:00 PM. Sunday is closed.`,
+    a: `Secret Builders Society is located at ${STORE.addressLine}, ${STORE.city}, ${STORE.region}. Store hours are Friday through Sunday, 12:00 PM to 7:00 PM. Closed Monday through Thursday.`,
   },
   {
     q: "How can I contact the store?",

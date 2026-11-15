@@ -21,9 +21,9 @@ export function InfoStrip() {
             <Clock className="text-sbs-red" size={20} aria-hidden="true" />
             <h2 className="mt-3 font-display text-[17px] leading-tight">Store Hours</h2>
             <p className="mt-1.5 text-[15px] leading-relaxed text-muted-foreground">
-              Mon–Sat 11 AM–6 PM
+              Fri–Sun 12 PM–7 PM
               <br />
-              Sunday Closed
+              Mon–Thu Closed
             </p>
           </div>
 

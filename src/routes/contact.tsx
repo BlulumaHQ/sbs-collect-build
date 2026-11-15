@@ -20,7 +20,7 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Visit Secret Builders Society at 1395 Commercial Drive, Vancouver, BC. Open Monday to Saturday, 11 AM to 6 PM. Call 778-928-6412.",
+          "Visit Secret Builders Society at 1395 Commercial Drive, Vancouver, BC. Open Friday to Sunday, 12 PM to 7 PM. Call 778-928-6412.",
       },
       { property: "og:title", content: "Contact & Store Info | Secret Builders Society" },
       {
