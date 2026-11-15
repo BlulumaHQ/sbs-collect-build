@@ -16,8 +16,8 @@ export const STORE = {
   currencyLabel: "Canada (CAD $)",
   mapsQuery: "1395 Commercial Drive, Vancouver, BC",
   hours: [
-    { day: "Friday — Sunday", time: "12:00 PM – 7:00 PM" },
-    { day: "Monday — Thursday", time: "Closed" },
+    { day: "Fri – Sun", time: "12 PM – 7 PM" },
+    { day: "Mon – Thu", time: "Closed" },
   ],
   /** Social accounts have not been supplied yet — prototype buttons only. */
   social: [{ label: "Facebook" }, { label: "Instagram" }, { label: "TikTok" }, { label: "X" }],

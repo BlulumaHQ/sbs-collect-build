@@ -267,7 +267,7 @@ export function SiteFooter() {
             {STORE.hours.map((h) => (
               <div key={h.day} className="flex justify-between gap-4 text-white/60">
                 <dt>{h.day}</dt>
-                <dd className="text-white/85">{h.time}</dd>
+                <dd className="whitespace-nowrap text-white/85">{h.time}</dd>
               </div>
             ))}
           </dl>
