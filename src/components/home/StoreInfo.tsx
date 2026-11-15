@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { STORE, STORE_GALLERY, STORE_PHOTOS, UNITY_TATTOO_URL } from "@/config/store";
+import { STORE, STORE_PHOTOS, UNITY_TATTOO_URL } from "@/config/store";
 import { StoreLightbox } from "@/components/store/StoreLightbox";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 
@@ -73,33 +73,25 @@ export function StoreInfo() {
   );
 }
 
-/** Homepage photo mosaic: one wide shot + three thumbnails, all open the lightbox. */
-const MOSAIC = [
-  STORE_PHOTOS.interiorWide,
-  STORE_PHOTOS.storefrontSign,
-  STORE_PHOTOS.pokemonKits,
-  STORE_PHOTOS.figures,
-];
+/** Homepage photo mosaic: one wide shot + two distinct thumbnails, all open the lightbox. */
+const MOSAIC = [STORE_PHOTOS.interiorWide, STORE_PHOTOS.storefrontSign, STORE_PHOTOS.pokemonKits];
 
 function StoreMosaic() {
   const [open, setOpen] = useState<number | null>(null);
-  // Lightbox walks the mosaic first, then the rest of the gallery.
-  const photos = [...MOSAIC, ...STORE_GALLERY.filter((p) => !MOSAIC.includes(p))];
-  const extra = photos.length - MOSAIC.length;
+  const photos = MOSAIC;
 
   return (
     <figure className="m-0">
-      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+      <div className="grid grid-cols-2 gap-2 sm:gap-3">
         {MOSAIC.map((p, i) => {
           const isLead = i === 0;
-          const isLast = i === MOSAIC.length - 1;
           return (
             <button
               key={p.src}
               type="button"
               onClick={() => setOpen(i)}
               className={`group relative block overflow-hidden bg-bone ${
-                isLead ? "col-span-3 aspect-[16/9]" : "aspect-square"
+                isLead ? "col-span-2 aspect-[16/9]" : "aspect-[4/3]"
               }`}
               aria-label={`Open photo: ${p.caption}`}
             >
@@ -110,11 +102,6 @@ function StoreMosaic() {
                 decoding="async"
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
               />
-              {isLast && extra > 0 ? (
-                <span className="micro-sm absolute inset-0 flex items-center justify-center bg-black/55 text-white transition-colors group-hover:bg-black/65">
-                  +{extra} photos
-                </span>
-              ) : null}
             </button>
           );
         })}

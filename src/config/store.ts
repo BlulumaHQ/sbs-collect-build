@@ -61,34 +61,10 @@ export const STORE_PHOTOS = {
     "The SBS corner inside 1395 Commercial Drive",
     "landscape",
   ),
-  interiorCorner: photo(
-    "sbs-shop-interior-corner",
-    "Wooden shelves of Gunpla, Evangelion and One Piece collectibles beside white racks of Pokémon model kits",
-    "Gunpla, Evangelion and One Piece on the main shelves",
-    "landscape",
-  ),
-  interiorPortrait: photo(
-    "sbs-shop-interior-portrait",
-    "Full view of the SBS shelves under the Gundam TV, next to the front window",
-    "Shelves by the front window",
-    "portrait",
-  ),
   gunplaShelf: photo(
     "sbs-gunpla-anime-collectibles-shelf",
     "Close-up of Gundam model kits including MGSD Destiny Gundam and Wing Gundam on a wooden shelf",
     "MGSD Destiny, Wing Gundam and more",
-    "portrait",
-  ),
-  gunplaOnePiece: photo(
-    "sbs-gunpla-one-piece-display",
-    "Gunpla, Naruto and One Piece Hidden Dissectibles displayed on wooden shelves with price tags",
-    "Gunpla, Naruto and One Piece Hidden Dissectibles",
-    "landscape",
-  ),
-  figures: photo(
-    "sbs-dragon-ball-miku-figures",
-    "Dragon Ball Broly and Hatsune Miku prize figures above Pokémon model kits on white racks",
-    "Prize figures and Pokémon model kits",
     "portrait",
   ),
   pokemonKits: photo(
@@ -117,16 +93,11 @@ export const STORE_PHOTOS = {
   ),
 } satisfies Record<string, StorePhoto>;
 
-/** Inside-the-shop gallery order (About page). Order matters for the bento layout. */
+/** Curated inside-the-shop set — one overview + two detail shots, no near-duplicates. */
 export const STORE_GALLERY: StorePhoto[] = [
   STORE_PHOTOS.interiorWide,
   STORE_PHOTOS.gunplaShelf,
-  STORE_PHOTOS.figures,
   STORE_PHOTOS.pokemonKits,
-  STORE_PHOTOS.gunplaOnePiece,
-  STORE_PHOTOS.interiorPortrait,
-  STORE_PHOTOS.frontEntrance,
-  STORE_PHOTOS.interiorCorner,
 ];
 
 export const MAPS_EMBED_SRC =
