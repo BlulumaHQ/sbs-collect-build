@@ -13,7 +13,7 @@
  * Products are mapped from tags written by the Plamod sync:
  *   sbs-category:<Figures|Model Kits|...>  sbs-subcategory:<menu name>
  *   franchise:Gundam  grade:<HG|...>  gundam-series:<uc|...>  series:<name>  new-arrival
- *   featured  (shows the product in the home page "Featured Picks")
+ *   featured  (home page "Featured Picks", and first in the shop's "Featured" sort)
  * Products without an sbs-category tag are classified by scripts/catalog-rules.mjs
  * (Plamod category tags, then title rules, then the Shopify product category).
  * Only products published to the storefront's sales channel are returned.

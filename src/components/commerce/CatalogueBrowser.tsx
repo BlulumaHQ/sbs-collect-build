@@ -17,7 +17,8 @@ export function sortProducts(products: CommerceProduct[], sort: ShopSearch["sort
     case "name-desc":
       return list.sort((a, b) => b.title.localeCompare(a.title));
     default:
-      return list;
+      // "Featured": products tagged `featured` in Shopify first, then the rest in catalogue order.
+      return list.sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
   }
 }
 
