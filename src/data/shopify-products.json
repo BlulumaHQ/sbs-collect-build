@@ -1,6 +1,6 @@
 {
  "shopDomain": "2zzz0q-zy.myshopify.com",
- "generatedAt": "2026-11-15T05:48:49.476Z",
+ "generatedAt": "2026-11-15T12:44:42.825Z",
  "products": [
   {
    "id": "10455198728472",
@@ -231,7 +231,7 @@
    "grade": null,
    "gundamSeries": null,
    "newArrival": null,
-   "featured": null,
+   "featured": true,
    "status": "available",
    "price": 28.99,
    "currency": "CAD",
@@ -413,7 +413,7 @@
    "grade": null,
    "gundamSeries": null,
    "newArrival": null,
-   "featured": null,
+   "featured": true,
    "status": "available",
    "price": 24.99,
    "currency": "CAD",
@@ -507,7 +507,7 @@
    "grade": null,
    "gundamSeries": null,
    "newArrival": null,
-   "featured": null,
+   "featured": true,
    "status": "available",
    "price": 89.99,
    "currency": "CAD",
@@ -534,7 +534,7 @@
    "grade": null,
    "gundamSeries": null,
    "newArrival": null,
-   "featured": null,
+   "featured": true,
    "status": "available",
    "price": 28.99,
    "currency": "CAD",
