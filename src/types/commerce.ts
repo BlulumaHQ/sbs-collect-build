@@ -22,6 +22,8 @@ export interface CommerceProduct {
   gundamSeries?: string | undefined;
   /** True only when the source explicitly flags the item as a new arrival. */
   newArrival?: boolean | undefined;
+  /** True when tagged `featured` in Shopify (home page Featured Picks). */
+  featured?: boolean | undefined;
   status: ProductStatus;
   price: number;
   /** Original price when the item is discounted — drives the SALE badge. */

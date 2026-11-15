@@ -3,7 +3,7 @@ import {
   getAllProducts,
   getCategories,
   getPreorderProducts,
-  getProductsByIds,
+  getFeaturedProducts,
   getSaleProducts,
 } from "@/commerce/adapter";
 import { CATEGORY_ARTWORK } from "@/commerce/artwork";
@@ -68,16 +68,7 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const featured = getProductsByIds([
-    "figures-01",
-    "figures-02",
-    "model-kits-02",
-    "plush-03",
-    "blind-boxes-01",
-    "hobby-supplies-01",
-    "character-goods-01",
-    "apparel-04",
-  ]);
+  const featured = getFeaturedProducts();
   const preorders = getPreorderProducts().slice(0, 4);
   const onSale = getSaleProducts().slice(0, 4);
   const categories = getCategories();

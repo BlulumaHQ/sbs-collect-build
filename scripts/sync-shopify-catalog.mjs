@@ -13,6 +13,7 @@
  * Products are mapped from tags written by the Plamod sync:
  *   sbs-category:<Figures|Model Kits|...>  sbs-subcategory:<menu name>
  *   franchise:Gundam  grade:<HG|...>  gundam-series:<uc|...>  series:<name>  new-arrival
+ *   featured  (shows the product in the home page "Featured Picks")
  * Products without an sbs-category tag are classified by scripts/catalog-rules.mjs
  * (Plamod category tags, then title rules, then the Shopify product category).
  * Only products published to the storefront's sales channel are returned.
@@ -90,6 +91,7 @@ export function mapProduct(node, shopName = "") {
     grade: tagValue(tags, "grade"),
     gundamSeries: tagValue(tags, "gundam-series"),
     newArrival: tags.some((t) => t.toLowerCase() === "new-arrival") || null,
+    featured: tags.some((t) => t.toLowerCase() === "featured") || null,
     status: available ? "available" : "sold-out",
     price,
     currency: variant.price?.currencyCode ?? "CAD",

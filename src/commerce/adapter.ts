@@ -44,6 +44,8 @@ interface RawProduct {
   scale?: string | null;
   gundamSeries?: string | null;
   newArrival?: boolean | null;
+  /** Shopify tag `featured` — shown in the home page "Featured Picks". */
+  featured?: boolean | null;
 }
 
 export const CATEGORY_ORDER = [
@@ -90,6 +92,7 @@ function normalize(p: RawProduct): CommerceProduct {
   scale: deriveScale({ scale: p.scale, title: p.title }),
   gundamSeries: deriveGundamSeries({ gundamSeries: p.gundamSeries, title: p.title, isGundam }),
   newArrival: p.newArrival === true ? true : undefined,
+  featured: p.featured === true ? true : undefined,
   series: clean(p.series),
   character: clean(p.character),
   status: p.status as ProductStatus,
@@ -151,6 +154,16 @@ export function getSaleProducts(): CommerceProduct[] {
 
 export function getNewArrivals(limit = 8): CommerceProduct[] {
   return products.filter((p) => p.status !== "sold-out").slice(0, limit);
+}
+
+/**
+ * Home page "Featured Picks": products tagged `featured` in Shopify, in stock first.
+ * When nothing is tagged yet, falls back to the newest in-stock products.
+ */
+export function getFeaturedProducts(limit = 8): CommerceProduct[] {
+  const tagged = products.filter((p) => p.featured);
+  const pool = tagged.length > 0 ? tagged : products.filter((p) => p.status !== "sold-out");
+  return [...pool].sort((a, b) => Number(a.status === "sold-out") - Number(b.status === "sold-out")).slice(0, limit);
 }
 
 export function getAllProducts(): CommerceProduct[] {
