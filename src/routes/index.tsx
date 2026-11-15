@@ -5,9 +5,8 @@ import {
   getPreorderProducts,
   getProductsByIds,
   getSaleProducts,
-  getSeries,
 } from "@/commerce/adapter";
-import { CATEGORY_ARTWORK, seriesArtwork } from "@/commerce/artwork";
+import { CATEGORY_ARTWORK } from "@/commerce/artwork";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { ProductGrid } from "@/components/commerce/ProductGrid";
 import { RecentlyViewed } from "@/components/commerce/RecentlyViewed";
@@ -18,6 +17,27 @@ import { StoreInfo } from "@/components/home/StoreInfo";
 import { GundamGrades } from "@/components/home/GundamGrades";
 import { BeginnersCorner } from "@/components/home/BeginnersCorner";
 import { Newsletter } from "@/components/home/Newsletter";
+
+const HOME_SERIES: {
+  name: string;
+  series: string;
+  keys: string[];
+  to: "/shop" | "/gundam";
+  fallback: string;
+}[] = [
+  { name: "Gundam (Gunpla)", series: "Gundam", keys: ["gundam", "gunpla"], to: "/gundam", fallback: "/images/categories/model-kits.webp" },
+  { name: "Pokémon", series: "Pokémon", keys: ["pokémon", "pokemon"], to: "/shop", fallback: "/images/collections/pokemon.jpg" },
+  { name: "One Piece", series: "ONE PIECE", keys: ["one piece"], to: "/shop", fallback: "/images/collections/one-piece.jpg" },
+  { name: "Dragon Ball", series: "Dragon Ball", keys: ["dragon ball"], to: "/shop", fallback: "/images/categories/figures.webp" },
+  { name: "Naruto", series: "NARUTO", keys: ["naruto"], to: "/shop", fallback: "/images/categories/blind-boxes.webp" },
+  { name: "Evangelion", series: "Evangelion", keys: ["evangelion"], to: "/shop", fallback: "/images/categories/figures.webp" },
+  { name: "Demon Slayer", series: "Demon Slayer", keys: ["demon slayer", "kimetsu"], to: "/shop", fallback: "/images/categories/figures.webp" },
+  { name: "Jujutsu Kaisen", series: "Jujutsu Kaisen", keys: ["jujutsu", "jujustu"], to: "/shop", fallback: "/images/categories/plush.webp" },
+  { name: "My Hero Academia", series: "My Hero Academia", keys: ["my hero academia", "boku no hero"], to: "/shop", fallback: "/images/categories/character-goods.webp" },
+  { name: "Haikyu!!", series: "Haikyu!!", keys: ["haikyu"], to: "/shop", fallback: "/images/categories/character-goods.webp" },
+  { name: "Hatsune Miku", series: "Hatsune Miku", keys: ["hatsune", "miku"], to: "/shop", fallback: "/images/collections/hatsune-miku.svg" },
+  { name: "Star Wars", series: "Star Wars", keys: ["star wars", "star destroyer", "millennium falcon", "death star"], to: "/shop", fallback: "/images/categories/model-kits.webp" },
+];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -60,7 +80,14 @@ function HomePage() {
   const preorders = getPreorderProducts().slice(0, 4);
   const onSale = getSaleProducts().slice(0, 4);
   const categories = getCategories();
-  const series = getSeries().slice(0, 8);
+  const allProducts = getAllProducts();
+  const homeSeries = HOME_SERIES.map((entry) => {
+    const matches = allProducts.filter((p) =>
+      entry.keys.some((k) => `${p.series ?? ""} ${p.title}`.toLowerCase().includes(k)),
+    );
+    const image = matches.find((p) => p.image)?.image || entry.fallback;
+    return { ...entry, image, count: matches.length };
+  });
   const total = getAllProducts().length;
 
   return (
@@ -198,15 +225,15 @@ function HomePage() {
           </div>
 
           <div className="mt-9 grid grid-cols-2 gap-5 lg:grid-cols-4">
-            {series.map((entry) => (
+            {homeSeries.map((entry) => (
               <Link
                 key={entry.name}
-                to="/shop"
-                search={{ sort: "featured", series: entry.name }}
+                to={entry.to}
+                search={entry.to === "/shop" ? { sort: "featured", series: entry.series } : undefined}
                 className="group relative block aspect-video overflow-hidden bg-charcoal"
               >
                 <img
-                  src={seriesArtwork(entry.name)}
+                  src={entry.image}
                   alt={`${entry.name} collection artwork`}
                   loading="lazy"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
@@ -216,7 +243,6 @@ function HomePage() {
                   <span className="clamp-1 block font-display text-lg text-white">
                     {entry.name}
                   </span>
-                  <span className="micro-sm mt-1 block text-white/65">{entry.count} {entry.count === 1 ? "product" : "products"}</span>
                 </span>
               </Link>
             ))}
