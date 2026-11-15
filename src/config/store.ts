@@ -63,8 +63,8 @@ export const STORE_PHOTOS = {
   ),
   gunplaShelf: photo(
     "sbs-gunpla-anime-collectibles-shelf",
-    "Close-up of Gundam model kits including MGSD Destiny Gundam and Wing Gundam on a wooden shelf",
-    "MGSD Destiny, Wing Gundam and more",
+    "Wooden shelves of Gundam model kits, One Piece blind boxes, Evangelion figures and Naruto collectibles under a Gundam cartoon",
+    "Gunpla, One Piece and Evangelion on the shelves",
     "portrait",
   ),
   pokemonKits: photo(
