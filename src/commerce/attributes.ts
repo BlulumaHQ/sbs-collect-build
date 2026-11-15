@@ -66,7 +66,7 @@ export function deriveGrade(input: {
 export function deriveScale(input: { scale?: string | null | undefined; title: string }): string | undefined {
   const explicit = input.scale?.trim();
   if (explicit && /^1\/\d{1,4}$/.test(explicit)) return explicit;
-  const match = input.title.match(/(?:^|[^\d/])(1\/\d{1,4})(?![\d/])/);
+  const match = input.title.match(/(?:^|[^\d/])(1\/\d{1,4})(?![\d/,.])/);
   return match ? match[1] : undefined;
 }
 

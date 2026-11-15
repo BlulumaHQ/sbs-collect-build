@@ -21,6 +21,7 @@ test("scale is read from 1/N tokens only", () => {
   assert.equal(deriveScale({ title: "1/72 Scale Darkstar Plastic Model Kit" }), "1/72");
   assert.equal(deriveScale({ title: "Mr. Color 132 - Earth Green" }), undefined);
   assert.equal(deriveScale({ scale: "1/100", title: "x" }), "1/100");
+  assert.equal(deriveScale({ title: "1/2,700,000 DEATH STAR II & 1/14,500 STAR DESTROYER" }), undefined);
 });
 
 test("Gundam series requires a Gundam product", () => {
