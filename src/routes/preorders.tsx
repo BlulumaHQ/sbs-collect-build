@@ -35,7 +35,7 @@ function PreordersPage() {
           <SBSBuildRail index="04" label="Preorders" />
         </div>
         <h1 className="mt-5 font-display text-4xl md:text-6xl">On the Horizon</h1>
-        <p className="micro mt-4 text-muted-foreground">{products.length} demo products</p>
+        <p className="micro mt-4 text-muted-foreground">{products.length} products</p>
 
         <div className="mt-12 lg:mt-16">
           <ProductGrid products={products} />

@@ -69,7 +69,7 @@ export function ProductFilters({
 
   const subcategories = [...new Set(scope.map((p) => p.subcategory).filter(Boolean))].sort() as string[];
   const statuses = [...new Set(scope.map((p) => p.status))] as ProductStatus[];
-  const vendors = [...new Set(scope.map((p) => p.vendor))].sort();
+  const vendors = [...new Set(scope.map((p) => p.vendor).filter(Boolean))].sort();
   const seriesList = [...new Set(scope.map((p) => p.series).filter(Boolean))].sort() as string[];
   const grades = GUNPLA_GRADES.filter((g) => scope.some((p) => p.grade === g.code));
   const scales = [...new Set(scope.map((p) => p.scale).filter(Boolean))].sort() as string[];

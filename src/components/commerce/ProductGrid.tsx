@@ -4,7 +4,7 @@ import { EmptyState } from "@/components/EmptyState";
 
 export function ProductGrid({
   products,
-  emptyMessage = "No demo products in this section yet.",
+  emptyMessage = "No products in this section yet.",
   columns = 4,
 }: {
   products: CommerceProduct[];

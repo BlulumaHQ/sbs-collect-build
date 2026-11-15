@@ -43,7 +43,7 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
           </Link>
           {scope.length === 0 ? (
             <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-              No Gundam kits are listed in the demo catalogue yet.
+              No Gundam kits are in stock right now.
             </p>
           ) : null}
         </div>

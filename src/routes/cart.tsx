@@ -13,10 +13,10 @@ export const Route = createFileRoute("/cart")({
       { title: "Cart | Secret Builders Society" },
       {
         name: "description",
-        content: "Local demo cart for the Secret Builders Society storefront prototype.",
+        content: "Your Secret Builders Society cart. Local pickup in Vancouver.",
       },
       { property: "og:title", content: "Cart | Secret Builders Society" },
-      { property: "og:description", content: "Local demo cart for the storefront prototype." },
+      { property: "og:description", content: "Your Secret Builders Society cart." },
       { property: "og:url", content: "/cart" },
     ],
     links: [{ rel: "canonical", href: "/cart" }],
@@ -142,7 +142,7 @@ function CartPage() {
               <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
                 {checkoutUrl
                   ? "Secure checkout on Shopify. Orders are local pickup only from our Vancouver store — we email you when your order is ready."
-                  : "This is a storefront preview with a local demo cart — no order is placed. Orders will be local pickup only from our Vancouver store; no shipping or delivery."}
+                  : "Online checkout isn’t live yet. Orders will be local pickup only from our Vancouver store; no shipping or delivery."}
               </p>
             </aside>
           </div>

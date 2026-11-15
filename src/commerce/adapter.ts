@@ -1,4 +1,3 @@
-import demoProducts from "@/data/demo-products.json";
 import shopifyCatalog from "@/data/shopify-products.json";
 import type {
   CommerceCategory,
@@ -12,11 +11,9 @@ import { deriveGrade, deriveGundamSeries, deriveScale, isGundamTitle } from "./a
 /**
  * Commerce adapter
  *
- * Normalizes the catalogue into CommerceProduct objects. When
- * src/data/shopify-products.json holds products (written by
- * scripts/sync-shopify-catalog.mjs from the Shopify Storefront API), that
- * snapshot is the catalogue; otherwise the local demo catalogue is used.
- * The exported surface is identical either way, so the UI does not change.
+ * Normalizes the catalogue into CommerceProduct objects. The catalogue is the
+ * Shopify snapshot in src/data/shopify-products.json, written by
+ * scripts/sync-shopify-catalog.mjs from the Shopify Storefront API.
  */
 
 interface RawProduct {
@@ -121,13 +118,11 @@ const catalog = shopifyCatalog as unknown as ShopifyCatalog;
 /** True when the storefront is serving the Shopify catalogue snapshot. */
 export const IS_SHOPIFY_CATALOG = catalog.products.length > 0;
 
-const products: CommerceProduct[] = (
-  IS_SHOPIFY_CATALOG ? catalog.products : (demoProducts as RawProduct[])
-).map(normalize);
+const products: CommerceProduct[] = catalog.products.map(normalize);
 
 /**
  * Shopify cart permalink for checkout (https://shop/cart/variant:qty,...).
- * Returns null while the demo catalogue is active or an item has no variant id.
+ * Returns null while the catalogue is empty or an item has no variant id.
  */
 export function getCheckoutUrl(
   items: { variantId?: string | undefined; quantity: number }[],
@@ -208,6 +203,7 @@ export function getSeries(): CommerceSeries[] {
 export function getVendors(): CommerceVendor[] {
   const map = new Map<string, CommerceProduct[]>();
   for (const p of products) {
+    if (!p.vendor) continue;
     const list = map.get(p.vendor) ?? [];
     list.push(p);
     map.set(p.vendor, list);

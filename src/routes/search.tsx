@@ -14,12 +14,12 @@ export const Route = createFileRoute("/search")({
       { title: "Search | Secret Builders Society" },
       {
         name: "description",
-        content: "Search the Secret Builders Society demo catalogue by title, maker, series or code.",
+        content: "Search the Secret Builders Society catalogue by title, maker, series or code.",
       },
       { property: "og:title", content: "Search | Secret Builders Society" },
       {
         property: "og:description",
-        content: "Search the Secret Builders Society demo catalogue.",
+        content: "Search the Secret Builders Society catalogue.",
       },
       { property: "og:url", content: "/search" },
     ],

@@ -58,7 +58,7 @@ export function GundamGrades({ index }: { index: string }) {
         </div>
         {scope.length === 0 ? (
           <p className="mt-4 text-sm text-muted-foreground">
-            Gundam kits aren’t in the demo catalogue yet. New to Gunpla?{" "}
+            Gundam kits aren’t in stock right now. New to Gunpla?{" "}
             <Link to="/guides/gunpla-grades-explained" className="text-sbs-red underline">Learn about grades</Link>.
           </p>
         ) : null}

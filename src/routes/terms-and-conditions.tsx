@@ -33,7 +33,7 @@ const SECTIONS = [
   },
   {
     title: "Product Information",
-    body: "Product names, images, descriptions and specifications shown in the demo catalogue are provided for design review and may not reflect final retail listings.",
+    body: "Product names, images, descriptions and specifications shown on this website are provided for reference; packaging and contents may vary slightly from the photos.",
   },
   {
     title: "Pricing and Availability",

@@ -13,9 +13,12 @@
  * Products are mapped from tags written by the Plamod sync:
  *   sbs-category:<Figures|Model Kits|...>  sbs-subcategory:<menu name>
  *   franchise:Gundam  grade:<HG|...>  gundam-series:<uc|...>  series:<name>  new-arrival
- * Products without an sbs-category tag are skipped.
+ * Products without an sbs-category tag are classified by scripts/catalog-rules.mjs
+ * (Plamod category tags, then title rules, then the Shopify product category).
+ * Only products published to the storefront's sales channel are returned.
  */
 import { writeFileSync } from "node:fs";
+import { classify, guessSeries, guessVendor, isPlaceholderVendor } from "./catalog-rules.mjs";
 import { fileURLToPath } from "node:url";
 
 const OUT = fileURLToPath(new URL("../src/data/shopify-products.json", import.meta.url));
@@ -25,7 +28,8 @@ const QUERY = `query Products($cursor: String) {
   products(first: 250, after: $cursor) {
     pageInfo { hasNextPage endCursor }
     nodes {
-      id handle title vendor tags availableForSale
+      id handle title vendor productType tags availableForSale
+      category { name }
       featuredImage { url }
       images(first: 10) { nodes { url } }
       variants(first: 1) {
@@ -50,10 +54,22 @@ function numericId(gid) {
 }
 
 /** Map one Storefront API product node to the RawProduct shape used by the adapter. */
-export function mapProduct(node) {
+export function mapProduct(node, shopName = "") {
   const tags = node.tags ?? [];
-  const category = tagValue(tags, "sbs-category");
-  if (!category) return null;
+  let category = tagValue(tags, "sbs-category");
+  let subcategory = tagValue(tags, "sbs-subcategory");
+  if (!category) {
+    const c = classify({
+      title: node.title,
+      productType: node.productType,
+      shopifyCategory: node.category?.name,
+      plamodCategory: tagValue(tags, "category"),
+      plamodSubcategory: tagValue(tags, "subcategory"),
+    });
+    category = c.category;
+    subcategory = subcategory ?? c.subcategory;
+  }
+  const vendor = isPlaceholderVendor(node.vendor, shopName) ? guessVendor(node.title) : node.vendor;
   const variant = node.variants?.nodes?.[0];
   if (!variant) return null;
   const images = (node.images?.nodes ?? []).map((i) => i.url).filter(Boolean);
@@ -66,10 +82,10 @@ export function mapProduct(node) {
     id: numericId(node.id),
     handle: node.handle,
     title: node.title,
-    vendor: node.vendor ?? "",
+    vendor,
     category,
-    subcategory: tagValue(tags, "sbs-subcategory"),
-    series: tagValue(tags, "series"),
+    subcategory,
+    series: tagValue(tags, "series") ?? guessSeries(node.title),
     franchise: tagValue(tags, "franchise"),
     grade: tagValue(tags, "grade"),
     gundamSeries: tagValue(tags, "gundam-series"),
@@ -86,6 +102,18 @@ export function mapProduct(node) {
   };
 }
 
+async function storefront(domain, token, query, variables = {}) {
+  const res = await fetch(`https://${domain}/api/${API_VERSION}/graphql.json`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Shopify-Storefront-Access-Token": token },
+    body: JSON.stringify({ query, variables }),
+  });
+  if (!res.ok) throw new Error(`Storefront API ${res.status}: ${await res.text()}`);
+  const json = await res.json();
+  if (json.errors) throw new Error(JSON.stringify(json.errors));
+  return json.data;
+}
+
 async function main() {
   const domain = process.env.SHOPIFY_STORE_DOMAIN?.replace(/^https?:\/\//, "").replace(/\/$/, "");
   const token = process.env.SHOPIFY_STOREFRONT_TOKEN;
@@ -94,20 +122,15 @@ async function main() {
     process.exit(1);
   }
   const products = [];
+  const shopRes = await storefront(domain, token, "{ shop { name } }");
+  const shopName = shopRes.shop?.name ?? "";
   let cursor = null;
   let skipped = 0;
   for (;;) {
-    const res = await fetch(`https://${domain}/api/${API_VERSION}/graphql.json`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Shopify-Storefront-Access-Token": token },
-      body: JSON.stringify({ query: QUERY, variables: { cursor } }),
-    });
-    if (!res.ok) throw new Error(`Storefront API ${res.status}: ${await res.text()}`);
-    const json = await res.json();
-    if (json.errors) throw new Error(JSON.stringify(json.errors));
-    const page = json.data.products;
+    const data = await storefront(domain, token, QUERY, { cursor });
+    const page = data.products;
     for (const node of page.nodes) {
-      const mapped = mapProduct(node);
+      const mapped = mapProduct(node, shopName);
       if (mapped) products.push(mapped);
       else skipped += 1;
     }
@@ -116,7 +139,7 @@ async function main() {
   }
   const out = { shopDomain: domain, generatedAt: new Date().toISOString(), products };
   writeFileSync(OUT, `${JSON.stringify(out, null, 1)}\n`);
-  console.log(`Wrote ${products.length} products (${skipped} skipped: no sbs-category tag, variant or image).`);
+  console.log(`Wrote ${products.length} products (${skipped} skipped: no variant or image).`);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {

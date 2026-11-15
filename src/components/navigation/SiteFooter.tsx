@@ -294,7 +294,7 @@ export function SiteFooter() {
             </a>
           </p>
           <p className="text-[12px] text-white/35 lg:text-[13px]">
-            Prototype catalogue — pricing shown for demonstration.
+            All prices in CAD. Local pickup only.
           </p>
         </div>
       </div>

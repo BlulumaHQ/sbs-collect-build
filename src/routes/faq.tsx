@@ -57,7 +57,7 @@ const FAQS = [
   },
   {
     q: "What does Sold Out mean?",
-    a: "Products marked SOLD OUT are currently unavailable in the demo catalogue.",
+    a: "Products marked SOLD OUT are currently unavailable.",
   },
   {
     q: "Can I create a customer account?",

@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import type { ReactNode } from "react";
 import type { CommerceCartItem, CommerceProduct } from "@/types/commerce";
 
-const STORAGE_KEY = "sbs-demo-cart-v1";
+const STORAGE_KEY = "sbs-cart-v2";
 
 interface CartContextValue {
   items: CommerceCartItem[];

@@ -20,7 +20,7 @@ function productSummary(p: CommerceProduct): string {
     .join(", ");
   const kind = p.subcategory ?? p.category;
   const from = p.series ? ` from ${p.series}` : "";
-  return `${p.title} by ${p.vendor}${parts ? ` — ${parts}` : ""}. ${kind}${from}, priced in ${p.currency}. Local pickup in ${STORE.city}, ${STORE.region}.`;
+  return `${p.title}${p.vendor ? ` by ${p.vendor}` : ""}${parts ? ` — ${parts}` : ""}. ${kind}${from}, priced in ${p.currency}. Local pickup in ${STORE.city}, ${STORE.region}.`;
 }
 
 export const Route = createFileRoute("/product/$handle")({
@@ -51,7 +51,7 @@ export const Route = createFileRoute("/product/$handle")({
         { property: "og:url", content: `/product/${params.handle}` },
       ],
       links: [{ rel: "canonical", href: `/product/${params.handle}` }],
-      // Product schema is intentionally omitted: demo pricing/availability are not verified offers.
+      // Product schema is intentionally omitted: add it once the store launches and checkout is live.
       scripts: [
         {
           type: "application/ld+json",
@@ -101,7 +101,7 @@ function ProductDetailPage() {
   const gallery = product.images.length > 0 ? product.images : [product.image];
 
   const metadata: { label: string; value: string }[] = [
-    { label: "Brand", value: product.vendor },
+    ...(product.vendor ? [{ label: "Brand", value: product.vendor }] : []),
     { label: "Category", value: product.category },
     ...(product.franchise ? [{ label: "Franchise", value: product.franchise }] : []),
     ...(product.grade ? [{ label: "Grade", value: product.grade === "OTHER" ? gradeName(product.grade) : `${product.grade} · ${gradeName(product.grade)}` }] : []),

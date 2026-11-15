@@ -61,7 +61,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
 
         <div className="mt-6 max-h-[50vh] overflow-y-auto">
           {query.trim() === "" ? (
-            <p className="micro text-muted-foreground">Type to search 28 demo products.</p>
+            <p className="micro text-muted-foreground">Type to search the catalogue.</p>
           ) : results.length === 0 ? (
             <p className="micro text-muted-foreground">No products found.</p>
           ) : (

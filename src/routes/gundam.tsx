@@ -101,7 +101,7 @@ function GundamPage() {
               <p className="mx-auto mt-4 max-w-xl font-display text-2xl">
                 {activeLabel
                   ? `No Gundam kits match “${activeLabel}” right now.`
-                  : "No Gundam kits are listed in the current demo catalogue."}
+                  : "No Gundam kits are in stock right now."}
               </p>
               <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
                 The live Gunpla range will appear here once the store catalogue is connected.
