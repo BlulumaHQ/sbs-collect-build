@@ -23,10 +23,11 @@ const HOME_SERIES: {
   series: string;
   keys: string[];
   to: "/shop" | "/gundam";
+  override?: string;
   fallback: string;
 }[] = [
   { name: "Gundam (Gunpla)", series: "Gundam", keys: ["gundam", "gunpla"], to: "/gundam", fallback: "/images/categories/model-kits.webp" },
-  { name: "Pokémon", series: "Pokémon", keys: ["pokémon", "pokemon"], to: "/shop", fallback: "/images/collections/pokemon.jpg" },
+  { name: "Pokémon", series: "Pokémon", keys: ["pokémon", "pokemon"], to: "/shop", fallback: "/images/collections/pokemon.jpg", override: "/images/uploads/20261115-secret-builders-society-pokemon-star-war.webp" },
   { name: "One Piece", series: "ONE PIECE", keys: ["one piece"], to: "/shop", fallback: "/images/collections/one-piece.jpg" },
   { name: "Dragon Ball", series: "Dragon Ball", keys: ["dragon ball"], to: "/shop", fallback: "/images/categories/figures.webp" },
   { name: "Naruto", series: "NARUTO", keys: ["naruto"], to: "/shop", fallback: "/images/categories/blind-boxes.webp" },
@@ -85,7 +86,7 @@ function HomePage() {
     const matches = allProducts.filter((p) =>
       entry.keys.some((k) => `${p.series ?? ""} ${p.title}`.toLowerCase().includes(k)),
     );
-    const image = matches.find((p) => p.image)?.image || entry.fallback;
+    const image = entry.override || matches.find((p) => p.image)?.image || entry.fallback;
     return { ...entry, image, count: matches.length };
   });
   const total = getAllProducts().length;
