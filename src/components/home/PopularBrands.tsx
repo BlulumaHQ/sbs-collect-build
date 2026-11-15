@@ -1,12 +1,37 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { getVendors } from "@/commerce/adapter";
 import { brandLogo } from "@/commerce/artwork";
 
+// name = vendor name used in the shop filter; box = visual logo size (w x h px)
+const BRANDS: { name: string; label: string; w: number; h: number }[] = [
+  { name: "BANDAI HOBBY", label: "Bandai Hobby", w: 64, h: 62 },
+  { name: "TAMASHII NATIONS", label: "Tamashii Nations", w: 144, h: 48 },
+  { name: "BANDAI", label: "Bandai", w: 64, h: 62 },
+  { name: "MegaHouse", label: "MegaHouse", w: 168, h: 19 },
+  { name: "GOOD SMILE COMPANY", label: "Good Smile Company", w: 168, h: 47 },
+  { name: "KOTOBUKIYA", label: "Kotobukiya", w: 144, h: 48 },
+  { name: "GSI Creos", label: "GSI Creos", w: 144, h: 48 },
+  { name: "GodHand", label: "GodHand", w: 144, h: 48 },
+  { name: "TAITO", label: "Taito", w: 144, h: 48 },
+  { name: "SEGA", label: "Sega", w: 144, h: 48 },
+  { name: "FuRyu", label: "FuRyu", w: 144, h: 48 },
+  { name: "threezero", label: "threezero", w: 144, h: 48 },
+];
+
+function shuffle<T>(list: T[]): T[] {
+  const a = list.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j]!, a[i]!];
+  }
+  return a;
+}
+
 export function PopularBrands() {
-  const brands = getVendors()
-    .slice()
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 8);
+  const [brands, setBrands] = useState(BRANDS);
+  useEffect(() => {
+    setBrands(shuffle(BRANDS));
+  }, []);
 
   return (
     <section className="section-y border-b border-border bg-white">
@@ -35,16 +60,17 @@ export function PopularBrands() {
                   {logo ? (
                     <img
                       src={logo}
-                      alt={brand.name}
+                      alt={brand.label}
                       loading="lazy"
-                      className="max-h-[64px] w-auto max-w-[80%] object-contain transition-transform duration-200 group-hover:scale-[1.04]"
+                      style={{ width: brand.w, height: brand.h }}
+                      className="max-w-[85%] object-contain transition-transform duration-200 group-hover:scale-[1.04]"
                     />
                   ) : (
-                    <span className="font-display text-lg">{brand.name}</span>
+                    <span className="font-display text-lg">{brand.label}</span>
                   )}
                 </div>
                 <span className="micro mt-4 text-muted-foreground group-hover:text-sbs-red">
-                  {brand.count} {brand.count === 1 ? "product" : "products"}
+                  {brand.label}
                 </span>
               </Link>
             );

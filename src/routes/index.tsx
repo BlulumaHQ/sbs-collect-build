@@ -220,9 +220,6 @@ function HomePage() {
               <SBSBuildRail index="08" label="Series Directory" />
               <h2 className="mt-5 font-display text-[32px] lg:text-[38px]">Explore Collections</h2>
             </div>
-            <Link to="/collections" className="micro text-sbs-red hover:underline">
-              View all collections
-            </Link>
           </div>
 
           <div className="mt-9 grid grid-cols-2 gap-5 lg:grid-cols-4">
