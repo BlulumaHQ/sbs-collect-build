@@ -25,12 +25,12 @@ const BRAND_LOGO_FILES: Record<string, string> = {
   "presence-co-ltd": "presence-logo.png",
   "square-enix": "square-enix-logo.svg",
   toptoy: "toptoy-logo.png",
-  "tamashii-nations": "tamashii-nations-logo.svg",
-  kotobukiya: "kotobukiya-logo.svg",
-  godhand: "godhand-logo.svg",
-  taito: "taito-logo.svg",
-  sega: "sega-logo.svg",
-  furyu: "furyu-logo.svg",
+  "tamashii-nations": "tamashii-nations-logo.png",
+  kotobukiya: "kotobukiya-logo.png",
+  godhand: "godhand-logo.png",
+  taito: "taito-logo.png",
+  sega: "sega-logo.png",
+  furyu: "furyu-logo.png",
   threezero: "threezero-logo.svg",
 };
 

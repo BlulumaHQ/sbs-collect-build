@@ -5,16 +5,16 @@ import { brandLogo } from "@/commerce/artwork";
 // name = vendor name used in the shop filter; box = visual logo size (w x h px)
 const BRANDS: { name: string; label: string; w: number; h: number }[] = [
   { name: "BANDAI HOBBY", label: "Bandai Hobby", w: 64, h: 62 },
-  { name: "TAMASHII NATIONS", label: "Tamashii Nations", w: 144, h: 48 },
+  { name: "TAMASHII NATIONS", label: "Tamashii Nations", w: 78, h: 63 },
   { name: "BANDAI", label: "Bandai", w: 64, h: 62 },
   { name: "MegaHouse", label: "MegaHouse", w: 168, h: 19 },
   { name: "GOOD SMILE COMPANY", label: "Good Smile Company", w: 168, h: 47 },
-  { name: "KOTOBUKIYA", label: "Kotobukiya", w: 144, h: 48 },
+  { name: "KOTOBUKIYA", label: "Kotobukiya", w: 144, h: 45 },
   { name: "GSI Creos", label: "GSI Creos", w: 144, h: 48 },
-  { name: "GodHand", label: "GodHand", w: 144, h: 48 },
-  { name: "TAITO", label: "Taito", w: 144, h: 48 },
-  { name: "SEGA", label: "Sega", w: 144, h: 48 },
-  { name: "FuRyu", label: "FuRyu", w: 144, h: 48 },
+  { name: "GodHand", label: "GodHand", w: 66, h: 62 },
+  { name: "TAITO", label: "Taito", w: 144, h: 46 },
+  { name: "SEGA", label: "Sega", w: 144, h: 44 },
+  { name: "FuRyu", label: "FuRyu", w: 144, h: 43 },
   { name: "threezero", label: "threezero", w: 144, h: 48 },
 ];
 
