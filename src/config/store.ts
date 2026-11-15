@@ -20,12 +20,7 @@ export const STORE = {
     { day: "Sunday", time: "Closed" },
   ],
   /** Social accounts have not been supplied yet — prototype buttons only. */
-  social: [
-    { label: "Facebook" },
-    { label: "Instagram" },
-    { label: "TikTok" },
-    { label: "X" },
-  ],
+  social: [{ label: "Facebook" }, { label: "Instagram" }, { label: "TikTok" }, { label: "X" }],
 } as const;
 
 export const UNITY_TATTOO_URL = "https://unity-tattoo.com/";
@@ -35,9 +30,104 @@ export const UNITY_TATTOO_LOGO = "/images/store/unity-tattoo-logo.png";
 export const UNITY_TATTOO_INTERIOR_PHOTO = "/images/store/unity-tattoo-interior.webp";
 export const UNITY_TATTOO_STOREFRONT_PHOTO = "/images/store/unity-tattoo-storefront.jpg";
 
-export const STORE_IMAGE = "/images/store/sbs-unity-shared-store-concept.webp";
-export const STORE_IMAGE_CAPTION =
-  "Concept visualization of the shared SBS and Unity Tattoo space.";
+/** Real in-store photos of Secret Builders Society (Nov 2026). */
+export type StorePhoto = {
+  /** Full-size image (≈1600px long edge) — used in the lightbox. */
+  src: string;
+  /** Small image (≈800px long edge) — used in grids. */
+  srcSm: string;
+  alt: string;
+  caption: string;
+  orientation: "landscape" | "portrait";
+};
+
+const photo = (
+  file: string,
+  alt: string,
+  caption: string,
+  orientation: StorePhoto["orientation"],
+): StorePhoto => ({
+  src: `/images/store/${file}.webp`,
+  srcSm: `/images/store/${file}-sm.webp`,
+  alt,
+  caption,
+  orientation,
+});
+
+export const STORE_PHOTOS = {
+  interiorWide: photo(
+    "sbs-shop-interior-wide",
+    "Secret Builders Society shop corner with Gundam model kits, One Piece blind boxes and a Gundam cartoon on the TV",
+    "The SBS corner inside 1395 Commercial Drive",
+    "landscape",
+  ),
+  interiorCorner: photo(
+    "sbs-shop-interior-corner",
+    "Wooden shelves of Gunpla, Evangelion and One Piece collectibles beside white racks of Pokémon model kits",
+    "Gunpla, Evangelion and One Piece on the main shelves",
+    "landscape",
+  ),
+  interiorPortrait: photo(
+    "sbs-shop-interior-portrait",
+    "Full view of the SBS shelves under the Gundam TV, next to the front window",
+    "Shelves by the front window",
+    "portrait",
+  ),
+  gunplaShelf: photo(
+    "sbs-gunpla-anime-collectibles-shelf",
+    "Close-up of Gundam model kits including MGSD Destiny Gundam and Wing Gundam on a wooden shelf",
+    "MGSD Destiny, Wing Gundam and more",
+    "portrait",
+  ),
+  gunplaOnePiece: photo(
+    "sbs-gunpla-one-piece-display",
+    "Gunpla, Naruto and One Piece Hidden Dissectibles displayed on wooden shelves with price tags",
+    "Gunpla, Naruto and One Piece Hidden Dissectibles",
+    "landscape",
+  ),
+  figures: photo(
+    "sbs-dragon-ball-miku-figures",
+    "Dragon Ball Broly and Hatsune Miku prize figures above Pokémon model kits on white racks",
+    "Prize figures and Pokémon model kits",
+    "portrait",
+  ),
+  pokemonKits: photo(
+    "sbs-pokemon-star-wars-model-kits",
+    "Bandai Pokémon model kits including Lugia and Rayquaza, with Star Wars Death Star and Star Destroyer kits below",
+    "Pokémon and Star Wars model kits",
+    "portrait",
+  ),
+  storefrontSign: photo(
+    "sbs-hobby-shop-sign-storefront",
+    "Secret Builders Society Hobby Shop sandwich board in front of the Unity Tattoo storefront",
+    "Hobby Shop sign outside 1395 Commercial Drive",
+    "landscape",
+  ),
+  frontEntrance: photo(
+    "sbs-hobby-shop-front-entrance",
+    "Front entrance at 1395 Commercial Drive with the Secret Builders Society Hobby Shop sign by the door",
+    "Front door at 1395 Commercial Drive",
+    "landscape",
+  ),
+  sidewalkSign: photo(
+    "sbs-hobby-shop-sidewalk-sign",
+    "Secret Builders Society Hobby Shop sidewalk sign on Commercial Drive",
+    "Look for this sign on the sidewalk",
+    "portrait",
+  ),
+} satisfies Record<string, StorePhoto>;
+
+/** Inside-the-shop gallery order (About page). Order matters for the bento layout. */
+export const STORE_GALLERY: StorePhoto[] = [
+  STORE_PHOTOS.interiorWide,
+  STORE_PHOTOS.gunplaShelf,
+  STORE_PHOTOS.figures,
+  STORE_PHOTOS.pokemonKits,
+  STORE_PHOTOS.gunplaOnePiece,
+  STORE_PHOTOS.interiorPortrait,
+  STORE_PHOTOS.frontEntrance,
+  STORE_PHOTOS.interiorCorner,
+];
 
 export const MAPS_EMBED_SRC =
   "https://www.google.com/maps?q=1395+Commercial+Drive,+Vancouver,+BC&output=embed";

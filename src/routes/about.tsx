@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { StoreGallery } from "@/components/store/StoreGallery";
 import {
   STORE,
-  STORE_IMAGE,
-  STORE_IMAGE_CAPTION,
+  STORE_GALLERY,
+  STORE_PHOTOS,
   UNITY_TATTOO_LOGO,
   UNITY_TATTOO_URL,
 } from "@/config/store";
@@ -72,14 +73,14 @@ function AboutPage() {
           <figure className="m-0">
             <div className="aspect-[4/3] w-full overflow-hidden bg-bone">
               <img
-                src={STORE_IMAGE}
-                alt="Shared tattoo studio and collector toy store interior with Gundam model kits"
+                src={STORE_PHOTOS.storefrontSign.src}
+                alt={STORE_PHOTOS.storefrontSign.alt}
                 loading="lazy"
                 className="h-full w-full object-cover"
               />
             </div>
             <figcaption className="micro-sm mt-3 text-muted-foreground">
-              Concept visualization. {STORE_IMAGE_CAPTION}
+              {STORE_PHOTOS.storefrontSign.caption}
             </figcaption>
           </figure>
           <div>
@@ -104,9 +105,7 @@ function AboutPage() {
                 loading="lazy"
                 className="h-10 w-auto lg:h-12"
               />
-              <span className="micro-sm text-muted-foreground">
-                Our neighbours in the space →
-              </span>
+              <span className="micro-sm text-muted-foreground">Our neighbours in the space →</span>
             </a>
             <dl className="mt-8 grid gap-6 sm:grid-cols-2">
               <div>
@@ -130,7 +129,28 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* 03 — principles */}
+      {/* 03 — inside the shop gallery */}
+      <section id="gallery" className="section-y scroll-mt-24 border-b border-border bg-white">
+        <div className="container-sbs">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <SBSBuildRail index="03" label="Inside the Shop" />
+              <h2 className="mt-5 font-display text-[32px] leading-[1.06] lg:text-[42px]">
+                Take a look around.
+              </h2>
+            </div>
+            <p className="max-w-md text-[16px] leading-relaxed text-muted-foreground">
+              Gunpla, prize figures, blind boxes and Pokémon kits — this is what is on the shelves
+              right now. Tap any photo to see it full size.
+            </p>
+          </div>
+          <div className="mt-10">
+            <StoreGallery photos={STORE_GALLERY} />
+          </div>
+        </div>
+      </section>
+
+      {/* 04 — principles */}
       <section className="section-y border-b border-border bg-bone">
         <div className="container-sbs">
           <h2 className="font-display text-[32px] lg:text-[38px]">How we work</h2>
@@ -146,7 +166,7 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* 04 — CTA */}
+      {/* 05 — CTA */}
       <section className="bg-white py-14 lg:py-16">
         <div className="container-sbs flex flex-wrap items-center justify-between gap-6">
           <h2 className="font-display text-[28px] lg:text-[34px]">Come see the shelves.</h2>

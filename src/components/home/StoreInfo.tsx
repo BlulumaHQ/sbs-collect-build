@@ -1,24 +1,14 @@
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { STORE, STORE_IMAGE, STORE_IMAGE_CAPTION, UNITY_TATTOO_URL } from "@/config/store";
+import { STORE, STORE_GALLERY, STORE_PHOTOS, UNITY_TATTOO_URL } from "@/config/store";
+import { StoreLightbox } from "@/components/store/StoreLightbox";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 
 export function StoreInfo() {
   return (
     <section className="section-y border-b border-border bg-white">
       <div className="container-sbs grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-        <figure className="m-0">
-          <div className="aspect-[4/3] w-full overflow-hidden bg-bone">
-            <img
-              src={STORE_IMAGE}
-              alt="Shared tattoo studio and collector toy store interior with model kit shelves"
-              loading="lazy"
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <figcaption className="micro-sm mt-3 text-muted-foreground">
-            {STORE_IMAGE_CAPTION}
-          </figcaption>
-        </figure>
+        <StoreMosaic />
 
         <div>
           <SBSBuildRail index="09" label="Our Space" />
@@ -80,5 +70,59 @@ export function StoreInfo() {
         </div>
       </div>
     </section>
+  );
+}
+
+/** Homepage photo mosaic: one wide shot + three thumbnails, all open the lightbox. */
+const MOSAIC = [
+  STORE_PHOTOS.interiorWide,
+  STORE_PHOTOS.storefrontSign,
+  STORE_PHOTOS.pokemonKits,
+  STORE_PHOTOS.figures,
+];
+
+function StoreMosaic() {
+  const [open, setOpen] = useState<number | null>(null);
+  // Lightbox walks the mosaic first, then the rest of the gallery.
+  const photos = [...MOSAIC, ...STORE_GALLERY.filter((p) => !MOSAIC.includes(p))];
+  const extra = photos.length - MOSAIC.length;
+
+  return (
+    <figure className="m-0">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        {MOSAIC.map((p, i) => {
+          const isLead = i === 0;
+          const isLast = i === MOSAIC.length - 1;
+          return (
+            <button
+              key={p.src}
+              type="button"
+              onClick={() => setOpen(i)}
+              className={`group relative block overflow-hidden bg-bone ${
+                isLead ? "col-span-3 aspect-[16/9]" : "aspect-square"
+              }`}
+              aria-label={`Open photo: ${p.caption}`}
+            >
+              <img
+                src={isLead ? p.src : p.srcSm}
+                alt={p.alt}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+              />
+              {isLast && extra > 0 ? (
+                <span className="micro-sm absolute inset-0 flex items-center justify-center bg-black/55 text-white transition-colors group-hover:bg-black/65">
+                  +{extra} photos
+                </span>
+              ) : null}
+            </button>
+          );
+        })}
+      </div>
+      <figcaption className="micro-sm mt-3 text-muted-foreground">
+        Inside Secret Builders Society, 1395 Commercial Drive.
+      </figcaption>
+      <StoreLightbox photos={photos} index={open} onIndexChange={setOpen} />
+    </figure>
   );
 }

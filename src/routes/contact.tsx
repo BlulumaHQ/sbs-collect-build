@@ -7,6 +7,7 @@ import {
   MAPS_DIRECTIONS_URL,
   MAPS_EMBED_SRC,
   STORE,
+  STORE_PHOTOS,
   UNITY_TATTOO_INTERIOR_PHOTO,
   UNITY_TATTOO_STOREFRONT_PHOTO,
   UNITY_TATTOO_URL,
@@ -223,7 +224,30 @@ function ContactPage() {
       <section className="border-b border-border bg-white">
         <div className="container-sbs py-12 lg:py-16">
           <h2 className="font-display text-[28px] lg:text-[34px]">Find the store</h2>
-          <div className="mt-6 h-[360px] w-full overflow-hidden border border-border lg:h-[470px]">
+          <p className="mt-3 max-w-2xl text-[16px] leading-relaxed text-muted-foreground">
+            We are inside 1395 Commercial Drive, through the Unity Tattoo door. Look for the{" "}
+            <strong className="font-semibold text-foreground">Hobby Shop</strong> sign on the
+            sidewalk.
+          </p>
+          <div className="mt-6 grid gap-3 sm:grid-cols-[2fr_1fr]">
+            {[STORE_PHOTOS.frontEntrance, STORE_PHOTOS.sidewalkSign].map((p) => (
+              <figure key={p.src} className="m-0">
+                <div className="h-[240px] w-full overflow-hidden border border-border bg-bone sm:h-[320px] lg:h-[380px]">
+                  <img
+                    src={p.srcSm}
+                    srcSet={`${p.srcSm} 800w, ${p.src} 1600w`}
+                    sizes="(min-width: 640px) 66vw, 100vw"
+                    alt={p.alt}
+                    loading="lazy"
+                    decoding="async"
+                    className={`h-full w-full object-cover ${p.orientation === "portrait" ? "object-[center_20%]" : ""}`}
+                  />
+                </div>
+                <figcaption className="micro-sm mt-2 text-muted-foreground">{p.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+          <div className="mt-8 h-[360px] w-full overflow-hidden border border-border lg:h-[470px]">
             <iframe
               title="Map showing 1395 Commercial Drive, Vancouver, BC"
               src={MAPS_EMBED_SRC}
