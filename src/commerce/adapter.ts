@@ -157,13 +157,16 @@ export function getNewArrivals(limit = 8): CommerceProduct[] {
 }
 
 /**
- * Home page "Featured Picks": products tagged `featured` in Shopify, in stock first.
- * When nothing is tagged yet, falls back to the newest in-stock products.
+ * Home page "Featured Picks": always `limit` products (default 8).
+ * Products tagged `featured` in Shopify come first (in stock before sold out);
+ * remaining slots are filled with the newest in-stock products.
  */
 export function getFeaturedProducts(limit = 8): CommerceProduct[] {
-  const tagged = products.filter((p) => p.featured);
-  const pool = tagged.length > 0 ? tagged : products.filter((p) => p.status !== "sold-out");
-  return [...pool].sort((a, b) => Number(a.status === "sold-out") - Number(b.status === "sold-out")).slice(0, limit);
+  const soldOutLast = (a: CommerceProduct, b: CommerceProduct) =>
+    Number(a.status === "sold-out") - Number(b.status === "sold-out");
+  const tagged = products.filter((p) => p.featured).sort(soldOutLast);
+  const fill = products.filter((p) => !p.featured && p.status !== "sold-out");
+  return [...tagged, ...fill].slice(0, limit);
 }
 
 export function getAllProducts(): CommerceProduct[] {
