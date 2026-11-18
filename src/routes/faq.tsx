@@ -45,7 +45,7 @@ const FAQS = [
   },
   {
     q: "How does store pickup work?",
-    a: `Choose "Pickup" at checkout. Most items ship to us from our warehouse, so please wait for our "Ready for pickup" email (usually within 2–5 business days), then collect your order at ${STORE.addressLine} during store hours.`,
+    a: `Choose "Pickup" at checkout. Most items ship to us from our warehouse, so please wait for our "Ready for pickup" email (usually within 2–4 business days), then collect your order at ${STORE.addressLine} during store hours.`,
   },
   {
     q: "Can I visit the store?",
