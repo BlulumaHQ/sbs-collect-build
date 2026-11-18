@@ -91,7 +91,7 @@ export function CartDrawer() {
             View cart
           </Link>
           <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            Storefront preview — no order is placed. Local pickup only in Vancouver.
+            Storefront preview — no order is placed. Ships across Canada or pick up in Vancouver.
           </p>
         </footer>
       </aside>

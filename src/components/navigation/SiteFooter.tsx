@@ -18,6 +18,7 @@ const EXPLORE_LINKS = [
 
 const CARE_LINKS = [
   { label: "FAQ", to: "/faq" as const },
+  { label: "Shipping", to: "/shipping-information" as const },
   { label: "Pickup Info", to: "/pickup-information" as const },
   { label: "Terms", to: "/terms-and-conditions" as const },
   { label: "Privacy", to: "/privacy-policy" as const },
@@ -294,7 +295,7 @@ export function SiteFooter() {
             </a>
           </p>
           <p className="text-[12px] text-white/35 lg:text-[13px]">
-            All prices in CAD. Local pickup only.
+            All prices in CAD. Ships across Canada.
           </p>
         </div>
       </div>

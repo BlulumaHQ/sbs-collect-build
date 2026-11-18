@@ -21,7 +21,7 @@ export const Route = createFileRoute("/shop/$category")({
     const title = `${name} | Secret Builders Society`;
     const description =
       CATEGORY_COPY[params.category]?.description ??
-      `${name} at Secret Builders Society, Vancouver. Prices in CAD, local pickup only.`;
+      `${name} at Secret Builders Society, Vancouver. Prices in CAD, ships across Canada.`;
     return {
       meta: [
         { title },

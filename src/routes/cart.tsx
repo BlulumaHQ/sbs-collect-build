@@ -141,8 +141,8 @@ function CartPage() {
               )}
               <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
                 {checkoutUrl
-                  ? "Secure checkout on Shopify. Orders are local pickup only from our Vancouver store — we email you when your order is ready."
-                  : "Online checkout isn’t live yet. Orders will be local pickup only from our Vancouver store; no shipping or delivery."}
+                  ? "Secure checkout on Shopify. Ships across Canada (free on CA$300+), or choose store pickup — we email you when your order is ready."
+                  : "Online checkout isn’t live yet. Orders will ship across Canada or be ready for store pickup in Vancouver."}
               </p>
             </aside>
           </div>

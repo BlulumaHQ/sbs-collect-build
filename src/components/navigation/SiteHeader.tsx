@@ -79,10 +79,10 @@ export function SiteHeader() {
 
             <div className="flex shrink-0 items-center gap-5">
               <Link
-                to="/pickup-information"
+                to="/shipping-information"
                 className="hidden text-[13px] text-white/75 hover:text-white md:inline"
               >
-                Local Pickup Only
+                Free Shipping CA$300+
               </Link>
               <span className="hidden text-[13px] text-white/50 lg:inline">
                 {STORE.currencyLabel}

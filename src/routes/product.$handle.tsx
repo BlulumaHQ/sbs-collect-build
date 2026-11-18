@@ -20,7 +20,7 @@ function productSummary(p: CommerceProduct): string {
     .join(", ");
   const kind = p.subcategory ?? p.category;
   const from = p.series ? ` from ${p.series}` : "";
-  return `${p.title}${p.vendor ? ` by ${p.vendor}` : ""}${parts ? ` — ${parts}` : ""}. ${kind}${from}, priced in ${p.currency}. Local pickup in ${STORE.city}, ${STORE.region}.`;
+  return `${p.title}${p.vendor ? ` by ${p.vendor}` : ""}${parts ? ` — ${parts}` : ""}. ${kind}${from}, priced in ${p.currency}. Ships across Canada or pick up in ${STORE.city}.`;
 }
 
 export const Route = createFileRoute("/product/$handle")({
@@ -213,16 +213,18 @@ function ProductDetailPage() {
 
             <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
               <li>
-                Local pickup only at {STORE.addressLine}, {STORE.city}, {STORE.region}. No shipping or
-                delivery.
+                Ships across Canada in 1–5 business days. Free shipping on orders CA$300+.
+              </li>
+              <li>
+                Store pickup at {STORE.addressLine}, {STORE.city} once we email you that your order is ready.
               </li>
               <li>Online ordering isn’t live yet — this cart is a storefront preview.</li>
               {product.status === "preorder" ? (
-                <li>Release dates are estimates. Preorder payment and pickup details are still to be confirmed.</li>
+                <li>Release dates are estimates. Please order preorders separately from in-stock items.</li>
               ) : null}
               <li>
-                <Link to="/pickup-information" className="text-sbs-red hover:underline">
-                  Pickup information
+                <Link to="/shipping-information" className="text-sbs-red hover:underline">
+                  Shipping &amp; pickup
                 </Link>
               </li>
             </ul>

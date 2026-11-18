@@ -47,7 +47,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Collector store on Commercial Drive in Vancouver. Gundam model kits, figures, plush, blind boxes and hobby supplies. Prices in CAD, local pickup only.",
+          "Collector store on Commercial Drive in Vancouver. Gundam model kits, figures, plush, blind boxes and hobby supplies. Prices in CAD, ships across Canada.",
       },
       {
         property: "og:title",

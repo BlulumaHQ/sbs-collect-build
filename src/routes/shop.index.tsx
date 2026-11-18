@@ -13,7 +13,7 @@ export const Route = createFileRoute("/shop/")({
       {
         name: "description",
         content:
-          "Shop figures, model kits, Gunpla, plush, blind boxes, hobby supplies, character goods and apparel at Secret Builders Society in Vancouver. Prices in CAD, local pickup only.",
+          "Shop figures, model kits, Gunpla, plush, blind boxes, hobby supplies, character goods and apparel at Secret Builders Society in Vancouver. Prices in CAD, ships across Canada.",
       },
       { property: "og:title", content: "Shop | Secret Builders Society" },
       {

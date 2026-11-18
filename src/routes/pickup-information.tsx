@@ -3,8 +3,8 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { MAPS_DIRECTIONS_URL, STORE } from "@/config/store";
 
-const TITLE = "Local Pickup in Vancouver | Secret Builders Society";
-const DESCRIPTION = `Secret Builders Society is local pickup only from ${STORE.addressLine}, ${STORE.city}, ${STORE.region}. No shipping or delivery. Prices in CAD.`;
+const TITLE = "Store Pickup in Vancouver | Secret Builders Society";
+const DESCRIPTION = `Pick up your Secret Builders Society order free at ${STORE.addressLine}, ${STORE.city}, ${STORE.region} once we email you that it's ready. We also ship across Canada. Prices in CAD.`;
 
 export const Route = createFileRoute("/pickup-information")({
   head: () => ({
@@ -27,11 +27,15 @@ function PickupPage() {
     <div className="container-sbs py-10 lg:py-14">
       <Breadcrumbs items={[{ label: "Pickup Information" }]} />
       <SBSBuildRail index="01" label="Customer Care" />
-      <h1 className="mt-5 font-display text-4xl md:text-5xl">Local Pickup Information</h1>
+      <h1 className="mt-5 font-display text-4xl md:text-5xl">Store Pickup Information</h1>
       <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
-        Secret Builders Society is a Vancouver shop serving customers in Canada. Orders are{" "}
-        <strong className="text-foreground">local pickup only</strong> from our store — we do not offer
-        shipping or delivery. All prices are in Canadian dollars (CAD).
+        Pickup is free at our Vancouver store. Most items ship to us from our warehouse, so{" "}
+        <strong className="text-foreground">please wait for our “Ready for pickup” email</strong> before you
+        visit. Prefer delivery? We also{" "}
+        <Link to="/shipping-information" className="text-sbs-red hover:underline">
+          ship across Canada
+        </Link>
+        . All prices are in Canadian dollars (CAD).
       </p>
 
       <div className="mt-12 grid gap-10 md:grid-cols-2">
@@ -64,17 +68,17 @@ function PickupPage() {
           </dl>
         </Block>
 
-        <Block title="Online orders">
+        <Block title="How pickup works">
           <p>
-            Online ordering is not live yet — this website is a storefront preview. How pickup orders are
-            placed, confirmed and collected will be confirmed before the online store launches.
+            Choose “Pickup” at checkout. We’ll email you as soon as your order is ready — usually within 2–5
+            business days. Bring your order number and collect it during store hours.
           </p>
         </Block>
 
         <Block title="Preorders">
           <p>
-            Release dates shown on preorder items are estimates and may change. Preorder payment timing and
-            pickup arrangements have not been finalized and will be confirmed before launch.
+            Release dates shown on preorder items are estimates and may change. We’ll email you when your
+            preorder arrives and is ready for pickup.
           </p>
         </Block>
       </div>

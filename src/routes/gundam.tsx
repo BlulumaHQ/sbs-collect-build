@@ -8,7 +8,7 @@ import { CatalogueBrowser } from "@/components/commerce/CatalogueBrowser";
 
 const TITLE = "Gundam Model Kits (Gunpla) in Vancouver | Secret Builders Society";
 const DESCRIPTION =
-  "Browse Gundam model kits at Secret Builders Society on Commercial Drive, Vancouver — filter by grade (EG, HG, RG, MG, PG, SD) and series. Prices in CAD, local pickup only.";
+  "Browse Gundam model kits at Secret Builders Society on Commercial Drive, Vancouver — filter by grade (EG, HG, RG, MG, PG, SD) and series. Prices in CAD, ships across Canada.";
 
 export const Route = createFileRoute("/gundam")({
   validateSearch: validateShopSearch,

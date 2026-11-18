@@ -10,12 +10,12 @@ export const Route = createFileRoute("/faq")({
       {
         name: "description",
         content:
-          "Answers about the Secret Builders Society storefront prototype, preorders, currency, local pickup in Vancouver, store visits and online ordering plans.",
+          "Answers about the Secret Builders Society storefront prototype, preorders, currency, shipping across Canada, store pickup in Vancouver, store visits and online ordering plans.",
       },
       { property: "og:title", content: "FAQ | Secret Builders Society" },
       {
         property: "og:description",
-        content: "Common questions about SBS preorders, local pickup in Vancouver and store visits.",
+        content: "Common questions about SBS preorders, shipping, store pickup in Vancouver and store visits.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -33,19 +33,19 @@ const FAQS = [
   },
   {
     q: "How do preorders work?",
-    a: "Products marked PREORDER represent upcoming products in the current storefront prototype. Release information, when available, is an estimate and may change. Preorder payment timing and pickup arrangements will be confirmed before launch.",
+    a: "Products marked PREORDER represent upcoming products in the current storefront prototype. Release information, when available, is an estimate and may change. If you order preorders and in-stock items together, we ship everything once all preorder items arrive, so we recommend ordering them separately.",
   },
   {
     q: "Can I order online now?",
     a: "Not yet. The current website is a storefront preview and does not take orders or payments. Online ordering will be enabled before the store launches publicly.",
   },
   {
-    q: "Do you ship or deliver orders?",
-    a: `No. Secret Builders Society is local pickup only from ${STORE.addressLine}, ${STORE.city}, ${STORE.region}. We do not offer shipping or delivery, including within Canada or to the US.`,
+    q: "Do you ship?",
+    a: "Yes, we ship across Canada. In-stock orders ship within 1–5 business days, and orders of CA$300 or more get free standard shipping. Shipping costs and options are shown at checkout.",
   },
   {
-    q: "How will pickup work?",
-    a: "Orders will be collected in person at the store during store hours. The details of how pickup orders are confirmed will be published before online ordering launches.",
+    q: "How does store pickup work?",
+    a: `Choose "Pickup" at checkout. Most items ship to us from our warehouse, so please wait for our "Ready for pickup" email (usually within 2–5 business days), then collect your order at ${STORE.addressLine} during store hours.`,
   },
   {
     q: "Can I visit the store?",
@@ -92,8 +92,8 @@ function FaqPage() {
           <Link to="/contact" className="btn-primary-sbs mt-6 w-full">
             Contact us
           </Link>
-          <Link to="/pickup-information" className="btn-ghost-sbs mt-3 w-full">
-            Pickup information
+          <Link to="/shipping-information" className="btn-ghost-sbs mt-3 w-full">
+            Shipping &amp; pickup
           </Link>
         </aside>
       </div>

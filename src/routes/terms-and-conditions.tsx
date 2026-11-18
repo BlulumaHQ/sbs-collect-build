@@ -52,8 +52,8 @@ const SECTIONS = [
     body: "No payments are processed through this prototype. Accepted payment methods and payment capture timing will be confirmed before public launch and shown before checkout.",
   },
   {
-    title: "Pickup only",
-    body: `Secret Builders Society does not offer shipping or delivery. Orders will be local pickup only from ${STORE.addressLine}, ${STORE.city}, ${STORE.region}. Pickup procedures will be confirmed before public launch.`,
+    title: "Shipping and pickup",
+    body: `We ship within Canada, or orders can be picked up at ${STORE.addressLine}, ${STORE.city}, ${STORE.region} after we email you that the order is ready. Processing times, rates and claims are described in our Shipping & Pickup Policy.`,
   },
   {
     title: "Returns and Cancellations",

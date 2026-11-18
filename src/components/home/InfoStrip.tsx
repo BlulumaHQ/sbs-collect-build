@@ -29,12 +29,12 @@ export function InfoStrip() {
 
           <div className="lg:border-l lg:border-border lg:px-8">
             <Store className="text-sbs-red" size={20} aria-hidden="true" />
-            <h2 className="mt-3 font-display text-[17px] leading-tight">Local Pickup Only</h2>
+            <h2 className="mt-3 font-display text-[17px] leading-tight">Ship or Pick Up</h2>
             <p className="mt-1.5 text-[15px] leading-relaxed text-muted-foreground">
-              Pickup in store on Commercial Drive. No shipping or delivery. Prices in CAD.
+              Ships across Canada, free on orders CA$300+. Store pickup once we email you that your order is ready.
             </p>
             <Link
-              to="/pickup-information"
+              to="/shipping-information"
               className="micro-sm mt-2 inline-block text-sbs-red hover:underline"
             >
               Learn more
