@@ -1,6 +1,6 @@
 {
  "shopDomain": "2zzz0q-zy.myshopify.com",
- "generatedAt": "2026-11-20T13:21:29.460Z",
+ "generatedAt": "2026-11-20T14:15:58.803Z",
  "products": [
   {
    "id": "10455198728472",
@@ -5119,7 +5119,8 @@
    "variantId": "53357726171416",
    "image": "https://cdn.shopify.com/s/files/1/1006/2594/0760/files/C814D6B4-8DE4-11EC-A8DC-045D9D80D5CC.png?v=1795177433",
    "images": [
-    "https://cdn.shopify.com/s/files/1/1006/2594/0760/files/C814D6B4-8DE4-11EC-A8DC-045D9D80D5CC.png?v=1795177433"
+    "https://cdn.shopify.com/s/files/1/1006/2594/0760/files/C814D6B4-8DE4-11EC-A8DC-045D9D80D5CC.png?v=1795177433",
+    "https://cdn.shopify.com/s/files/1/1006/2594/0760/files/godhand-kezuru-blade-coarse.jpg?v=1795183958"
    ],
    "estimatedRelease": null,
    "preorderDeadline": null,
@@ -5130,7 +5131,15 @@
     "y": 0.75,
     "rw": 800
    },
-   "hoverFrame": null
+   "hoverFrame": {
+    "m": "b",
+    "bg": "#ffffff",
+    "w": 90.1,
+    "h": 90.1,
+    "l": 5.16,
+    "t": 4.54,
+    "rw": 700
+   }
   },
   {
    "id": "10617599918360",
