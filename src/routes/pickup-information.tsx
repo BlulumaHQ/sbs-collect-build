@@ -68,10 +68,14 @@ function PickupPage() {
           </dl>
         </Block>
 
+        <Block title="Visiting the store">
+          <p>{STORE.walkIn}</p>
+        </Block>
+
         <Block title="How pickup works">
           <p>
-            Choose “Pickup” at checkout. We’ll email you as soon as your order is ready — usually
-            within 2–5 business days. Bring your order number and collect it during store hours.
+            Choose “Pickup” at checkout. {STORE.pickupLeadTime} Bring your order number and collect it during
+            store hours.
           </p>
         </Block>
 

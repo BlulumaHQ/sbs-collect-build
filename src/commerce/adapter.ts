@@ -31,6 +31,9 @@ export function slugify(value: string): string {
  * Shopify cart permalink for checkout (https://shop/cart/variant:qty,...).
  * Returns null while the catalogue is empty or an item has no variant id.
  */
+/** Shopify customer accounts (order history, tracking) — passwordless sign-in. */
+export const CUSTOMER_ACCOUNT_URL = "https://shopify.com/100625940760/account";
+
 export function getCheckoutUrl(
   items: { variantId?: string | undefined; quantity: number }[],
 ): string | null {

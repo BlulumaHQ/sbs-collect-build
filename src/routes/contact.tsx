@@ -60,6 +60,9 @@ function ContactPage() {
       return;
     }
     setError(null);
+    // No form backend yet: hand the message to the customer's own email app, addressed to the store.
+    const body = `${form.message}\n\n— ${form.name} (${form.email})`;
+    window.location.href = `mailto:${STORE.email}?subject=${encodeURIComponent(form.subject)}&body=${encodeURIComponent(body)}`;
     setSent(true);
   };
 
@@ -142,7 +145,12 @@ function ContactPage() {
 
             {sent ? (
               <p className="mt-8 border border-sbs-red/30 bg-sbs-red/5 p-5 text-[16px] leading-relaxed">
-                Thank you. Your message has been received in this prototype.
+                Your email app should now open with your message to {STORE.email} — press Send there to
+                reach us. If nothing opened, email us directly at{" "}
+                <a href={`mailto:${STORE.email}`} className="text-sbs-red underline">
+                  {STORE.email}
+                </a>
+                .
               </p>
             ) : (
               <form onSubmit={submit} noValidate className="mt-7 space-y-5">

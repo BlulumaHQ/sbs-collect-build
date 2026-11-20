@@ -325,10 +325,9 @@ function ProductDetailPage() {
                 Free shipping on orders CA$300+.
               </li>
               <li>
-                Store pickup at {STORE.addressLine}, {STORE.city} once we email you that your order
-                is ready.
+                Store pickup at {STORE.addressLine}, {STORE.city} — usually ready the following Fri–Sun;
+                we email you when it’s ready.
               </li>
-              <li>Online ordering isn’t live yet — this cart is a storefront preview.</li>
               {product.status === "preorder" ? (
                 <li>
                   Release dates are estimates. Please order preorders separately from in-stock

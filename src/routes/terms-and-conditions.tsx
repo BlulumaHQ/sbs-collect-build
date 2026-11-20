@@ -10,12 +10,12 @@ export const Route = createFileRoute("/terms-and-conditions")({
       {
         name: "description",
         content:
-          "Draft terms covering site use, product information, orders and preorders for the Secret Builders Society storefront prototype.",
+          "Terms for orders from Secret Builders Society, Vancouver: pricing in CAD, payment, preorders, shipping, pickup and damaged items.",
       },
       { property: "og:title", content: "Terms & Conditions | Secret Builders Society" },
       {
         property: "og:description",
-        content: "Draft terms for the Secret Builders Society storefront prototype.",
+        content: "Terms for orders from Secret Builders Society, Vancouver.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -28,52 +28,52 @@ export const Route = createFileRoute("/terms-and-conditions")({
 
 const SECTIONS = [
   {
-    title: "Website Use",
-    body: "This website is currently a storefront prototype for design review. Browsing the site does not create an order, contract or reservation of any product.",
+    title: "About these terms",
+    body: `These terms apply to purchases from Secret Builders Society, ${STORE.addressLine}, ${STORE.city}, ${STORE.region}, through this website. By placing an order you agree to them.`,
   },
   {
-    title: "Product Information",
-    body: "Product names, images, descriptions and specifications shown on this website are provided for reference; packaging and contents may vary slightly from the photos.",
+    title: "Product information",
+    body: "We sell officially licensed products from established manufacturers and distributors. Photos are supplied by the manufacturer or distributor; packaging and colours can vary slightly from the images.",
   },
   {
-    title: "Pricing and Availability",
-    body: `Prices shown are indicative and displayed in ${STORE.currency}. Final pricing, taxes and availability will be confirmed at checkout when the live store launches.`,
+    title: "Pricing and availability",
+    body: `All prices are in ${STORE.currency}. GST and PST are calculated at checkout. Stock is limited and can sell out between your visit and checkout; if an item you paid for turns out to be unavailable, we refund it in full.`,
   },
   {
-    title: "Orders",
-    body: "Online ordering is not yet enabled. Order handling, confirmation and cancellation rules will be confirmed before public launch and shown before checkout.",
+    title: "Orders and payment",
+    body: "Checkout and payment are handled securely by Shopify. Your order is confirmed when you receive our order confirmation email. We may cancel and fully refund an order if a product is unavailable or a pricing error occurs.",
   },
   {
     title: "Preorders",
-    body: "Preorder release information is an estimate and may change. Preorder terms, including any cancellation rights, will be confirmed before public launch.",
-  },
-  {
-    title: "Payment",
-    body: "No payments are processed through this prototype. Accepted payment methods and payment capture timing will be confirmed before public launch and shown before checkout.",
+    body: "Preorders are paid when you order. Release dates are estimates set by the manufacturer and may change. If a release is cancelled you receive a full refund. Orders that mix preorder and in-stock items ship together once everything has arrived.",
   },
   {
     title: "Shipping and pickup",
-    body: `We ship within Canada, or orders can be picked up at ${STORE.addressLine}, ${STORE.city}, ${STORE.region} after we email you that the order is ready. Processing times, rates and claims are described in our Shipping & Pickup Policy.`,
+    body: `We ship within Canada, or you can pick up at ${STORE.addressLine}, ${STORE.city}. ${STORE.pickupLeadTime} Processing times, rates and claims are described in our Shipping Information.`,
   },
   {
-    title: "Returns and Cancellations",
-    body: "Return, exchange and cancellation policies have not been finalized. The applicable policy will be confirmed before public launch and shown before checkout.",
+    title: "Damaged, wrong or missing items",
+    body: "If your order arrives damaged, defective or incorrect, contact us within 30 days of delivery with photos of the box, inner packaging and product, and keep all packaging. We will replace the item or refund it. Report a lost package within 7 days of the last tracking update.",
   },
   {
-    title: "Intellectual Property",
-    body: "All product names, characters and logos remain the property of their respective rights holders. Site design and copy are the property of Secret Builders Society.",
+    title: "Other returns",
+    body: `For any other return or exchange request, contact us at ${STORE.email} before sending anything back and we will let you know your options.`,
   },
   {
-    title: "Limitation of Liability",
-    body: "This site is provided on an as-is basis for review purposes. To the extent permitted by law, Secret Builders Society is not liable for indirect or consequential loss arising from use of this site.",
+    title: "Intellectual property",
+    body: "All product names, characters and logos belong to their respective rights holders. Site design and copy belong to Secret Builders Society.",
   },
   {
-    title: "Changes to These Terms",
-    body: "These terms are a draft and will be reviewed, updated and approved before the store launches publicly.",
+    title: "Limitation of liability",
+    body: "To the extent permitted by law, Secret Builders Society is not liable for indirect or consequential loss arising from use of this site. Nothing in these terms limits your rights under British Columbia consumer protection law.",
+  },
+  {
+    title: "Changes to these terms",
+    body: "We may update these terms from time to time. The version shown on this page when you place your order applies to that order.",
   },
   {
     title: "Contact",
-    body: `Questions about these terms can be sent to ${STORE.email} or called in to ${STORE.phone}.`,
+    body: `Questions about these terms: ${STORE.email} or ${STORE.phone}.`,
   },
 ];
 
@@ -83,10 +83,7 @@ function TermsPage() {
       <Breadcrumbs items={[{ label: "Terms & Conditions" }]} />
       <SBSBuildRail index="01" label="Legal" />
       <h1 className="mt-5 font-display text-4xl md:text-5xl">Terms & Conditions</h1>
-      <p className="mt-4 max-w-3xl border-l-2 border-sbs-red pl-4 text-sm leading-relaxed text-muted-foreground">
-        Draft policy content for design review. Final store terms must be approved before public
-        launch.
-      </p>
+      <p className="mt-4 text-sm text-muted-foreground">Last updated November 20, 2026</p>
 
       <div className="mt-12 max-w-3xl border-t border-border">
         {SECTIONS.map((section) => (

@@ -69,11 +69,6 @@ function CollectionsPage() {
               </Link>
             ))}
           </div>
-
-          <p className="micro-sm mt-8 text-muted-foreground">
-            Collection artwork is prototype key art — official franchise artwork will replace it
-            once licensing is confirmed.
-          </p>
         </div>
       </section>
     </>

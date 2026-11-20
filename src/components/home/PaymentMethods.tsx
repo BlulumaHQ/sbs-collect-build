@@ -2,7 +2,6 @@ const METHODS = [
   { src: "/images/payments/apple-pay.svg", label: "Apple Pay" },
   { src: "/images/payments/visa.svg", label: "Visa" },
   { src: "/images/payments/mastercard.svg", label: "Mastercard" },
-  { src: "/images/payments/paypal.svg", label: "PayPal" },
 ];
 
 export function PaymentMethods({ tone = "light" }: { tone?: "light" | "dark" }) {
@@ -15,7 +14,7 @@ export function PaymentMethods({ tone = "light" }: { tone?: "light" | "dark" }) 
     >
       <div>
         <p className={`micro-sm ${dark ? "text-white/60" : "text-muted-foreground"}`}>
-          Planned payment options
+          Secure checkout
         </p>
         <div className="mt-2 flex flex-wrap items-center gap-2 lg:mt-3 lg:gap-3">
           {METHODS.map((m) => (
@@ -32,8 +31,8 @@ export function PaymentMethods({ tone = "light" }: { tone?: "light" | "dark" }) 
         </div>
       </div>
       <p className="hidden max-w-md text-xs leading-relaxed md:block">
-        Payment methods shown for storefront design preview. Final availability will be determined
-        by Shopify checkout configuration.
+        Payments are processed securely by Shopify. We accept major credit cards, Shop Pay,
+        Apple Pay and Google Pay. Prices in CAD.
       </p>
     </div>
   );

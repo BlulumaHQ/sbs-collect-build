@@ -26,7 +26,7 @@ function NotFoundComponent() {
         <p className="micro text-sbs-red">404</p>
         <h1 className="mt-4 font-display text-4xl">Page not found</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          This page does not exist in the Secret Builders Society prototype.
+          This page doesn’t exist or may have moved.
         </p>
         <Link
           to="/shop"
