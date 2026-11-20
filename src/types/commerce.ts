@@ -4,7 +4,12 @@ export type BadgeKind = "sale" | "preorder" | "sold-out";
 
 export interface CommerceProduct {
   id: string;
+  /** URL slug used on this site (readable, from the title for supplier-coded Shopify handles). */
   handle: string;
+  /** The Shopify handle, when it differs from `handle` — old links redirect to the readable one. */
+  shopifyHandle?: string | undefined;
+  /** Imported from the Plamod supplier feed (not the shop's own listings). */
+  supplierFeed?: boolean | undefined;
   title: string;
   vendor: string;
   category: string;

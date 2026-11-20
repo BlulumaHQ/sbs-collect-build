@@ -12,6 +12,8 @@ export const STORE = {
   phone: "778-928-6412",
   phoneHref: "tel:7789286412",
   email: "info@secretbuilderssociety.ca",
+  /** Public site address — used for absolute share-image and og:url links. */
+  siteUrl: "https://secretbuilderssociety.ca",
   currency: "CAD",
   /** Shopify store used for checkout permalinks. */
   shopifyDomain: "2zzz0q-zy.myshopify.com",

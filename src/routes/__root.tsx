@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { STORE } from "@/config/store";
 import {
   Outlet,
   Link,
@@ -84,9 +85,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Secret Builders Society | Figures, Model Kits & Collector Goods" },
       { property: "og:site_name", content: "Secret Builders Society" },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "/images/og-image.png" },
+      { property: "og:image", content: `${STORE.siteUrl}/images/og-image.png` },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "/images/og-image.png" },
+      { name: "twitter:image", content: `${STORE.siteUrl}/images/og-image.png` },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

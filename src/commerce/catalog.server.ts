@@ -128,7 +128,45 @@ interface ShopifyCatalog {
 
 const catalog = shopifyCatalog as unknown as ShopifyCatalog;
 
-const products: CommerceProduct[] = catalog.products.map(normalize);
+/** Supplier-coded Shopify handles ("plamod-52t01081", "untitled-nov-15…") get a readable URL from the title. */
+const CODED_HANDLE = /^(plamod-|untitled-)/;
+
+function readableSlug(title: string): string {
+  const slug = title
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  if (slug.length <= 80) return slug;
+  const cut = slug.slice(0, 80);
+  return cut.slice(0, cut.lastIndexOf("-") > 40 ? cut.lastIndexOf("-") : 80);
+}
+
+function withReadableHandles(list: CommerceProduct[]): CommerceProduct[] {
+  const taken = new Set(list.filter((p) => !CODED_HANDLE.test(p.handle)).map((p) => p.handle));
+  return list.map((p) => {
+    if (!CODED_HANDLE.test(p.handle)) return p;
+    const supplierFeed = p.handle.startsWith("plamod-") ? true : undefined;
+    let slug = readableSlug(p.title);
+    // Same title twice (or a title with no Latin letters): add the SKU, which never changes.
+    if (!slug || taken.has(slug)) {
+      const code = readableSlug(p.sku ?? "") || p.handle.replace(CODED_HANDLE, "");
+      slug = slug ? `${slug}-${code}` : code;
+    }
+    if (taken.has(slug)) slug = p.handle;
+    taken.add(slug);
+    return { ...p, handle: slug, shopifyHandle: p.handle, supplierFeed };
+  });
+}
+
+const products: CommerceProduct[] = withReadableHandles(catalog.products.map(normalize));
+const byHandle = new Map<string, CommerceProduct>();
+for (const p of products) {
+  byHandle.set(p.handle, p);
+  if (p.shopifyHandle) byHandle.set(p.shopifyHandle, p);
+}
 
 export function getSaleProducts(): CommerceProduct[] {
   return products.filter((p) => p.compareAtPrice && p.compareAtPrice > p.price);
@@ -163,8 +201,9 @@ export function getAllProducts(): CommerceProduct[] {
   return products;
 }
 
+/** Finds a product by its readable handle or its original Shopify handle. */
 export function getProductByHandle(handle: string): CommerceProduct | undefined {
-  return products.find((p) => p.handle === handle);
+  return byHandle.get(handle);
 }
 
 export function getProductsByIds(ids: string[]): CommerceProduct[] {
@@ -181,7 +220,7 @@ export function getHotProducts(limit = 3): CommerceProduct[] {
   const inStock = products.filter((p) => p.status === "available" || p.status === "last-one");
   const tagged = inStock.filter((p) => p.hot);
   const own = inStock
-    .filter((p) => !p.hot && !p.handle.startsWith("plamod-"))
+    .filter((p) => !p.hot && !p.supplierFeed)
     .sort(
       (a, b) =>
         Number(b.franchise === "Gundam") - Number(a.franchise === "Gundam") || b.price - a.price,

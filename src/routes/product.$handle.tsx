@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { fetchProductPage } from "@/commerce/api";
 import type { CommerceProduct } from "@/types/commerce";
 import {
@@ -97,6 +97,10 @@ export const Route = createFileRoute("/product/$handle")({
   loader: async ({ params }) => {
     const data = await fetchProductPage({ data: params.handle });
     if (!data) throw notFound();
+    // Old Shopify-coded URL (e.g. /product/plamod-52t01081) → readable one, permanently.
+    if (data.product.handle !== params.handle) {
+      throw redirect({ to: "/product/$handle", params: { handle: data.product.handle }, statusCode: 301 });
+    }
     return data;
   },
   head: ({ loaderData, params }) => {
@@ -118,9 +122,11 @@ export const Route = createFileRoute("/product/$handle")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "product" },
-        { property: "og:url", content: `/product/${params.handle}` },
+        { property: "og:url", content: `${STORE.siteUrl}/product/${product.handle}` },
+        { property: "og:image", content: product.image },
+        { name: "twitter:image", content: product.image },
       ],
-      links: [{ rel: "canonical", href: `/product/${params.handle}` }],
+      links: [{ rel: "canonical", href: `/product/${product.handle}` }],
     };
   },
   notFoundComponent: ProductNotFound,
