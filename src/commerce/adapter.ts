@@ -80,7 +80,8 @@ function normalize(p: RawProduct): CommerceProduct {
     gundamSeries: deriveGundamSeries({ gundamSeries: p.gundamSeries, title: p.title, isGundam }),
     newArrival: p.newArrival === true ? true : undefined,
     featured: p.featured === true ? true : undefined,
-    series: clean(p.series),
+    // Supplier placeholders like "No Series" are not real series.
+    series: /^(no series|none|n\/a|others?)$/i.test(clean(p.series) ?? "") ? undefined : clean(p.series),
     character: clean(p.character),
     status: p.status as ProductStatus,
     price: p.price,
