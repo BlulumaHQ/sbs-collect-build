@@ -1,25 +1,52 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 
-
+/**
+ * Hero slides. Images are textless product shots — all words and buttons are
+ * code, so they stay sharp, readable on mobile and editable here.
+ *   imageStyle "fade": photo on the slide colour, edges faded into it
+ *   imageStyle "card": photo on a white card (for white-background shots)
+ */
 interface Slide {
   image: string;
   alt: string;
   tone: "dark" | "light";
   background: string;
+  imageStyle: "fade" | "card";
+  eyebrow: string;
+  kicker?: string;
+  title: string;
+  subtitle?: string;
+  details?: string[];
+  cta: { label: string; to: "/preorders" | "/shop" | "/gundam" };
 }
 
 const SLIDES: Slide[] = [
   {
-    image: "/images/uploads/20261114-levi-ackerman-preorder-spotlight-12.webp",
-    alt: "Levi Ackerman preorder spotlight",
-    tone: "dark",
-    background: "#0b0b0c",
+    image: "/images/hero/levi-ackerman-hiya.webp",
+    alt: "Hiya Toys Exquisite Basic Levi Ackerman 1/12 figure",
+    tone: "light",
+    background: "#ece7e6",
+    imageStyle: "fade",
+    eyebrow: "Pre-order",
+    kicker: "Hiya Toys / Exquisite Basic Series",
+    title: "Levi Ackerman",
+    subtitle: "Attack on Titan",
+    details: ["1/12 Scale · 5.7 in / 14.5 cm", "Pre-order deadline Dec 10"],
+    cta: { label: "Shop pre-orders", to: "/preorders" },
   },
   {
-    image: "/images/uploads/20261114-sbs_godzilla_hero_02_dark_1900x675.png",
-    alt: "Godzilla hero",
+    image: "/images/hero/godzilla-minus-one-petitrama.webp",
+    alt: "MegaHouse Petitrama DX Godzilla Minus One repaint version diorama",
     tone: "dark",
-    background: "#0b0b0c",
+    background: "#172026",
+    imageStyle: "card",
+    eyebrow: "Pre-order / Featured release",
+    kicker: "MegaHouse / Petitrama DX",
+    title: "Godzilla -1.0",
+    subtitle: "Repaint Version",
+    details: ["14.5 cm · Not released yet", "Pre-order deadline Dec 10"],
+    cta: { label: "Shop pre-orders", to: "/preorders" },
   },
 ];
 
@@ -90,16 +117,99 @@ export function HeroCarousel() {
               }`}
               style={{ backgroundColor: slide.background }}
             >
-              <img
-                src={slide.image}
-                alt={slide.alt}
-                loading={i === 0 ? "eager" : "lazy"}
-                width={1920}
-                height={1080}
-                className={`absolute inset-0 h-full w-full object-cover object-top transition-transform duration-[7000ms] ease-out ${
-                  active ? "scale-[1.04]" : "scale-100"
-                }`}
-              />
+              <div className="container-sbs grid h-full grid-rows-[1fr_auto] items-center gap-4 py-6 lg:grid-cols-[1fr_1.15fr] lg:grid-rows-1 lg:gap-12 lg:py-0">
+                {/* image — first on mobile, right on desktop */}
+                <div className="relative h-full min-h-0 lg:order-2 lg:h-[82%]">
+                  <div
+                    className={`absolute inset-0 overflow-hidden ${
+                      slide.imageStyle === "card" ? "bg-white" : ""
+                    }`}
+                  >
+                    <img
+                      src={slide.image}
+                      alt={slide.alt}
+                      loading={i === 0 ? "eager" : "lazy"}
+                      className={`h-full w-full object-contain transition-transform duration-[7000ms] ease-out ${
+                        slide.imageStyle === "card" ? "p-4 lg:p-8" : ""
+                      } ${active ? "scale-[1.04]" : "scale-100"}`}
+                      style={
+                        slide.imageStyle === "fade"
+                          ? {
+                              maskImage:
+                                "radial-gradient(ellipse 70% 75% at 50% 50%, #000 60%, transparent 100%)",
+                              WebkitMaskImage:
+                                "radial-gradient(ellipse 70% 75% at 50% 50%, #000 60%, transparent 100%)",
+                            }
+                          : undefined
+                      }
+                    />
+                  </div>
+                </div>
+
+                {/* copy */}
+                <div
+                  className={`pb-16 lg:order-1 lg:pb-0 ${
+                    slide.tone === "dark" ? "text-white" : "text-charcoal"
+                  }`}
+                >
+                  <p
+                    className={`micro inline-block border px-3 py-1.5 ${
+                      slide.tone === "dark" ? "border-white/40" : "border-charcoal/40"
+                    }`}
+                  >
+                    {slide.eyebrow}
+                  </p>
+                  {slide.kicker ? (
+                    <p
+                      className={`micro mt-4 hidden sm:block ${
+                        slide.tone === "dark" ? "text-white/70" : "text-charcoal/70"
+                      }`}
+                    >
+                      {slide.kicker}
+                    </p>
+                  ) : null}
+                  {i === 0 ? (
+                    <h2 className="mt-3 font-display text-[34px] uppercase leading-[0.95] sm:text-5xl lg:text-[64px]">
+                      {slide.title}
+                    </h2>
+                  ) : (
+                    <p className="mt-3 font-display text-[34px] uppercase leading-[0.95] sm:text-5xl lg:text-[64px]">
+                      {slide.title}
+                    </p>
+                  )}
+                  {slide.subtitle ? (
+                    <p
+                      className={`mt-2 text-base italic lg:text-xl ${
+                        slide.tone === "dark" ? "text-white/80" : "text-charcoal/75"
+                      }`}
+                    >
+                      {slide.subtitle}
+                    </p>
+                  ) : null}
+                  {slide.details?.length ? (
+                    <ul
+                      className={`mt-4 hidden space-y-1 text-sm sm:block ${
+                        slide.tone === "dark" ? "text-white/75" : "text-charcoal/75"
+                      }`}
+                    >
+                      {slide.details.map((d) => (
+                        <li key={d}>{d}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  <Link
+                    to={slide.cta.to}
+                    tabIndex={active ? 0 : -1}
+                    className={`micro mt-5 inline-flex items-center gap-3 px-6 py-3.5 transition-colors duration-200 lg:mt-7 ${
+                      slide.tone === "dark"
+                        ? "bg-white text-charcoal hover:bg-sbs-red hover:text-white"
+                        : "bg-charcoal text-white hover:bg-sbs-red"
+                    }`}
+                  >
+                    {slide.cta.label} <span aria-hidden="true">→</span>
+                  </Link>
+                </div>
+              </div>
             </div>
           );
         })}
