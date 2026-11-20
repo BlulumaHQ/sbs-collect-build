@@ -111,12 +111,11 @@ export function mapProduct(node, shopName = "", previous = new Map()) {
     createdAt: node.createdAt ?? null,
     // Plain-text product description from Shopify (trimmed to keep the snapshot lean)
     description: (node.description ?? "").replace(/\s+\n/g, "\n").trim().slice(0, 2000) || null,
-    status:
-      tags.some((t) => t.toLowerCase() === "preorder") || /not-released/.test(node.handle)
-        ? "preorder"
-        : available
-          ? "available"
-          : "sold-out",
+    status: tags.some((t) => t.toLowerCase() === "preorder")
+      ? "preorder"
+      : available
+        ? "available"
+        : "sold-out",
     price,
     currency: variant.price?.currencyCode ?? "CAD",
     compareAtPrice: compareAt && compareAt > price ? compareAt : null,

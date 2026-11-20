@@ -35,15 +35,6 @@ export function GuideLayout({
       <p className="micro mt-5 text-muted-foreground">
         {guide.level} · {guide.readingMinutes} min read
       </p>
-      <figure className="mt-8 overflow-hidden bg-bone">
-        <img
-          src={guide.image}
-          alt={guide.imageAlt}
-          width={1448}
-          height={1086}
-          className="aspect-[16/9] w-full object-cover object-center"
-        />
-      </figure>
 
       <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_280px] lg:gap-16">
         <div>
