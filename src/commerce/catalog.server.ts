@@ -195,6 +195,15 @@ for (const p of products) {
   if (p.shopifyHandle) byHandle.set(p.shopifyHandle, p);
 }
 
+/** Old product URLs renamed in Shopify: old handle → current handle (the product page 301s to it). */
+const RENAMED_HANDLES: Record<string, string> = {
+  "gundam-assemble-paint-pack-01-pa01-not-released-yet": "gundam-assemble-paint-pack-01-pa01",
+};
+for (const [oldHandle, current] of Object.entries(RENAMED_HANDLES)) {
+  const p = byHandle.get(current);
+  if (p && !byHandle.has(oldHandle)) byHandle.set(oldHandle, p);
+}
+
 export function getSaleProducts(): CommerceProduct[] {
   return products.filter((p) => p.compareAtPrice && p.compareAtPrice > p.price);
 }
