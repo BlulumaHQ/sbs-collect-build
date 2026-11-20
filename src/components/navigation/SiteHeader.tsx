@@ -35,10 +35,22 @@ export function SiteHeader() {
     if (mobileSearch) mobileSearchRef.current?.focus();
   }, [mobileSearch]);
   useEffect(() => {
-    const onScroll = () => setCompact(window.scrollY > 140);
+    // Hysteresis: shrinking the header moves the page up ~90px, so a single threshold
+    // made it flip back and forth (flicker). Enter compact late, leave it only near the top.
+    let frame = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const y = window.scrollY;
+        setCompact((prev) => (prev ? y > 40 : y > 220));
+      });
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
   const [query, setQuery] = useState("");
   const { count, subtotal, openDrawer } = useCart();
