@@ -51,6 +51,11 @@ export function ProductCard({
             />
           ) : null}
 
+          {product.staffPick ? (
+            <span className="micro-sm absolute right-3 top-3 bg-charcoal px-2 py-1 text-white">
+              Staff Pick
+            </span>
+          ) : null}
           {badge ? (
             <span className="absolute left-0 top-3">
               <ProductStatusBadge badge={badge} />

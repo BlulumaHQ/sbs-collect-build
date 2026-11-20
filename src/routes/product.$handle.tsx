@@ -236,6 +236,15 @@ function ProductDetailPage() {
             </div>
             <p className="micro mt-2 text-muted-foreground">Priced in {STORE.currency}.</p>
 
+            {product.staffPick ? (
+              <figure className="mt-6 border-l-2 border-sbs-red bg-bone px-4 py-3.5">
+                <figcaption className="micro text-sbs-red">Staff Pick</figcaption>
+                <blockquote className="mt-1.5 whitespace-pre-line text-[15px] leading-relaxed text-charcoal">
+                  {product.staffPick}
+                </blockquote>
+              </figure>
+            ) : null}
+
             {product.status === "preorder" ? (
               <div className="mt-6 border border-amber-300 bg-amber-50 px-4 py-3.5 text-sm leading-relaxed text-amber-900">
                 <p className="micro text-amber-800">Pre-order</p>

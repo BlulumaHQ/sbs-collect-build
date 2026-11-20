@@ -36,6 +36,8 @@ export interface CommerceProduct {
   estimatedRelease?: string | undefined;
   /** Last day pre-orders are accepted (YYYY-MM-DD). */
   preorderDeadline?: string | undefined;
+  /** Store manager note (Shopify metafield custom.staff_pick). */
+  staffPick?: string | undefined;
   image: string;
   /** Ordered gallery. Always contains at least `image`. */
   images: string[];

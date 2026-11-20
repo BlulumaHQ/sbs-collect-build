@@ -36,6 +36,7 @@ const QUERY = `query Products($cursor: String) {
       id handle title vendor productType tags availableForSale
       category { name }
       featuredImage { url }
+      staffPick: metafield(namespace: "custom", key: "staff_pick") { value }
       images(first: 10) { nodes { url } }
       variants(first: 1) {
         nodes {
@@ -115,6 +116,8 @@ export function mapProduct(node, shopName = "") {
     // Pre-order details: release:2027-02  preorder-deadline:2026-12-15
     estimatedRelease: tagValue(tags, "release"),
     preorderDeadline: tagValue(tags, "preorder-deadline"),
+    // Store manager note — product metafield custom.staff_pick (Storefront access on)
+    staffPick: node.staffPick?.value?.trim() || null,
   };
 }
 

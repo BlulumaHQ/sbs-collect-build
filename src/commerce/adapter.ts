@@ -36,6 +36,7 @@ interface RawProduct {
   upc?: string | null;
   estimatedRelease?: string | null;
   preorderDeadline?: string | null;
+  staffPick?: string | null;
   compareAtPrice?: number | null;
   image: string;
   images?: string[] | null;
@@ -110,6 +111,7 @@ function normalize(p: RawProduct): CommerceProduct {
     upc: clean(p.upc),
     estimatedRelease: formatRelease(clean(p.estimatedRelease)),
     preorderDeadline: clean(p.preorderDeadline),
+    staffPick: clean(p.staffPick),
     compareAtPrice: p.compareAtPrice ?? undefined,
     image: p.image,
     images: p.images?.length ? p.images : [p.image],
