@@ -11,7 +11,7 @@ export const STORE = {
   country: "Canada",
   phone: "778-928-6412",
   phoneHref: "tel:7789286412",
-  email: "ingo@secretbuilderssociety.ca",
+  email: "info@secretbuilderssociety.ca",
   currency: "CAD",
   currencyLabel: "Canada (CAD $)",
   mapsQuery: "1395 Commercial Drive, Vancouver, BC",
