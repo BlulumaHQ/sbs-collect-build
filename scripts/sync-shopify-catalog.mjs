@@ -34,7 +34,7 @@ const QUERY = `query Products($cursor: String) {
   products(first: 250, after: $cursor) {
     pageInfo { hasNextPage endCursor }
     nodes {
-      id handle title vendor productType tags availableForSale
+      id handle title vendor productType tags availableForSale createdAt
       category { name }
       featuredImage { url }
       staffPick: metafield(namespace: "custom", key: "staff_pick") { value }
@@ -100,6 +100,7 @@ export function mapProduct(node, shopName = "") {
     featured: tags.some((t) => t.toLowerCase() === "featured") || null,
     // Home hero "On Our Shelf" picks
     hot: tags.some((t) => t.toLowerCase() === "hot") || null,
+    createdAt: node.createdAt ?? null,
     status:
       tags.some((t) => t.toLowerCase() === "preorder") || /not-released/.test(node.handle)
         ? "preorder"

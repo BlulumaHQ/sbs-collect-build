@@ -22,6 +22,8 @@ export interface CommerceProduct {
   gundamSeries?: string | undefined;
   /** True only when the source explicitly flags the item as a new arrival. */
   newArrival?: boolean | undefined;
+  /** When the product was created in Shopify (ISO). */
+  createdAt?: string | undefined;
   /** True when tagged `featured` in Shopify (home page Featured Picks). */
   featured?: boolean | undefined;
   status: ProductStatus;

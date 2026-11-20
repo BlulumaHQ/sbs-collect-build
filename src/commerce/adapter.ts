@@ -49,6 +49,7 @@ interface RawProduct {
   scale?: string | null;
   gundamSeries?: string | null;
   newArrival?: boolean | null;
+  createdAt?: string | null;
   /** Shopify tag `featured` — shown in the home page "Featured Picks". */
   featured?: boolean | null;
   frame?: ImageFrame | null;
@@ -83,6 +84,14 @@ function clean(value: string | null | undefined): string | undefined {
   return trimmed ? trimmed : undefined;
 }
 
+/** New arrival window: created in Shopify within 30 days of the catalogue snapshot. */
+const NEW_ARRIVAL_DAYS = 30;
+function isRecent(createdAt: string | null | undefined): boolean {
+  if (!createdAt) return false;
+  const ref = Date.parse(catalog.generatedAt ?? "") || Date.now();
+  return ref - Date.parse(createdAt) <= NEW_ARRIVAL_DAYS * 86_400_000;
+}
+
 function normalize(p: RawProduct): CommerceProduct {
   const subcategory = clean(p.subcategory);
   const isGundam =
@@ -99,7 +108,8 @@ function normalize(p: RawProduct): CommerceProduct {
     grade: deriveGrade({ grade: p.grade, title: p.title, category: p.category, subcategory }),
     scale: deriveScale({ scale: p.scale, title: p.title }),
     gundamSeries: deriveGundamSeries({ gundamSeries: p.gundamSeries, title: p.title, isGundam }),
-    newArrival: p.newArrival === true ? true : undefined,
+    newArrival: p.newArrival === true || isRecent(p.createdAt) ? true : undefined,
+    createdAt: clean(p.createdAt),
     featured: p.featured === true ? true : undefined,
     series: clean(p.series),
     character: clean(p.character),
@@ -165,10 +175,6 @@ export function getSaleProducts(): CommerceProduct[] {
   return products.filter((p) => p.compareAtPrice && p.compareAtPrice > p.price);
 }
 
-export function getNewArrivals(limit = 8): CommerceProduct[] {
-  return products.filter((p) => p.status !== "sold-out").slice(0, limit);
-}
-
 /**
  * Home page "Featured Picks": always `limit` products (default 8).
  * Products tagged `featured` in Shopify come first (in stock before sold out);
@@ -180,6 +186,18 @@ export function getFeaturedProducts(limit = 8): CommerceProduct[] {
   const tagged = products.filter((p) => p.featured).sort(soldOutLast);
   const fill = products.filter((p) => !p.featured && p.status !== "sold-out");
   return [...tagged, ...fill].slice(0, limit);
+}
+
+/** Home "New Arrivals": newest first (tag `new-arrival` or created in the last 30 days). */
+export function getNewArrivals(limit = 8): CommerceProduct[] {
+  const byNewest = (a: CommerceProduct, b: CommerceProduct) =>
+    (b.createdAt ?? "").localeCompare(a.createdAt ?? "");
+  const fresh = products.filter((p) => p.newArrival && p.status !== "sold-out").sort(byNewest);
+  // Nothing new yet (or no createdAt in an older snapshot): newest in-stock instead.
+  const pool = fresh.length
+    ? fresh
+    : products.filter((p) => p.status !== "sold-out").sort(byNewest);
+  return pool.slice(0, limit);
 }
 
 export function getAllProducts(): CommerceProduct[] {

@@ -51,8 +51,29 @@ export function brandLogo(vendor: string): string | null {
   return file ? `/images/brands/${file}` : null;
 }
 
+/** SBS collection key art (16:9, real product photos), by series slug. */
+const SERIES_SBS: Record<string, string> = {
+  "demon-slayer": "demon-slayer",
+  "dragon-ball": "dragon-ball",
+  "dragon-ball-z": "dragon-ball",
+  evangelion: "evangelion",
+  haikyu: "haikyu",
+  "hatsune-miku": "hatsune-miku",
+  "jujutsu-kaisen": "jujutsu-kaisen",
+  gundam: "gundam",
+  "mobile-suit-gundam": "gundam",
+  "my-hero-academia": "my-hero-academia",
+  naruto: "naruto",
+  "naruto-shippuden": "naruto",
+  "one-piece": "one-piece",
+  pokemon: "pokemon",
+  "star-wars": "star-wars-vader",
+};
+
 export function seriesArtwork(series: string): string {
   const slug = slugify(series);
+  const sbs = SERIES_SBS[slug];
+  if (sbs) return `/images/collections/sbs-${sbs}.webp`;
   return SERIES_JPG.has(slug)
     ? `/images/collections/${slug}.jpg`
     : `/images/collections/${slug}.svg`;

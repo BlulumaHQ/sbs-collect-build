@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   getAllProducts,
   getVisibleCategories,
+  getNewArrivals,
   getPreorderProducts,
   getFeaturedProducts,
   getSaleProducts,
@@ -28,6 +29,7 @@ const HOME_SERIES: {
 }[] = [
   {
     name: "Gundam (Gunpla)",
+    override: "/images/collections/sbs-gundam.webp",
     series: "Gundam",
     keys: ["gundam", "gunpla"],
     to: "/gundam",
@@ -35,14 +37,15 @@ const HOME_SERIES: {
   },
   {
     name: "Pokémon",
+    override: "/images/collections/sbs-pokemon.webp",
     series: "Pokémon",
     keys: ["pokémon", "pokemon"],
     to: "/shop",
     fallback: "/images/collections/pokemon.jpg",
-    override: "/images/uploads/20261115-secret-builders-society-pokemon-star-war.webp",
   },
   {
     name: "One Piece",
+    override: "/images/collections/sbs-one-piece.webp",
     series: "ONE PIECE",
     keys: ["one piece"],
     to: "/shop",
@@ -50,6 +53,7 @@ const HOME_SERIES: {
   },
   {
     name: "Dragon Ball",
+    override: "/images/collections/sbs-dragon-ball.webp",
     series: "Dragon Ball",
     keys: ["dragon ball"],
     to: "/shop",
@@ -57,6 +61,7 @@ const HOME_SERIES: {
   },
   {
     name: "Naruto",
+    override: "/images/collections/sbs-naruto.webp",
     series: "NARUTO",
     keys: ["naruto"],
     to: "/shop",
@@ -64,6 +69,7 @@ const HOME_SERIES: {
   },
   {
     name: "Evangelion",
+    override: "/images/collections/sbs-evangelion.webp",
     series: "Evangelion",
     keys: ["evangelion"],
     to: "/shop",
@@ -71,6 +77,7 @@ const HOME_SERIES: {
   },
   {
     name: "Demon Slayer",
+    override: "/images/collections/sbs-demon-slayer.webp",
     series: "Demon Slayer",
     keys: ["demon slayer", "kimetsu"],
     to: "/shop",
@@ -78,6 +85,7 @@ const HOME_SERIES: {
   },
   {
     name: "Jujutsu Kaisen",
+    override: "/images/collections/sbs-jujutsu-kaisen.webp",
     series: "Jujutsu Kaisen",
     keys: ["jujutsu", "jujustu"],
     to: "/shop",
@@ -85,6 +93,7 @@ const HOME_SERIES: {
   },
   {
     name: "My Hero Academia",
+    override: "/images/collections/sbs-my-hero-academia.webp",
     series: "My Hero Academia",
     keys: ["my hero academia", "boku no hero"],
     to: "/shop",
@@ -92,6 +101,7 @@ const HOME_SERIES: {
   },
   {
     name: "Haikyu!!",
+    override: "/images/collections/sbs-haikyu.webp",
     series: "Haikyu!!",
     keys: ["haikyu"],
     to: "/shop",
@@ -99,6 +109,7 @@ const HOME_SERIES: {
   },
   {
     name: "Hatsune Miku",
+    override: "/images/collections/sbs-hatsune-miku.webp",
     series: "Hatsune Miku",
     keys: ["hatsune", "miku"],
     to: "/shop",
@@ -106,6 +117,7 @@ const HOME_SERIES: {
   },
   {
     name: "Star Wars",
+    override: "/images/collections/sbs-star-wars.webp",
     series: "Star Wars",
     keys: ["star wars", "star destroyer", "millennium falcon", "death star"],
     to: "/shop",
@@ -142,6 +154,7 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const featured = getFeaturedProducts();
+  const newArrivals = getNewArrivals(8);
   const preorders = getPreorderProducts().slice(0, 4);
   const onSale = getSaleProducts().slice(0, 4);
   const categories = getVisibleCategories();
@@ -210,6 +223,30 @@ function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* NEW ARRIVALS */}
+      {newArrivals.length > 0 ? (
+        <section className="section-y border-b border-border bg-white">
+          <div className="container-sbs">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <SBSBuildRail index="03" label="Just Landed" />
+                <h2 className="mt-5 font-display text-[32px] lg:text-[38px]">New Arrivals</h2>
+              </div>
+              <Link
+                to="/shop"
+                search={{ sort: "featured", new: true }}
+                className="micro text-sbs-red hover:underline"
+              >
+                All new arrivals
+              </Link>
+            </div>
+            <div className="mt-9">
+              <ProductGrid products={newArrivals} />
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {/* 03 — GUNDAM BY GRADE */}
       <GundamGrades index="03" />
@@ -298,11 +335,11 @@ function HomePage() {
               >
                 <img
                   src={entry.image}
-                  alt={`${entry.name} collection artwork`}
+                  alt=""
                   loading="lazy"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
                 />
-                <span className="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/10 to-transparent" />
+                <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                 <span className="absolute inset-x-0 bottom-0 p-4">
                   <span className="clamp-1 block font-display text-lg text-white">
                     {entry.name}
