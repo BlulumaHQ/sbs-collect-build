@@ -62,31 +62,31 @@ export function seriesArtwork(series: string): string {
 export const CATEGORY_ARTWORK: Record<string, { src: string; alt: string }> = {
   Figures: {
     src: "/images/categories/figures.webp",
-    alt: "Anime figures key art: scale, chibi and action figures posed together",
+    alt: "Anime figures collage: scale, non-scale, chibi and action figures from Dragon Ball, One Piece, Jujutsu Kaisen and more",
   },
   "Model Kits": {
     src: "/images/categories/model-kits.webp",
-    alt: "Model kits key art: Gundam, mecha and scale kits with sprues and tools",
+    alt: "Model kits collage: Gunpla HG, RG, MG and PG Gundam kits including RX-78-2, Unicorn and Strike Freedom",
   },
   Plush: {
     src: "/images/categories/plush.webp",
-    alt: "Plush key art: soft collectible characters and animal plushies",
+    alt: "Anime plush collage: character plushies, mascots and plush keychains including Chopper and Haro",
   },
   "Blind Boxes": {
     src: "/images/categories/blind-boxes.webp",
-    alt: "Blind box key art: designer mystery box series and capsule figures",
+    alt: "Blind boxes collage: gacha capsules, trading figures and mascot blind box series",
   },
   "Hobby Supplies": {
     src: "/images/categories/hobby-supplies.webp",
-    alt: "Hobby supplies key art: airbrush, paints, nippers, files and markers",
+    alt: "Hobby supplies collage: airbrushes, Mr. Hobby and SMS paints, nippers, cement and finishing tools",
   },
   "Character Goods": {
     src: "/images/categories/character-goods.webp",
-    alt: "Character goods key art: acrylic stands, keychains, pins and stationery",
+    alt: "Character goods collage: acrylic stands, keychains, replicas, home goods and pins",
   },
   Apparel: {
     src: "/images/categories/apparel.webp",
-    alt: "Apparel key art: Japanese-inspired collector tees, hoodies and caps",
+    alt: "Anime apparel collage: hoodies, tees, knit sweaters, accessories and cosplay pieces",
   },
 };
 
