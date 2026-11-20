@@ -13,6 +13,8 @@ export const STORE = {
   phoneHref: "tel:7789286412",
   email: "info@secretbuilderssociety.ca",
   currency: "CAD",
+  /** Shopify store used for checkout permalinks. */
+  shopifyDomain: "2zzz0q-zy.myshopify.com",
   /** Free standard shipping threshold (CAD). Shopify shipping rates must match. */
   freeShippingThreshold: 300,
   currencyLabel: "Canada (CAD $)",

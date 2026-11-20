@@ -20,7 +20,8 @@ export const GUIDES: GuideMeta[] = [
     seoTitle: "Gunpla Grades Explained: EG, HG, RG, MG, PG & SD | SBS Guides",
     description:
       "A plain-English guide to Gunpla grades — Entry Grade, High Grade, Real Grade, Master Grade, Perfect Grade and SD — with scale, difficulty and who each one suits.",
-    excerpt: "What the letters on the box mean, and how to pick the right grade for your first or next kit.",
+    excerpt:
+      "What the letters on the box mean, and how to pick the right grade for your first or next kit.",
     readingMinutes: 8,
     level: "Beginner",
   },
@@ -31,7 +32,8 @@ export const GUIDES: GuideMeta[] = [
     seoTitle: "Essential Gunpla Tools for Beginners: Nippers, Sanding & Panel Lining | SBS Guides",
     description:
       "The short list of tools you actually need for a first Gunpla build — nippers, a hobby knife used safely, sanding sticks, tweezers and panel lining basics.",
-    excerpt: "Nippers, a hobby knife, sanding sticks, tweezers and a panel liner — what each does and how to use it safely.",
+    excerpt:
+      "Nippers, a hobby knife, sanding sticks, tweezers and a panel liner — what each does and how to use it safely.",
     readingMinutes: 7,
     level: "Beginner",
   },
@@ -42,7 +44,8 @@ export const GUIDES: GuideMeta[] = [
     seoTitle: "How to Build Your First Gundam Model Kit: Step-by-Step | SBS Guides",
     description:
       "A step-by-step walkthrough of a first Gunpla build: reading the manual, finding parts on runners, clean clipping, nub cleanup, assembly and simple finishing.",
-    excerpt: "From opening the box to a clean, finished kit on your shelf — a calm, step-by-step first build.",
+    excerpt:
+      "From opening the box to a clean, finished kit on your shelf — a calm, step-by-step first build.",
     readingMinutes: 9,
     level: "Beginner",
   },
@@ -66,31 +69,30 @@ export function guideHead(slug: GuideMeta["slug"]) {
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: guide.path }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Article",
-          headline: guide.title,
-          description: guide.description,
-          inLanguage: "en-CA",
-          author: { "@type": "Organization", name: "Secret Builders Society" },
-          publisher: { "@type": "Organization", name: "Secret Builders Society" },
-        }),
-      },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-            { "@type": "ListItem", position: 2, name: "Guides", item: "/guides" },
-            { "@type": "ListItem", position: 3, name: guide.title },
-          ],
-        }),
-      },
-    ],
   };
+}
+
+/** Article + BreadcrumbList structured data for a guide (rendered by GuideLayout). */
+export function guideJsonLd(slug: GuideMeta["slug"]): object[] {
+  const guide = getGuide(slug);
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: guide.title,
+      description: guide.description,
+      inLanguage: "en-CA",
+      author: { "@type": "Organization", name: "Secret Builders Society" },
+      publisher: { "@type": "Organization", name: "Secret Builders Society" },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+        { "@type": "ListItem", position: 2, name: "Guides", item: "/guides" },
+        { "@type": "ListItem", position: 3, name: guide.title },
+      ],
+    },
+  ];
 }

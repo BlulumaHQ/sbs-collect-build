@@ -1,4 +1,4 @@
-import type { CommerceProduct } from "@/types/commerce";
+import type { Facets } from "@/commerce/query";
 import type { ShopSearch } from "@/commerce/search-schema";
 import { formatPrice } from "@/commerce/format";
 
@@ -8,9 +8,8 @@ const FILTER_STATUS_LABEL: Record<string, string> = {
   preorder: "PREORDER",
   "sold-out": "SOLD OUT",
 };
-import { CATEGORY_ORDER, categorySlug } from "@/commerce/adapter";
+import { categorySlug } from "@/commerce/adapter";
 import { GUNPLA_GRADES, GUNDAM_SERIES } from "@/commerce/attributes";
-import type { ProductStatus } from "@/types/commerce";
 
 function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -48,12 +47,12 @@ function Option({
 }
 
 export function ProductFilters({
-  scope,
+  facets,
   search,
   onChange,
   showCategoryFilter,
 }: {
-  scope: CommerceProduct[];
+  facets: Facets;
   search: ShopSearch;
   onChange: (next: ShopSearch) => void;
   showCategoryFilter: boolean;
@@ -65,27 +64,24 @@ export function ProductFilters({
     onChange(next);
   };
 
-  const countBy = (predicate: (p: CommerceProduct) => boolean) => scope.filter(predicate).length;
-
-  const subcategories = [
-    ...new Set(scope.map((p) => p.subcategory).filter(Boolean)),
-  ].sort() as string[];
-  const statuses = [...new Set(scope.map((p) => p.status))] as ProductStatus[];
-  const vendors = [...new Set(scope.map((p) => p.vendor).filter(Boolean))].sort();
-  const seriesList = [...new Set(scope.map((p) => p.series).filter(Boolean))].sort() as string[];
-  const grades = GUNPLA_GRADES.filter((g) => scope.some((p) => p.grade === g.code));
-  const scales = [...new Set(scope.map((p) => p.scale).filter(Boolean))].sort() as string[];
-  const gundamSeries = GUNDAM_SERIES.filter((s) => scope.some((p) => p.gundamSeries === s.code));
-  const prices = scope.map((p) => p.price);
-  const min = Math.floor(Math.min(...prices, 0));
-  const max = Math.ceil(Math.max(...prices, 0));
-
-  const priceBands = [
-    { label: `Under ${formatPrice(25)}`, min: 0, max: 25 },
-    { label: `${formatPrice(25)} – ${formatPrice(50)}`, min: 25, max: 50 },
-    { label: `${formatPrice(50)} – ${formatPrice(100)}`, min: 50, max: 100 },
-    { label: `${formatPrice(100)}+`, min: 100, max: 100000 },
-  ].filter((band) => scope.some((p) => p.price >= band.min && p.price <= band.max));
+  const label = <T extends { code: string; name: string }>(list: readonly T[], code: string) =>
+    list.find((x) => x.code === code);
+  const grades = facets.grades;
+  const gundamSeries = facets.gundamSeries;
+  const scales = facets.scales;
+  const subcategories = facets.subcategories;
+  const statuses = facets.statuses;
+  const vendors = facets.vendors;
+  const seriesList = facets.series;
+  const priceBands = facets.priceBands.map((b) => ({
+    ...b,
+    label:
+      b.max >= 100000
+        ? `${formatPrice(b.min)}+`
+        : b.min === 0
+          ? `Under ${formatPrice(b.max)}`
+          : `${formatPrice(b.min)} – ${formatPrice(b.max)}`,
+  }));
 
   const hasActive =
     Boolean(
@@ -103,7 +99,7 @@ export function ProductFilters({
     search.minPrice !== undefined ||
     search.maxPrice !== undefined;
 
-  const categoriesInScope = CATEGORY_ORDER.filter((name) => scope.some((p) => p.category === name));
+  const categoriesInScope = facets.categories;
 
   return (
     <div>
@@ -122,11 +118,11 @@ export function ProductFilters({
 
       {showCategoryFilter && categoriesInScope.length > 1 ? (
         <FilterGroup title="Category">
-          {categoriesInScope.map((name) => (
+          {categoriesInScope.map(({ value: name, count }) => (
             <Option
               key={name}
               label={name}
-              count={countBy((p) => p.category === name)}
+              count={count}
               active={search.category === categorySlug(name)}
               onClick={() => toggle("category", categorySlug(name))}
             />
@@ -136,13 +132,17 @@ export function ProductFilters({
 
       {grades.length > 0 ? (
         <FilterGroup title="Grade">
-          {grades.map((g) => (
+          {grades.map(({ value: code, count }) => (
             <Option
-              key={g.code}
-              label={g.code === "OTHER" ? g.name : `${g.code} · ${g.name}`}
-              count={countBy((p) => p.grade === g.code)}
-              active={search.grade === g.code}
-              onClick={() => toggle("grade", g.code)}
+              key={code}
+              label={
+                code === "OTHER"
+                  ? (label(GUNPLA_GRADES, code)?.name ?? code)
+                  : `${code} · ${label(GUNPLA_GRADES, code)?.name ?? ""}`
+              }
+              count={count}
+              active={search.grade === code}
+              onClick={() => toggle("grade", code)}
             />
           ))}
         </FilterGroup>
@@ -150,13 +150,13 @@ export function ProductFilters({
 
       {gundamSeries.length > 0 ? (
         <FilterGroup title="Gundam Series">
-          {gundamSeries.map((s) => (
+          {gundamSeries.map(({ value: code, count }) => (
             <Option
-              key={s.code}
-              label={s.name}
-              count={countBy((p) => p.gundamSeries === s.code)}
-              active={search.gseries === s.code}
-              onClick={() => toggle("gseries", s.code)}
+              key={code}
+              label={label(GUNDAM_SERIES, code)?.name ?? code}
+              count={count}
+              active={search.gseries === code}
+              onClick={() => toggle("gseries", code)}
             />
           ))}
         </FilterGroup>
@@ -164,11 +164,11 @@ export function ProductFilters({
 
       {scales.length > 0 ? (
         <FilterGroup title="Scale">
-          {scales.map((scale) => (
+          {scales.map(({ value: scale, count }) => (
             <Option
               key={scale}
               label={scale}
-              count={countBy((p) => p.scale === scale)}
+              count={count}
               active={search.scale === scale}
               onClick={() => toggle("scale", scale)}
             />
@@ -178,11 +178,11 @@ export function ProductFilters({
 
       {subcategories.length > 0 ? (
         <FilterGroup title="Subcategory">
-          {subcategories.map((sub) => (
+          {subcategories.map(({ value: sub, count }) => (
             <Option
               key={sub}
               label={sub}
-              count={countBy((p) => p.subcategory === sub)}
+              count={count}
               active={search.subcategory === sub}
               onClick={() => toggle("subcategory", sub)}
             />
@@ -192,11 +192,11 @@ export function ProductFilters({
 
       {statuses.length > 1 ? (
         <FilterGroup title="Availability">
-          {statuses.map((status) => (
+          {statuses.map(({ value: status, count }) => (
             <Option
               key={status}
               label={FILTER_STATUS_LABEL[status] ?? status}
-              count={countBy((p) => p.status === status)}
+              count={count}
               active={search.status === status}
               onClick={() => toggle("status", status)}
             />
@@ -206,11 +206,11 @@ export function ProductFilters({
 
       {vendors.length > 1 ? (
         <FilterGroup title="Maker">
-          {vendors.map((vendor) => (
+          {vendors.map(({ value: vendor, count }) => (
             <Option
               key={vendor}
               label={vendor}
-              count={countBy((p) => p.vendor === vendor)}
+              count={count}
               active={search.vendor === vendor}
               onClick={() => toggle("vendor", vendor)}
             />
@@ -220,11 +220,11 @@ export function ProductFilters({
 
       {seriesList.length > 1 ? (
         <FilterGroup title="Series">
-          {seriesList.map((series) => (
+          {seriesList.map(({ value: series, count }) => (
             <Option
               key={series}
               label={series}
-              count={countBy((p) => p.series === series)}
+              count={count}
               active={search.series === series}
               onClick={() => toggle("series", series)}
             />
@@ -232,7 +232,7 @@ export function ProductFilters({
         </FilterGroup>
       ) : null}
 
-      {priceBands.length > 1 && max > min ? (
+      {priceBands.length > 1 ? (
         <FilterGroup title="Price">
           {priceBands.map((band) => {
             const active = search.minPrice === band.min && search.maxPrice === band.max;
@@ -240,7 +240,7 @@ export function ProductFilters({
               <Option
                 key={band.label}
                 label={band.label}
-                count={countBy((p) => p.price >= band.min && p.price <= band.max)}
+                count={band.count}
                 active={active}
                 onClick={() => {
                   const next: ShopSearch = { ...search };

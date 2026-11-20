@@ -1,14 +1,29 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { searchProducts } from "@/commerce/adapter";
+import { fetchCatalogPage } from "@/commerce/api";
+import { Pagination } from "@/components/commerce/CatalogueBrowser";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { ProductGrid } from "@/components/commerce/ProductGrid";
 
 export const Route = createFileRoute("/search")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    q: typeof search["q"] === "string" ? search["q"] : "",
-  }),
+  validateSearch: (search: Record<string, unknown>): { q: string; page?: number } => {
+    const page = Number(search["page"]);
+    return {
+      q: typeof search["q"] === "string" ? search["q"] : "",
+      ...(Number.isFinite(page) && page > 1 ? { page: Math.floor(page) } : {}),
+    };
+  },
+  loaderDeps: ({ search }) => search,
+  loader: ({ deps }) =>
+    deps.q.trim()
+      ? fetchCatalogPage({
+          data: {
+            scope: { kind: "search", q: deps.q },
+            search: { sort: "featured", page: deps.page },
+          },
+        })
+      : null,
   head: () => ({
     meta: [
       { title: "Search | Secret Builders Society" },
@@ -30,9 +45,11 @@ export const Route = createFileRoute("/search")({
 
 function SearchPage() {
   const { q } = Route.useSearch();
+  const data = Route.useLoaderData();
+  const results = data?.items ?? [];
+  const total = data?.total ?? 0;
   const navigate = useNavigate({ from: "/search" });
   const [value, setValue] = useState(q);
-  const results = searchProducts(q);
 
   return (
     <div>
@@ -70,12 +87,19 @@ function SearchPage() {
 
         {q ? (
           <p className="micro mt-6 text-muted-foreground">
-            {results.length} {results.length === 1 ? "result" : "results"} for “{q}”
+            {total} {total === 1 ? "result" : "results"} for “{q}”
           </p>
         ) : null}
 
         <div className="mt-8">
           {q ? <ProductGrid products={results} emptyMessage="No products found." /> : null}
+          {data && data.pageCount > 1 ? (
+            <Pagination
+              page={data.page}
+              pageCount={data.pageCount}
+              onPage={(p) => navigate({ to: ".", search: { q, ...(p > 1 ? { page: p } : {}) } })}
+            />
+          ) : null}
         </div>
       </div>
     </div>

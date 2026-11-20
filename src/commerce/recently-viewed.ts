@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getProductsByIds } from "@/commerce/adapter";
+import { fetchProductsByIds } from "@/commerce/api";
 import type { CommerceProduct } from "@/types/commerce";
 
 const KEY = "sbs-recently-viewed-v1";
@@ -30,9 +30,24 @@ export function useTrackRecentlyViewed(id: string | undefined) {
 
 /** Returns recently viewed products, optionally excluding the current one. */
 export function useRecentlyViewed(excludeId?: string): CommerceProduct[] {
-  const [ids, setIds] = useState<string[]>([]);
+  const [products, setProducts] = useState<CommerceProduct[]>([]);
   useEffect(() => {
-    setIds(read());
+    const ids = read().filter((id) => id !== excludeId);
+    if (ids.length === 0) {
+      setProducts([]);
+      return undefined;
+    }
+    let cancelled = false;
+    fetchProductsByIds({ data: ids })
+      .then((list) => {
+        if (!cancelled) setProducts(list);
+      })
+      .catch(() => {
+        if (!cancelled) setProducts([]);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [excludeId]);
-  return getProductsByIds(ids.filter((id) => id !== excludeId));
+  return products;
 }

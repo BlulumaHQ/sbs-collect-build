@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
-import { getHotProducts } from "@/commerce/adapter";
+import type { CommerceProduct } from "@/types/commerce";
 import { formatPrice } from "@/commerce/format";
 import { FramedImage } from "@/components/commerce/FramedImage";
 
@@ -18,8 +18,6 @@ const SLIDES: { kind: SlideKind; background: string }[] = [
   { kind: "hot", background: "#111111" },
   { kind: "preorder", background: "#172026" },
 ];
-
-const HOT = getHotProducts(3);
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
@@ -99,7 +97,7 @@ function BrandSlide({ active, first }: { active: boolean; first: boolean }) {
   );
 }
 
-function HotSlide({ active }: { active: boolean }) {
+function HotSlide({ active, hot }: { active: boolean; hot: CommerceProduct[] }) {
   return (
     <>
       <img
@@ -123,7 +121,7 @@ function HotSlide({ active }: { active: boolean }) {
           </div>
         </div>
         <ul className="flex gap-3 lg:gap-4">
-          {HOT.map((p, i) => (
+          {hot.map((p, i) => (
             <li key={p.id} className={i === 2 ? "hidden sm:block" : undefined}>
               <Link
                 to="/product/$handle"
@@ -216,7 +214,7 @@ function PreorderSlide({ active }: { active: boolean }) {
 
 const INTERVAL = 6000;
 
-export function HeroCarousel() {
+export function HeroCarousel({ hot }: { hot: CommerceProduct[] }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const touchX = useRef<number | null>(null);
@@ -284,7 +282,7 @@ export function HeroCarousel() {
               {slide.kind === "brand" ? (
                 <BrandSlide active={active} first={i === 0} />
               ) : slide.kind === "hot" ? (
-                <HotSlide active={active} />
+                <HotSlide active={active} hot={hot} />
               ) : (
                 <PreorderSlide active={active} />
               )}

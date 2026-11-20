@@ -1,70 +1,33 @@
-import { useMemo, useState } from "react";
-import type { CommerceProduct } from "@/types/commerce";
+import { useState } from "react";
 import type { ShopSearch } from "@/commerce/search-schema";
+import type { CatalogPage } from "@/commerce/query";
 import { ProductGrid } from "./ProductGrid";
 import { SortControl } from "./SortControl";
 import { ProductFilters } from "./ProductFilters";
 
-export function sortProducts(products: CommerceProduct[], sort: ShopSearch["sort"]) {
-  const list = [...products];
-  switch (sort) {
-    case "price-asc":
-      return list.sort((a, b) => a.price - b.price);
-    case "price-desc":
-      return list.sort((a, b) => b.price - a.price);
-    case "name-asc":
-      return list.sort((a, b) => a.title.localeCompare(b.title));
-    case "name-desc":
-      return list.sort((a, b) => b.title.localeCompare(a.title));
-    default:
-      // "Featured": products tagged `featured` in Shopify first, then the rest in catalogue order.
-      return list.sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
-  }
-}
-
-export function filterProducts(products: CommerceProduct[], search: ShopSearch) {
-  return products.filter((p) => {
-    if (search.category && p.categorySlug !== search.category) return false;
-    if (search.subcategory && p.subcategory !== search.subcategory) return false;
-    if (search.status && p.status !== search.status) return false;
-    if (search.vendor && p.vendor !== search.vendor) return false;
-    if (search.series && p.series !== search.series) return false;
-    if (search.grade && p.grade !== search.grade) return false;
-    if (search.scale && p.scale !== search.scale) return false;
-    if (search.gseries && p.gundamSeries !== search.gseries) return false;
-    if (search.sale && !(p.compareAtPrice && p.compareAtPrice > p.price)) return false;
-    if (search.new && !p.newArrival) return false;
-    if (search.minPrice !== undefined && p.price < search.minPrice) return false;
-    if (search.maxPrice !== undefined && p.price > search.maxPrice) return false;
-    return true;
-  });
-}
-
 export function CatalogueBrowser({
-  scope,
+  data,
   search,
   onChange,
   showCategoryFilter = false,
   emptyState,
 }: {
   emptyState?: React.ReactNode;
-  scope: CommerceProduct[];
+  /** One server-computed page of results (see fetchCatalogPage). */
+  data: CatalogPage;
   search: ShopSearch;
   onChange: (next: ShopSearch) => void;
   showCategoryFilter?: boolean;
 }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  const results = useMemo(
-    () => sortProducts(filterProducts(scope, search), search.sort),
-    [scope, search],
-  );
+  const { items, total, page, pageCount, facets } = data;
 
   const filters = (
     <ProductFilters
-      scope={scope}
+      facets={facets}
       search={search}
-      onChange={onChange}
+      onChange={(next) => onChange({ ...next, page: undefined })}
       showCategoryFilter={showCategoryFilter}
     />
   );
@@ -76,7 +39,8 @@ export function CatalogueBrowser({
       <div>
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
           <p className="micro text-muted-foreground">
-            {results.length} {results.length === 1 ? "product" : "products"}
+            {total} {total === 1 ? "product" : "products"}
+            {pageCount > 1 ? ` · page ${page} of ${pageCount}` : ""}
           </p>
           <div className="flex items-center gap-3">
             <button
@@ -86,11 +50,24 @@ export function CatalogueBrowser({
             >
               Filter
             </button>
-            <SortControl value={search.sort} onChange={(sort) => onChange({ ...search, sort })} />
+            <SortControl
+              value={search.sort}
+              onChange={(sort) => onChange({ ...search, sort, page: undefined })}
+            />
           </div>
         </div>
 
-        {results.length === 0 && emptyState ? emptyState : <ProductGrid products={results} />}
+        {total === 0 && emptyState ? emptyState : <ProductGrid products={items} />}
+        {pageCount > 1 ? (
+          <Pagination
+            page={page}
+            pageCount={pageCount}
+            onPage={(p) => {
+              onChange({ ...search, page: p > 1 ? p : undefined });
+              if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          />
+        ) : null}
       </div>
 
       {mobileFiltersOpen ? (
@@ -122,5 +99,64 @@ export function CatalogueBrowser({
         </div>
       ) : null}
     </div>
+  );
+}
+
+/** Numbered pages with first/last and neighbours, e.g. ‹ 1 … 4 5 6 … 20 ›. */
+export function Pagination({
+  page,
+  pageCount,
+  onPage,
+}: {
+  page: number;
+  pageCount: number;
+  onPage: (page: number) => void;
+}) {
+  const pages = [...new Set([1, page - 1, page, page + 1, pageCount])]
+    .filter((p) => p >= 1 && p <= pageCount)
+    .sort((a, b) => a - b);
+  const cls = "micro flex h-11 min-w-11 items-center justify-center border px-3 transition-colors";
+  return (
+    <nav aria-label="Pagination" className="mt-10 flex flex-wrap items-center justify-center gap-2">
+      <button
+        type="button"
+        disabled={page <= 1}
+        onClick={() => onPage(page - 1)}
+        className={`${cls} border-border hover:border-sbs-red disabled:opacity-40`}
+        aria-label="Previous page"
+      >
+        ‹
+      </button>
+      {pages.map((p, i) => (
+        <span key={p} className="flex items-center gap-2">
+          {i > 0 && p - pages[i - 1]! > 1 ? (
+            <span className="micro text-muted-foreground" aria-hidden="true">
+              …
+            </span>
+          ) : null}
+          <button
+            type="button"
+            onClick={() => onPage(p)}
+            aria-current={p === page ? "page" : undefined}
+            className={`${cls} ${
+              p === page
+                ? "border-sbs-red bg-sbs-red text-white"
+                : "border-border hover:border-sbs-red hover:text-sbs-red"
+            }`}
+          >
+            {p}
+          </button>
+        </span>
+      ))}
+      <button
+        type="button"
+        disabled={page >= pageCount}
+        onClick={() => onPage(page + 1)}
+        className={`${cls} border-border hover:border-sbs-red disabled:opacity-40`}
+        aria-label="Next page"
+      >
+        ›
+      </button>
+    </nav>
   );
 }

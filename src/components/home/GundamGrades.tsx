@@ -1,9 +1,16 @@
 import { Link } from "@tanstack/react-router";
-import { getGundamProducts } from "@/commerce/adapter";
+import { useSiteSummary } from "@/commerce/site-summary";
 import { GUNPLA_GRADES } from "@/commerce/attributes";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 
-const SCALE: Record<string, string> = { EG: "1/144", HG: "1/144", RG: "1/144", MG: "1/100", PG: "1/60", SD: "No fixed scale" };
+const SCALE: Record<string, string> = {
+  EG: "1/144",
+  HG: "1/144",
+  RG: "1/144",
+  MG: "1/100",
+  PG: "1/60",
+  SD: "No fixed scale",
+};
 const BLURB: Record<string, string> = {
   EG: "Simplest first build",
   HG: "The classic starting point",
@@ -14,7 +21,7 @@ const BLURB: Record<string, string> = {
 };
 
 export function GundamGrades({ index }: { index: string }) {
-  const scope = getGundamProducts();
+  const counts = useSiteSummary().gundam.grades;
   const grades = GUNPLA_GRADES.filter((g) => g.code !== "OTHER");
 
   return (
@@ -27,14 +34,18 @@ export function GundamGrades({ index }: { index: string }) {
               Shop Gundam by Grade
             </h2>
           </div>
-          <Link to="/gundam" search={{ sort: "featured" }} className="micro text-sbs-red hover:underline">
+          <Link
+            to="/gundam"
+            search={{ sort: "featured" }}
+            className="micro text-sbs-red hover:underline"
+          >
             All Gundam
           </Link>
         </div>
 
         <div className="mt-9 grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-3 lg:grid-cols-6">
           {grades.map((g) => {
-            const n = scope.filter((p) => p.grade === g.code).length;
+            const n = counts[g.code] ?? 0;
             const inner = (
               <>
                 <span className="font-display text-[44px] leading-none tracking-tight transition-colors duration-200 group-hover:text-sbs-red lg:text-[52px]">
@@ -50,16 +61,24 @@ export function GundamGrades({ index }: { index: string }) {
               </>
             );
             return (
-              <Link key={g.code} to="/gundam" search={{ sort: "featured", grade: g.code }} className="group bg-white p-6 transition-colors hover:bg-bone">
+              <Link
+                key={g.code}
+                to="/gundam"
+                search={{ sort: "featured", grade: g.code }}
+                className="group bg-white p-6 transition-colors hover:bg-bone"
+              >
                 {inner}
               </Link>
             );
           })}
         </div>
-        {scope.length === 0 ? (
+        {Object.keys(counts).length === 0 ? (
           <p className="mt-4 text-sm text-muted-foreground">
             Gundam kits aren’t in stock right now. New to Gunpla?{" "}
-            <Link to="/guides/gunpla-grades-explained" className="text-sbs-red underline">Learn about grades</Link>.
+            <Link to="/guides/gunpla-grades-explained" className="text-sbs-red underline">
+              Learn about grades
+            </Link>
+            .
           </p>
         ) : null}
       </div>

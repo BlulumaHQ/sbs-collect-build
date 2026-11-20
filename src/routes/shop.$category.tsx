@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
-import { getCategoryBySlug, getProductsByCategorySlug } from "@/commerce/adapter";
+import { CATEGORY_ORDER, categorySlug } from "@/commerce/adapter";
+import { fetchCatalogPage } from "@/commerce/api";
 import { validateShopSearch, type ShopSearch } from "@/commerce/search-schema";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
@@ -8,10 +9,14 @@ import { CATEGORY_COPY } from "@/content/categories";
 
 export const Route = createFileRoute("/shop/$category")({
   validateSearch: validateShopSearch,
-  loader: ({ params }) => {
-    const category = getCategoryBySlug(params.category);
-    if (!category) throw notFound();
-    return { category };
+  loaderDeps: ({ search }) => ({ search }),
+  loader: async ({ params, deps }) => {
+    const name = CATEGORY_ORDER.find((n) => categorySlug(n) === params.category);
+    if (!name) throw notFound();
+    const page = await fetchCatalogPage({
+      data: { scope: { kind: "category", slug: params.category }, search: deps.search },
+    });
+    return { category: { name, slug: params.category }, page };
   },
   head: ({ loaderData, params }) => {
     const name = loaderData?.category.name;
@@ -39,7 +44,8 @@ export const Route = createFileRoute("/shop/$category")({
 });
 
 function CategoryPage() {
-  const { category } = Route.useLoaderData();
+  const { category, page } = Route.useLoaderData();
+  const count = page.facets.categories[0]?.count ?? page.total;
   const search = Route.useSearch();
   const params = Route.useParams();
   const navigate = useNavigate({ from: "/shop/$category" });
@@ -62,7 +68,7 @@ function CategoryPage() {
           </p>
         ) : null}
         <p className="micro mt-4 text-muted-foreground">
-          {category.count} {category.count === 1 ? "product" : "products"} listed
+          {count} {count === 1 ? "product" : "products"} listed
         </p>
         {category.slug === "model-kits" ? (
           <div className="mt-5 flex flex-wrap gap-3">
@@ -80,11 +86,7 @@ function CategoryPage() {
         ) : null}
 
         <div className="mt-10">
-          <CatalogueBrowser
-            scope={getProductsByCategorySlug(category.slug)}
-            search={search}
-            onChange={onChange}
-          />
+          <CatalogueBrowser data={page} search={search} onChange={onChange} />
         </div>
       </div>
     </div>

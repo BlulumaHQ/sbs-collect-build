@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram } from "lucide-react";
-import { PRIMARY_CATEGORIES } from "./taxonomy";
+import { usePrimaryCategories } from "./taxonomy";
 import { STORE } from "@/config/store";
 import { PaymentMethods } from "@/components/home/PaymentMethods";
 
@@ -60,6 +60,7 @@ function MobileAccordion({ title, children }: { title: string; children: ReactNo
 }
 
 export function SiteFooter() {
+  const PRIMARY_CATEGORIES = usePrimaryCategories();
   return (
     <footer className="bg-charcoal text-white">
       <div className="container-sbs grid gap-8 py-10 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1.2fr] lg:gap-10 lg:py-20">

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getProductByHandle, getRelatedProducts } from "@/commerce/adapter";
+import { fetchProductPage } from "@/commerce/api";
 import type { CommerceProduct } from "@/types/commerce";
 import {
   formatPrice,
@@ -19,7 +19,63 @@ import { ProductStatusBadge } from "@/components/commerce/ProductStatusBadge";
 import { ProductCard } from "@/components/commerce/ProductCard";
 import { RecentlyViewed } from "@/components/commerce/RecentlyViewed";
 import { STORE } from "@/config/store";
+import { JsonLd } from "@/components/JsonLd";
 import { gradeName, gundamSeriesName } from "@/commerce/attributes";
+
+/** Meta description: the Shopify description when there is one, else the attribute summary. */
+function metaDescription(p: CommerceProduct): string {
+  const text = p.description?.replace(/\s+/g, " ").trim();
+  if (!text) return productSummary(p);
+  return text.length > 155 ? `${text.slice(0, 152).replace(/\s+\S*$/, "")}…` : text;
+}
+
+const AVAILABILITY: Record<CommerceProduct["status"], string> = {
+  available: "https://schema.org/InStock",
+  "last-one": "https://schema.org/LimitedAvailability",
+  preorder: "https://schema.org/PreOrder",
+  "sold-out": "https://schema.org/OutOfStock",
+};
+
+/** schema.org Product for rich results (price, availability, brand, GTIN). */
+function breadcrumbSchema(product: CommerceProduct) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+      { "@type": "ListItem", position: 2, name: "Shop", item: "/shop" },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: product.category,
+        item: `/shop/${product.categorySlug}`,
+      },
+      { "@type": "ListItem", position: 4, name: product.title },
+    ],
+  };
+}
+
+function productSchema(p: CommerceProduct) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: p.title,
+    image: p.images.length ? p.images : [p.image],
+    description: metaDescription(p),
+    ...(p.sku ? { sku: p.sku } : {}),
+    ...(p.upc && /^\d{12,14}$/.test(p.upc) ? { gtin: p.upc } : {}),
+    ...(p.vendor ? { brand: { "@type": "Brand", name: p.vendor } } : {}),
+    category: p.subcategory ?? p.category,
+    offers: {
+      "@type": "Offer",
+      price: p.price.toFixed(2),
+      priceCurrency: p.currency,
+      availability: AVAILABILITY[p.status],
+      itemCondition: "https://schema.org/NewCondition",
+      seller: { "@type": "Organization", name: STORE.name },
+    },
+  };
+}
 
 /** Factual one-line summary built only from verified catalogue attributes. */
 function productSummary(p: CommerceProduct): string {
@@ -35,10 +91,10 @@ function productSummary(p: CommerceProduct): string {
 }
 
 export const Route = createFileRoute("/product/$handle")({
-  loader: ({ params }) => {
-    const product = getProductByHandle(params.handle);
-    if (!product) throw notFound();
-    return { product: product satisfies CommerceProduct };
+  loader: async ({ params }) => {
+    const data = await fetchProductPage({ data: params.handle });
+    if (!data) throw notFound();
+    return data;
   },
   head: ({ loaderData, params }) => {
     const product = loaderData?.product;
@@ -51,7 +107,7 @@ export const Route = createFileRoute("/product/$handle")({
       };
     }
     const title = `${product.title} | Secret Builders Society`;
-    const description = productSummary(product);
+    const description = metaDescription(product);
     return {
       meta: [
         { title },
@@ -62,27 +118,6 @@ export const Route = createFileRoute("/product/$handle")({
         { property: "og:url", content: `/product/${params.handle}` },
       ],
       links: [{ rel: "canonical", href: `/product/${params.handle}` }],
-      // Product schema is intentionally omitted: add it once the store launches and checkout is live.
-      scripts: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-              { "@type": "ListItem", position: 2, name: "Shop", item: "/shop" },
-              {
-                "@type": "ListItem",
-                position: 3,
-                name: product.category,
-                item: `/shop/${product.categorySlug}`,
-              },
-              { "@type": "ListItem", position: 4, name: product.title },
-            ],
-          }),
-        },
-      ],
     };
   },
   notFoundComponent: ProductNotFound,
@@ -102,10 +137,8 @@ function ProductNotFound() {
 }
 
 function ProductDetailPage() {
-  const { handle } = Route.useParams();
-  const product = getProductByHandle(handle) as CommerceProduct;
+  const { product, related } = Route.useLoaderData();
   const { addItem } = useCart();
-  const related = getRelatedProducts(product);
   const purchasable = canBuy(product);
   const badge = getBadge(product);
   const off = discountPercent(product);
@@ -151,6 +184,7 @@ function ProductDetailPage() {
 
   return (
     <>
+      <JsonLd data={[productSchema(product), breadcrumbSchema(product)]} />
       <div className="container-sbs py-8 lg:py-12">
         <Breadcrumbs
           items={[
@@ -308,9 +342,15 @@ function ProductDetailPage() {
               </li>
             </ul>
 
-            <p className="mt-8 text-[15px] leading-relaxed text-muted-foreground">
-              {productSummary(product)}
-            </p>
+            {product.description ? (
+              <div className="mt-8 whitespace-pre-line text-[15px] leading-relaxed text-muted-foreground">
+                {product.description}
+              </div>
+            ) : (
+              <p className="mt-8 text-[15px] leading-relaxed text-muted-foreground">
+                {productSummary(product)}
+              </p>
+            )}
 
             <dl className="mt-6 border-t border-border">
               {metadata.map((row) => (

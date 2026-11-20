@@ -24,6 +24,8 @@ export interface CommerceProduct {
   newArrival?: boolean | undefined;
   /** When the product was created in Shopify (ISO). */
   createdAt?: string | undefined;
+  /** Plain-text description from Shopify. */
+  description?: string | undefined;
   /** True when tagged `featured` in Shopify (home page Featured Picks). */
   featured?: boolean | undefined;
   status: ProductStatus;

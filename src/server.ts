@@ -47,6 +47,17 @@ function isH3SwallowedErrorBody(body: string): boolean {
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    const url = new URL(request.url);
+    if (url.pathname === "/sitemap.xml" || url.pathname === "/robots.txt") {
+      const { sitemapXml, robotsTxt } = await import("./lib/sitemap");
+      const xml = url.pathname === "/sitemap.xml";
+      return new Response(xml ? sitemapXml(url.origin) : robotsTxt(url.origin), {
+        headers: {
+          "content-type": xml ? "application/xml; charset=utf-8" : "text/plain; charset=utf-8",
+          "cache-control": "public, max-age=3600",
+        },
+      });
+    }
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
@@ -63,4 +74,3 @@ export default {
     }
   },
 };
-

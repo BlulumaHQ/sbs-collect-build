@@ -36,6 +36,7 @@ const QUERY = `query Products($cursor: String) {
     nodes {
       id handle title vendor productType tags availableForSale createdAt
       category { name }
+      description
       featuredImage { url }
       staffPick: metafield(namespace: "custom", key: "staff_pick") { value }
       images(first: 10) { nodes { url } }
@@ -101,6 +102,8 @@ export function mapProduct(node, shopName = "") {
     // Home hero "On Our Shelf" picks
     hot: tags.some((t) => t.toLowerCase() === "hot") || null,
     createdAt: node.createdAt ?? null,
+    // Plain-text product description from Shopify (trimmed to keep the snapshot lean)
+    description: (node.description ?? "").replace(/\s+\n/g, "\n").trim().slice(0, 2000) || null,
     status:
       tags.some((t) => t.toLowerCase() === "preorder") || /not-released/.test(node.handle)
         ? "preorder"

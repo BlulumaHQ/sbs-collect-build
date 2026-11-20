@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { PRIMARY_CATEGORIES } from "./taxonomy";
+import { usePrimaryCategories } from "./taxonomy";
+import { useSiteSummary } from "@/commerce/site-summary";
 import { GUNPLA_GRADES } from "@/commerce/attributes";
-import { getGundamProducts } from "@/commerce/adapter";
 import { GUIDES } from "@/content/guides";
 import { STORE } from "@/config/store";
 
@@ -27,7 +27,8 @@ const SUPPORT = [
 export function MobileNavigation({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [shopOpen, setShopOpen] = useState(true);
   const [gundamOpen, setGundamOpen] = useState(false);
-  const gundam = getGundamProducts();
+  const PRIMARY_CATEGORIES = usePrimaryCategories();
+  const gundam = useSiteSummary().gundam;
   if (!open) return null;
 
   return (
@@ -117,7 +118,7 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
                   </Link>
                 ))}
               </div>
-              {gundam.length === 0 ? (
+              {gundam.total === 0 ? (
                 <p className="mt-2 text-xs text-muted-foreground">No Gundam kits listed yet.</p>
               ) : null}
               <Link

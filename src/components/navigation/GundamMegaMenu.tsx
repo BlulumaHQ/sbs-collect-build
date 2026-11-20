@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { getGundamProducts } from "@/commerce/adapter";
+import { useSiteSummary } from "@/commerce/site-summary";
 import { GUNDAM_SERIES, GUNPLA_GRADES } from "@/commerce/attributes";
 import { GUIDES } from "@/content/guides";
 
@@ -15,29 +15,28 @@ function Count({ n }: { n: number }) {
  * counts reflect products carrying that metadata.
  */
 export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
-  const scope = getGundamProducts();
-  const count = (pred: (p: (typeof scope)[number]) => boolean) => scope.filter(pred).length;
+  const summary = useSiteSummary().gundam;
 
   const availability = [
     {
       label: "In Stock",
       search: { sort: "featured" as const, status: "available" },
-      n: count((p) => p.status === "available"),
+      n: summary.available,
     },
     {
       label: "New Arrivals",
       search: { sort: "featured" as const, new: true },
-      n: count((p) => Boolean(p.newArrival)),
+      n: summary.newArrivals,
     },
     {
       label: "Preorders",
       search: { sort: "featured" as const, status: "preorder" },
-      n: count((p) => p.status === "preorder"),
+      n: summary.preorder,
     },
     {
       label: "On Sale",
       search: { sort: "featured" as const, sale: true },
-      n: count((p) => Boolean(p.compareAtPrice && p.compareAtPrice > p.price)),
+      n: summary.sale,
     },
   ];
 
@@ -47,7 +46,7 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
         <div className="flex flex-col gap-1">
           <span className="micro mb-2 text-sbs-red">Shop by Grade</span>
           {GUNPLA_GRADES.map((g) => {
-            const n = count((p) => p.grade === g.code);
+            const n = summary.grades[g.code] ?? 0;
             const label = g.code === "OTHER" ? g.name : `${g.code} · ${g.name}`;
             return (
               <Link
@@ -68,7 +67,7 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
           >
             Learn about grades →
           </Link>
-          {scope.length === 0 ? (
+          {summary.total === 0 ? (
             <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
               No Gundam kits are in stock right now.
             </p>
@@ -85,7 +84,7 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
               onClick={onNavigate}
               className={linkCls}
             >
-              {s.name} <Count n={count((p) => p.gundamSeries === s.code)} />
+              {s.name} <Count n={summary.gundamSeries[s.code] ?? 0} />
             </Link>
           ))}
         </div>

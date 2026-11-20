@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { getVisibleCategories } from "@/commerce/adapter";
+import { useVisibleCategories } from "@/commerce/site-summary";
 
 export const FIGURE_SUBCATEGORIES = [
   "Scale Figures",
@@ -31,15 +31,18 @@ export const HOBBY_SUPPLY_SUBCATEGORIES = [
   "Display Cases & Storage",
 ];
 
-const VISIBLE = getVisibleCategories();
-const hasProducts = (name: string) => VISIBLE.some((c) => c.name === name);
+const DIRECT = ["Plush", "Blind Boxes", "Character Goods", "Apparel"];
 
-/** Empty categories (0 products) are hidden everywhere in navigation. */
-export const DIRECT_CATEGORIES = ["Plush", "Blind Boxes", "Character Goods", "Apparel"].filter(
-  hasProducts,
-);
+/** Top-level categories with products, in catalogue order. */
+export function usePrimaryCategories() {
+  return useVisibleCategories().map(({ name, slug }) => ({ name, slug }));
+}
 
-export const PRIMARY_CATEGORIES = VISIBLE.map(({ name, slug }) => ({ name, slug }));
+/** Smaller categories listed directly in the mega menu (empty ones hidden). */
+export function useDirectCategories() {
+  const visible = useVisibleCategories();
+  return DIRECT.filter((name) => visible.some((c) => c.name === name));
+}
 
 export function SubcategoryLink({
   categoryPath,

@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import {
-  DIRECT_CATEGORIES,
+  useDirectCategories,
   FIGURE_SUBCATEGORIES,
   HOBBY_SUPPLY_SUBCATEGORIES,
   MODEL_KIT_SUBCATEGORIES,
@@ -9,6 +9,7 @@ import {
 import { categorySlug } from "@/commerce/adapter";
 
 export function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
+  const DIRECT_CATEGORIES = useDirectCategories();
   return (
     <div className="border-t border-border bg-card">
       <div className="container-sbs grid gap-8 py-10 lg:grid-cols-[200px_1fr_1fr_1fr_240px]">
@@ -24,6 +25,7 @@ export function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
           </Link>
           <Link
             to="/preorders"
+            search={{ sort: "featured" }}
             onClick={onNavigate}
             className="text-sm text-charcoal/80 hover:text-sbs-red"
           >

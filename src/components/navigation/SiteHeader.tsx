@@ -6,12 +6,10 @@ import { GundamMegaMenu } from "./GundamMegaMenu";
 import { MobileNavigation } from "./MobileNavigation";
 import { useCart } from "@/commerce/cart";
 import { formatMoneyCAD } from "@/commerce/format";
-import { PRIMARY_CATEGORIES } from "./taxonomy";
+import { usePrimaryCategories } from "./taxonomy";
 import { STORE } from "@/config/store";
 
-const CATEGORY_NAV = PRIMARY_CATEGORIES.filter((c) =>
-  ["figures", "model-kits", "hobby-supplies"].includes(c.slug),
-);
+const NAV_SLUGS = ["figures", "model-kits", "hobby-supplies"];
 
 const NAV = [
   { label: "Preorders", to: "/preorders" as const },
@@ -24,6 +22,7 @@ const NAV = [
 type MegaKey = "shop" | "gundam" | null;
 
 export function SiteHeader() {
+  const CATEGORY_NAV = usePrimaryCategories().filter((c) => NAV_SLUGS.includes(c.slug));
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
   const [mega, setMega] = useState<MegaKey>(null);

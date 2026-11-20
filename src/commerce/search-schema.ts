@@ -15,6 +15,8 @@ export interface ShopSearch {
   new?: boolean | undefined;
   minPrice?: number | undefined;
   maxPrice?: number | undefined;
+  /** 1-based page of results (48 per page). */
+  page?: number | undefined;
 }
 
 const SORT_KEYS: SortKey[] = ["featured", "price-asc", "price-desc", "name-asc", "name-desc"];
@@ -57,5 +59,7 @@ export function validateShopSearch(search: Record<string, unknown>): ShopSearch 
   if (minPrice !== undefined) result.minPrice = minPrice;
   const maxPrice = num(search["maxPrice"]);
   if (maxPrice !== undefined) result.maxPrice = maxPrice;
+  const page = num(search["page"]);
+  if (page !== undefined && page > 1) result.page = Math.floor(page);
   return result;
 }

@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "@/commerce/cart";
+import { fetchSiteSummary } from "@/commerce/api";
 import { SiteHeader } from "@/components/navigation/SiteHeader";
 import { SiteFooter } from "@/components/navigation/SiteFooter";
 import { CartDrawer } from "@/components/navigation/CartDrawer";
@@ -73,6 +74,9 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  // Menu counts (categories, Gundam grades). Cached for the session; refreshed every 10 min.
+  loader: () => fetchSiteSummary(),
+  staleTime: 10 * 60_000,
   head: () => ({
     meta: [
       { charSet: "utf-8" },

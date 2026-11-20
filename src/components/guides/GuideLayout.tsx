@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
-import { GUIDES, getGuide, type GuideMeta } from "@/content/guides";
+import { GUIDES, getGuide, guideJsonLd, type GuideMeta } from "@/content/guides";
+import { JsonLd } from "@/components/JsonLd";
 
 export function GuideLayout({
   slug,
@@ -20,12 +21,17 @@ export function GuideLayout({
 
   return (
     <article className="container-sbs py-10 lg:py-14">
+      <JsonLd data={guideJsonLd(slug)} />
       <Breadcrumbs items={[{ label: "Guides", to: "/guides" }, { label: guide.title }]} />
       <div className="mt-6">
         <SBSBuildRail index={index} label="Build & Learn" />
       </div>
-      <h1 className="mt-5 max-w-4xl font-display text-4xl leading-tight md:text-5xl">{guide.title}</h1>
-      <p className="mt-5 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">{guide.excerpt}</p>
+      <h1 className="mt-5 max-w-4xl font-display text-4xl leading-tight md:text-5xl">
+        {guide.title}
+      </h1>
+      <p className="mt-5 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
+        {guide.excerpt}
+      </p>
       <p className="micro mt-5 text-muted-foreground">
         {guide.level} · {guide.readingMinutes} min read
       </p>
@@ -33,10 +39,11 @@ export function GuideLayout({
       <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_280px] lg:gap-16">
         <div>
           <aside className="border-l-2 border-sbs-red bg-bone px-5 py-4 text-sm leading-relaxed text-muted-foreground">
-            <strong className="text-foreground">General hobby information.</strong> This guide describes Gunpla
-            in general and is not a list of what Secret Builders Society has in stock. Kits differ between
-            releases — always follow the instructions included with your own kit. Secret Builders Society is
-            an independent shop and is not affiliated with Bandai or Sunrise.
+            <strong className="text-foreground">General hobby information.</strong> This guide
+            describes Gunpla in general and is not a list of what Secret Builders Society has in
+            stock. Kits differ between releases — always follow the instructions included with your
+            own kit. Secret Builders Society is an independent shop and is not affiliated with
+            Bandai or Sunrise.
           </aside>
           <div className="guide-prose">{children}</div>
         </div>
@@ -59,7 +66,11 @@ export function GuideLayout({
             <p className="mt-2 text-sm text-muted-foreground">
               See which Gundam kits and hobby supplies are currently listed in our catalogue.
             </p>
-            <Link to="/gundam" search={{ sort: "featured" }} className="btn-primary-sbs mt-4 w-full">
+            <Link
+              to="/gundam"
+              search={{ sort: "featured" }}
+              className="btn-primary-sbs mt-4 w-full"
+            >
               Shop Gundam
             </Link>
             <Link

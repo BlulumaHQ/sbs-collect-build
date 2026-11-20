@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { getAllProducts } from "@/commerce/adapter";
+import { fetchCatalogPage } from "@/commerce/api";
 import { validateShopSearch, type ShopSearch } from "@/commerce/search-schema";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
@@ -7,6 +7,8 @@ import { CatalogueBrowser } from "@/components/commerce/CatalogueBrowser";
 
 export const Route = createFileRoute("/shop/")({
   validateSearch: validateShopSearch,
+  loaderDeps: ({ search }) => ({ search }),
+  loader: ({ deps }) => fetchCatalogPage({ data: { scope: { kind: "all" }, search: deps.search } }),
   head: () => ({
     meta: [
       { title: "Shop | Secret Builders Society" },
@@ -53,7 +55,7 @@ function ShopPage() {
 
         <div className="mt-10">
           <CatalogueBrowser
-            scope={getAllProducts()}
+            data={Route.useLoaderData()}
             search={search}
             onChange={onChange}
             showCategoryFilter

@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { getVendors } from "@/commerce/adapter";
+import { fetchVendors } from "@/commerce/api";
 import { brandLogo } from "@/commerce/artwork";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/brands")({
+  loader: () => fetchVendors(),
   head: () => ({
     meta: [
       { title: "Brands | Secret Builders Society" },
@@ -24,7 +25,7 @@ export const Route = createFileRoute("/brands")({
 });
 
 function BrandsPage() {
-  const vendors = getVendors();
+  const vendors = Route.useLoaderData();
 
   return (
     <>
