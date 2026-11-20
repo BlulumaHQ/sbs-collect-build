@@ -39,7 +39,21 @@ export interface CommerceProduct {
   images: string[];
   /** Shopify variant id (live catalogue only). */
   variantId?: string | undefined;
+  /** Card framing for `image` / `images[1]` (scripts/image-framing.mjs). */
+  frame?: ImageFrame | undefined;
+  hoverFrame?: ImageFrame | undefined;
 }
+
+/**
+ * How a photo sits in a square card.
+ * b = solid background: trimmed + centred (w/h/l/t are % of the card, bg fills it)
+ * c = busy photo: object-cover at object-position x% y%
+ * f = whole photo, contained
+ */
+export type ImageFrame =
+  | { m: "b"; bg: string; w: number; h: number; l: number; t: number; rw: number }
+  | { m: "c"; x: number; y: number; rw: number }
+  | { m: "f" };
 
 export interface CommerceCategory {
   name: string;

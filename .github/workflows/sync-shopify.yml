@@ -24,8 +24,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Install image tools
+        run: npm install --prefix "$RUNNER_TEMP/imgtools" --no-audit --no-fund sharp@0.33
       - name: Snapshot Shopify products
         env:
+          IMG_TOOLS_DIR: ${{ runner.temp }}/imgtools
           SHOPIFY_STORE_DOMAIN: 2zzz0q-zy.myshopify.com
           # Public Storefront API token (Headless channel). Shopify designs this token
           # to be shipped in browser code; it can only read published product data.
@@ -38,7 +41,7 @@ jobs:
           if git diff -U0 -- src/data/shopify-products.json | grep '^[+-] ' | grep -qv '"generatedAt"'; then
             git config user.name "SBS Catalogue Sync"
             git config user.email "sony@bluluma.com"
-            git add src/data/shopify-products.json
+            git add src/data/shopify-products.json src/data/image-framing.json
             git commit -m "Sync Shopify catalogue"
             git push
           else
