@@ -9,7 +9,10 @@ import type {
 import { deriveGrade, deriveGundamSeries, deriveScale, isGundamTitle } from "./attributes";
 
 /**
- * Commerce adapter
+ * Commerce adapter (SERVER ONLY — imports the full catalogue snapshot).
+ *
+ * Only ./catalog-api.ts may import this module; client code uses the server
+ * functions there, so the snapshot never ships to the browser.
  *
  * Normalizes the catalogue into CommerceProduct objects. The catalogue is the
  * Shopify snapshot in src/data/shopify-products.json, written by
@@ -48,28 +51,8 @@ interface RawProduct {
   featured?: boolean | null;
 }
 
-export const CATEGORY_ORDER = [
-  "Figures",
-  "Model Kits",
-  "Plush",
-  "Blind Boxes",
-  "Hobby Supplies",
-  "Character Goods",
-  "Apparel",
-] as const;
-
-export function categorySlug(name: string): string {
-  return name.toLowerCase().replace(/\s+/g, "-");
-}
-
-export function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[^\w\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-");
-}
+export { CATEGORY_ORDER, categorySlug, slugify, POPULAR_BRANDS, getCheckoutUrl } from "./constants";
+import { CATEGORY_ORDER, categorySlug } from "./constants";
 
 function clean(value: string | null | undefined): string | undefined {
   const trimmed = value?.trim();
@@ -122,31 +105,6 @@ const catalog = shopifyCatalog as unknown as ShopifyCatalog;
 export const IS_SHOPIFY_CATALOG = catalog.products.length > 0;
 
 const products: CommerceProduct[] = catalog.products.map(normalize);
-
-/**
- * Shopify cart permalink for checkout (https://shop/cart/variant:qty,...).
- * Returns null while the catalogue is empty or an item has no variant id.
- */
-export function getCheckoutUrl(
-  items: { variantId?: string | undefined; quantity: number }[],
-): string | null {
-  if (!IS_SHOPIFY_CATALOG || !catalog.shopDomain || items.length === 0) return null;
-  if (items.some((i) => !i.variantId)) return null;
-  const lines = items.map((i) => `${i.variantId}:${i.quantity}`).join(",");
-  return `https://${catalog.shopDomain}/cart/${lines}`;
-}
-
-/** Curated brand rail for the storefront. */
-export const POPULAR_BRANDS = [
-  "BANDAI",
-  "GOOD SMILE COMPANY",
-  "GSI Creos",
-  "SQUARE ENIX",
-  "MegaHouse",
-  "52TOYS",
-  "BellFine",
-  "CAPCOM",
-] as const;
 
 export function getSaleProducts(): CommerceProduct[] {
   return products.filter((p) => p.compareAtPrice && p.compareAtPrice > p.price);

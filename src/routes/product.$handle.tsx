@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getProductByHandle, getRelatedProducts } from "@/commerce/adapter";
+import { fetchProductPage } from "@/commerce/catalog-api";
 import type { CommerceProduct } from "@/types/commerce";
 import { formatPrice, STATUS_CTA, getBadge, isPurchasable, discountPercent } from "@/commerce/format";
 import { useCart } from "@/commerce/cart";
@@ -24,11 +24,12 @@ function productSummary(p: CommerceProduct): string {
 }
 
 export const Route = createFileRoute("/product/$handle")({
-  loader: ({ params }) => {
-    const product = getProductByHandle(params.handle);
-    if (!product) throw notFound();
-    return { product: product satisfies CommerceProduct };
+  loader: async ({ params }) => {
+    const page = await fetchProductPage({ data: params.handle });
+    if (!page) throw notFound();
+    return page;
   },
+  staleTime: 5 * 60_000,
   head: ({ loaderData, params }) => {
     const product = loaderData?.product;
     if (!product) {
@@ -86,10 +87,8 @@ function ProductNotFound() {
 }
 
 function ProductDetailPage() {
-  const { handle } = Route.useParams();
-  const product = getProductByHandle(handle) as CommerceProduct;
+  const { product, related } = Route.useLoaderData();
   const { addItem } = useCart();
-  const related = getRelatedProducts(product);
   const purchasable = isPurchasable(product.status);
   const badge = getBadge(product);
   const off = discountPercent(product);

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { CATEGORY_ORDER, categorySlug } from "@/commerce/adapter";
+import { CATEGORY_ORDER, categorySlug } from "@/commerce/constants";
 
 export const FIGURE_SUBCATEGORIES = [
   "Scale Figures",

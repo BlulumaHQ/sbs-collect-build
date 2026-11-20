@@ -1,10 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { getSeries } from "@/commerce/adapter";
+import { fetchSeries } from "@/commerce/catalog-api";
 import { seriesArtwork } from "@/commerce/artwork";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const Route = createFileRoute("/collections")({
+  loader: () => fetchSeries(),
+  staleTime: 5 * 60_000,
   head: () => ({
     meta: [
       { title: "Collections | Secret Builders Society" },
@@ -24,7 +26,7 @@ export const Route = createFileRoute("/collections")({
 });
 
 function CollectionsPage() {
-  const series = getSeries();
+  const series = Route.useLoaderData();
 
   return (
     <>

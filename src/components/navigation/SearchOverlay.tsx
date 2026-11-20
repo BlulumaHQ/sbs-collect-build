@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { searchProducts } from "@/commerce/adapter";
+import { fetchSearchSuggestions } from "@/commerce/catalog-api";
+import type { CommerceProduct } from "@/types/commerce";
 import { formatPrice } from "@/commerce/format";
 
 export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -26,7 +27,28 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  const results = useMemo(() => searchProducts(query).slice(0, 6), [query]);
+  const [results, setResults] = useState<CommerceProduct[]>([]);
+  useEffect(() => {
+    const q = query.trim();
+    if (!q) {
+      setResults([]);
+      return undefined;
+    }
+    let cancelled = false;
+    const id = window.setTimeout(() => {
+      fetchSearchSuggestions({ data: q })
+        .then((list) => {
+          if (!cancelled) setResults(list);
+        })
+        .catch(() => {
+          if (!cancelled) setResults([]);
+        });
+    }, 200);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(id);
+    };
+  }, [query]);
 
   if (!open) return null;
 

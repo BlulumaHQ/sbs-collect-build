@@ -6,11 +6,11 @@ import {
   MODEL_KIT_SUBCATEGORIES,
   SubcategoryLink,
 } from "./taxonomy";
-import { categorySlug, getProductsByCategorySlug } from "@/commerce/adapter";
-
-const accent = getProductsByCategorySlug("model-kits")[1];
+import { categorySlug } from "@/commerce/constants";
+import { useNavSummary } from "@/commerce/nav-summary";
 
 export function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
+  const accent = useNavSummary().menuAccent;
   return (
     <div className="border-t border-border bg-card">
       <div className="container-sbs grid gap-8 py-10 lg:grid-cols-[200px_1fr_1fr_1fr_240px]">
@@ -25,7 +25,7 @@ export function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
             Shop All
           </Link>
           <Link
-            to="/preorders"
+            to="/preorders" search={{ sort: "featured" }}
             onClick={onNavigate}
             className="text-sm text-charcoal/80 hover:text-sbs-red"
           >

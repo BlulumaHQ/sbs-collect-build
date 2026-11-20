@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCart } from "@/commerce/cart";
 import { formatPrice } from "@/commerce/format";
-import { getCheckoutUrl } from "@/commerce/adapter";
+import { getCheckoutUrl } from "@/commerce/constants";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { ProductStatusBadge } from "@/components/commerce/ProductStatusBadge";

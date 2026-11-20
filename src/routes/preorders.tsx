@@ -1,21 +1,26 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { getPreorderProducts } from "@/commerce/adapter";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { fetchListing } from "@/commerce/catalog-api";
+import { validateShopSearch, type ShopSearch } from "@/commerce/search-schema";
+import { CatalogueBrowser } from "@/components/commerce/CatalogueBrowser";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
-import { ProductGrid } from "@/components/commerce/ProductGrid";
 
 export const Route = createFileRoute("/preorders")({
+  validateSearch: validateShopSearch,
+  loaderDeps: ({ search }) => search,
+  loader: ({ deps }) => fetchListing({ data: { scope: { kind: "preorder" }, search: deps } }),
+  staleTime: 5 * 60_000,
   head: () => ({
     meta: [
       { title: "Preorders | Secret Builders Society" },
       {
         name: "description",
-        content: "Demo catalogue items currently listed with preorder status at Secret Builders Society.",
+        content: "Preorder upcoming figures, model kits and collector goods at Secret Builders Society, Vancouver. Prices in CAD.",
       },
       { property: "og:title", content: "Preorders | Secret Builders Society" },
       {
         property: "og:description",
-        content: "Demo catalogue items currently listed with preorder status.",
+        content: "Preorder upcoming figures, model kits and collector goods at Secret Builders Society.",
       },
       { property: "og:url", content: "/preorders" },
     ],
@@ -25,7 +30,10 @@ export const Route = createFileRoute("/preorders")({
 });
 
 function PreordersPage() {
-  const products = getPreorderProducts();
+  const listing = Route.useLoaderData();
+  const search = Route.useSearch();
+  const navigate = useNavigate({ from: "/preorders" });
+  const onChange = (next: ShopSearch) => navigate({ to: ".", search: next });
 
   return (
     <div>
@@ -35,10 +43,10 @@ function PreordersPage() {
           <SBSBuildRail index="04" label="Preorders" />
         </div>
         <h1 className="mt-5 font-display text-4xl md:text-6xl">On the Horizon</h1>
-        <p className="micro mt-4 text-muted-foreground">{products.length} products</p>
+        <p className="micro mt-4 text-muted-foreground">{listing.scopeTotal} products</p>
 
         <div className="mt-12 lg:mt-16">
-          <ProductGrid products={products} />
+          <CatalogueBrowser scope={{ kind: "preorder" }} listing={listing} search={search} onChange={onChange} showFilters={false} />
         </div>
 
         <div className="mt-16 border-t border-border pt-8">

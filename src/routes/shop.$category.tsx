@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
-import { getCategoryBySlug, getProductsByCategorySlug } from "@/commerce/adapter";
+import { fetchCategory, fetchListing } from "@/commerce/catalog-api";
 import { validateShopSearch, type ShopSearch } from "@/commerce/search-schema";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
@@ -8,11 +8,16 @@ import { CATEGORY_COPY } from "@/content/categories";
 
 export const Route = createFileRoute("/shop/$category")({
   validateSearch: validateShopSearch,
-  loader: ({ params }) => {
-    const category = getCategoryBySlug(params.category);
+  loaderDeps: ({ search }) => search,
+  loader: async ({ params, deps }) => {
+    const [category, listing] = await Promise.all([
+      fetchCategory({ data: params.category }),
+      fetchListing({ data: { scope: { kind: "category", slug: params.category }, search: deps } }),
+    ]);
     if (!category) throw notFound();
-    return { category };
+    return { category, listing };
   },
+  staleTime: 5 * 60_000,
   head: ({ loaderData, params }) => {
     const name = loaderData?.category.name;
     if (!name) {
@@ -39,7 +44,7 @@ export const Route = createFileRoute("/shop/$category")({
 });
 
 function CategoryPage() {
-  const { category } = Route.useLoaderData();
+  const { category, listing } = Route.useLoaderData();
   const search = Route.useSearch();
   const params = Route.useParams();
   const navigate = useNavigate({ from: "/shop/$category" });
@@ -77,7 +82,8 @@ function CategoryPage() {
 
         <div className="mt-10">
           <CatalogueBrowser
-            scope={getProductsByCategorySlug(category.slug)}
+            scope={{ kind: "category", slug: category.slug }}
+            listing={listing}
             search={search}
             onChange={onChange}
           />

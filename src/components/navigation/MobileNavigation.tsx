@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { PRIMARY_CATEGORIES } from "./taxonomy";
 import { GUNPLA_GRADES } from "@/commerce/attributes";
-import { getGundamProducts } from "@/commerce/adapter";
+import { useNavSummary } from "@/commerce/nav-summary";
 import { GUIDES } from "@/content/guides";
 import { STORE } from "@/config/store";
 import { useRewards } from "@/components/rewards/RewardsProvider";
@@ -28,7 +28,7 @@ const SUPPORT = [
 export function MobileNavigation({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [shopOpen, setShopOpen] = useState(true);
   const [gundamOpen, setGundamOpen] = useState(false);
-  const gundam = getGundamProducts();
+  const { gundam } = useNavSummary();
   const { openRewards } = useRewards();
   if (!open) return null;
 
@@ -103,7 +103,7 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
                   </Link>
                 ))}
               </div>
-              {gundam.length === 0 ? (
+              {gundam.total === 0 ? (
                 <p className="mt-2 text-xs text-muted-foreground">No Gundam kits listed yet.</p>
               ) : null}
               <Link to="/guides/gunpla-grades-explained" onClick={onClose} className="micro-sm mt-3 block text-sbs-red">

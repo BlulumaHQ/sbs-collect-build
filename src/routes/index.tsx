@@ -1,11 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  getAllProducts,
-  getCategories,
-  getPreorderProducts,
-  getFeaturedProducts,
-  getSaleProducts,
-} from "@/commerce/adapter";
+import { fetchHome } from "@/commerce/catalog-api";
+import { useNavSummary } from "@/commerce/nav-summary";
 import { CATEGORY_ARTWORK } from "@/commerce/artwork";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { ProductGrid } from "@/components/commerce/ProductGrid";
@@ -41,6 +36,8 @@ const HOME_SERIES: {
 ];
 
 export const Route = createFileRoute("/")({
+  loader: () => fetchHome({ data: HOME_SERIES.map(({ series, keys }) => ({ series, keys })) }),
+  staleTime: 5 * 60_000,
   head: () => ({
     meta: [
       { title: "Secret Builders Society | Figures, Model Kits & Collector Goods" },
@@ -68,19 +65,13 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const featured = getFeaturedProducts();
-  const preorders = getPreorderProducts().slice(0, 4);
-  const onSale = getSaleProducts().slice(0, 4);
-  const categories = getCategories();
-  const allProducts = getAllProducts();
-  const homeSeries = HOME_SERIES.map((entry) => {
-    const matches = allProducts.filter((p) =>
-      entry.keys.some((k) => `${p.series ?? ""} ${p.title}`.toLowerCase().includes(k)),
-    );
-    const image = entry.override || matches.find((p) => p.image)?.image || entry.fallback;
-    return { ...entry, image, count: matches.length };
+  const { featured, preorders, onSale, series } = Route.useLoaderData();
+  const { categories, total } = useNavSummary();
+  const homeSeries = HOME_SERIES.map((entry, i) => {
+    const found = series[i];
+    const image = entry.override || found?.image || entry.fallback;
+    return { ...entry, image, count: found?.count ?? 0 };
   });
-  const total = getAllProducts().length;
 
   return (
     <>
@@ -174,7 +165,7 @@ function HomePage() {
                 <SBSBuildRail index="05" label="Preorder Window" />
                 <h2 className="mt-5 font-display text-[32px] lg:text-[38px]">Coming Soon</h2>
               </div>
-              <Link to="/preorders" className="micro text-sbs-red hover:underline">
+              <Link to="/preorders" search={{ sort: "featured" }} className="micro text-sbs-red hover:underline">
                 All preorders
               </Link>
             </div>

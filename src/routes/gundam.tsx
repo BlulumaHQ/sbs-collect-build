@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { getGundamProducts } from "@/commerce/adapter";
+import { fetchListing } from "@/commerce/catalog-api";
 import { GUNPLA_GRADES, gradeName, gundamSeriesName } from "@/commerce/attributes";
 import { validateShopSearch, type ShopSearch } from "@/commerce/search-schema";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -12,6 +12,9 @@ const DESCRIPTION =
 
 export const Route = createFileRoute("/gundam")({
   validateSearch: validateShopSearch,
+  loaderDeps: ({ search }) => search,
+  loader: ({ deps }) => fetchListing({ data: { scope: { kind: "gundam" }, search: deps } }),
+  staleTime: 5 * 60_000,
   head: () => ({
     meta: [
       { title: TITLE },
@@ -31,7 +34,7 @@ export const Route = createFileRoute("/gundam")({
 function GundamPage() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: "/gundam" });
-  const scope = getGundamProducts();
+  const listing = Route.useLoaderData();
   const onChange = (next: ShopSearch) => navigate({ to: ".", search: next });
 
   const activeLabel = [
@@ -92,7 +95,8 @@ function GundamPage() {
 
       <div className="mt-10">
         <CatalogueBrowser
-          scope={scope}
+          scope={{ kind: "gundam" }}
+          listing={listing}
           search={search}
           onChange={onChange}
           emptyState={

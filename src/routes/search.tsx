@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { searchProducts } from "@/commerce/adapter";
+import { fetchListing } from "@/commerce/catalog-api";
+import { CatalogueBrowser } from "@/components/commerce/CatalogueBrowser";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { ProductGrid } from "@/components/commerce/ProductGrid";
@@ -9,6 +10,9 @@ export const Route = createFileRoute("/search")({
   validateSearch: (search: Record<string, unknown>) => ({
     q: typeof search["q"] === "string" ? search["q"] : "",
   }),
+  loaderDeps: ({ search }) => ({ q: search.q }),
+  loader: ({ deps }) =>
+    deps.q.trim() ? fetchListing({ data: { scope: { kind: "search", q: deps.q }, search: { sort: "featured" } } }) : Promise.resolve(null),
   head: () => ({
     meta: [
       { title: "Search | Secret Builders Society" },
@@ -32,7 +36,8 @@ function SearchPage() {
   const { q } = Route.useSearch();
   const navigate = useNavigate({ from: "/search" });
   const [value, setValue] = useState(q);
-  const results = searchProducts(q);
+  const listing = Route.useLoaderData();
+  const total = listing?.total ?? 0;
 
   return (
     <div>
@@ -70,12 +75,22 @@ function SearchPage() {
 
         {q ? (
           <p className="micro mt-6 text-muted-foreground">
-            {results.length} {results.length === 1 ? "result" : "results"} for “{q}”
+            {total} {total === 1 ? "result" : "results"} for “{q}”
           </p>
         ) : null}
 
         <div className="mt-8">
-          {q ? <ProductGrid products={results} emptyMessage="No products found." /> : null}
+          {q && listing && listing.total > 0 ? (
+            <CatalogueBrowser
+              scope={{ kind: "search", q }}
+              listing={listing}
+              search={{ sort: "featured" }}
+              onChange={() => undefined}
+              showFilters={false}
+            />
+          ) : q ? (
+            <ProductGrid products={[]} emptyMessage="No products found." />
+          ) : null}
         </div>
       </div>
     </div>

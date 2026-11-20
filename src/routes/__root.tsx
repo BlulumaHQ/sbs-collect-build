@@ -18,6 +18,7 @@ import { SiteFooter } from "@/components/navigation/SiteFooter";
 import { CartDrawer } from "@/components/navigation/CartDrawer";
 import { RewardsProvider } from "@/components/rewards/RewardsProvider";
 import { RewardsLauncher, RewardsModal } from "@/components/rewards/Rewards";
+import { fetchNavSummary } from "@/commerce/catalog-api";
 
 
 function NotFoundComponent() {
@@ -75,6 +76,9 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  // Small catalogue summary (counts per category / grade) for menus — never the full catalogue.
+  loader: () => fetchNavSummary(),
+  staleTime: 5 * 60_000,
   head: () => ({
     meta: [
       { charSet: "utf-8" },

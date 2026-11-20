@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { getGundamProducts } from "@/commerce/adapter";
+import { useNavSummary } from "@/commerce/nav-summary";
 import { GUNPLA_GRADES } from "@/commerce/attributes";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 
@@ -14,7 +14,7 @@ const BLURB: Record<string, string> = {
 };
 
 export function GundamGrades({ index }: { index: string }) {
-  const scope = getGundamProducts();
+  const { gundam } = useNavSummary();
   const grades = GUNPLA_GRADES.filter((g) => g.code !== "OTHER");
 
   return (
@@ -34,7 +34,7 @@ export function GundamGrades({ index }: { index: string }) {
 
         <div className="mt-9 grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-3 lg:grid-cols-6">
           {grades.map((g) => {
-            const n = scope.filter((p) => p.grade === g.code).length;
+            const n = gundam.grades[g.code] ?? 0;
             const inner = (
               <>
                 <span className="font-display text-[44px] leading-none tracking-tight transition-colors duration-200 group-hover:text-sbs-red lg:text-[52px]">
@@ -56,7 +56,7 @@ export function GundamGrades({ index }: { index: string }) {
             );
           })}
         </div>
-        {scope.length === 0 ? (
+        {gundam.total === 0 ? (
           <p className="mt-4 text-sm text-muted-foreground">
             Gundam kits aren’t in stock right now. New to Gunpla?{" "}
             <Link to="/guides/gunpla-grades-explained" className="text-sbs-red underline">Learn about grades</Link>.

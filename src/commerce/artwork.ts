@@ -1,4 +1,4 @@
-import { slugify } from "./adapter";
+import { slugify } from "./constants";
 
 /**
  * Local artwork resolvers.

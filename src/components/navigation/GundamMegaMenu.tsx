@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { getGundamProducts } from "@/commerce/adapter";
+import { useNavSummary } from "@/commerce/nav-summary";
 import { GUNDAM_SERIES, GUNPLA_GRADES } from "@/commerce/attributes";
 import { GUIDES } from "@/content/guides";
 
@@ -14,14 +14,13 @@ function Count({ n }: { n: number }) {
  * counts reflect products carrying that metadata.
  */
 export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
-  const scope = getGundamProducts();
-  const count = (pred: (p: (typeof scope)[number]) => boolean) => scope.filter(pred).length;
+  const { gundam } = useNavSummary();
 
   const availability = [
-    { label: "In Stock", search: { sort: "featured" as const, status: "available" }, n: count((p) => p.status === "available") },
-    { label: "New Arrivals", search: { sort: "featured" as const, new: true }, n: count((p) => Boolean(p.newArrival)) },
-    { label: "Preorders", search: { sort: "featured" as const, status: "preorder" }, n: count((p) => p.status === "preorder") },
-    { label: "On Sale", search: { sort: "featured" as const, sale: true }, n: count((p) => Boolean(p.compareAtPrice && p.compareAtPrice > p.price)) },
+    { label: "In Stock", search: { sort: "featured" as const, status: "available" }, n: gundam.available },
+    { label: "New Arrivals", search: { sort: "featured" as const, new: true }, n: gundam.newArrivals },
+    { label: "Preorders", search: { sort: "featured" as const, status: "preorder" }, n: gundam.preorder },
+    { label: "On Sale", search: { sort: "featured" as const, sale: true }, n: gundam.sale },
   ];
 
   return (
@@ -30,7 +29,7 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
         <div className="flex flex-col gap-1">
           <span className="micro mb-2 text-sbs-red">Shop by Grade</span>
           {GUNPLA_GRADES.map((g) => {
-            const n = count((p) => p.grade === g.code);
+            const n = gundam.grades[g.code] ?? 0;
             const label = g.code === "OTHER" ? g.name : `${g.code} · ${g.name}`;
             return (
               <Link key={g.code} to="/gundam" search={{ sort: "featured", grade: g.code }} onClick={onNavigate} className={linkCls}>
@@ -41,7 +40,7 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
           <Link to="/guides/gunpla-grades-explained" onClick={onNavigate} className="micro-sm mt-3 text-foreground hover:text-sbs-red">
             Learn about grades →
           </Link>
-          {scope.length === 0 ? (
+          {gundam.total === 0 ? (
             <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
               No Gundam kits are in stock right now.
             </p>
@@ -52,7 +51,7 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
           <span className="micro mb-2 text-sbs-red">Shop by Series</span>
           {GUNDAM_SERIES.map((s) => (
             <Link key={s.code} to="/gundam" search={{ sort: "featured", gseries: s.code }} onClick={onNavigate} className={linkCls}>
-              {s.name} <Count n={count((p) => p.gundamSeries === s.code)} />
+              {s.name} <Count n={gundam.series[s.code] ?? 0} />
             </Link>
           ))}
         </div>
