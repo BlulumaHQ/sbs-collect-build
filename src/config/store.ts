@@ -27,9 +27,9 @@ export const STORE = {
   ],
   /** One wording for pickup timing everywhere (FAQ, pickup page, product page, cart). */
   pickupLeadTime:
-    "We order from our supplier every Monday. Orders placed by Monday 11:59 PM (Pacific) are expected to be ready that Friday; orders placed Tuesday–Sunday are expected the following Friday. Please wait for our email saying your order is ready before coming in — no same-day pickup.",
+    "Orders placed by Sunday 11:59 PM (Pacific) are expected to be ready that coming Friday; orders placed from Monday on are expected the Friday after. Please wait for our email saying your order is ready before coming in — no same-day pickup.",
   /** One wording for the ship/ready rule in short spots (product page, cart). */
-  orderCutoff: "Order by Monday 11:59 PM (Pacific) for that Friday; later orders are ready the following Friday.",
+  orderCutoff: "Order by Sunday 11:59 PM (Pacific) for the coming Friday; orders from Monday on are ready the Friday after.",
   /** Holidays or supplier delays: push every estimated ready date back this many weeks. */
   fulfilmentDelayWeeks: 0,
   /** One wording for walk-in visits everywhere. */

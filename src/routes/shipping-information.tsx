@@ -38,9 +38,8 @@ function ShippingPage() {
       <div className="mt-12 grid gap-10 md:grid-cols-2">
         <Block title="Order processing">
           <p>
-            We order from our supplier every Monday and ship on Friday. Orders placed by Monday
-            11:59 PM (Pacific) are expected to ship that Friday; orders placed Tuesday–Sunday ship
-            the following Friday. Statutory holidays can push this back a week.
+            We ship on Fridays. Orders placed by Sunday 11:59 PM (Pacific) are expected to ship the
+            coming Friday; orders placed from Monday on ship the Friday after. Statutory holidays can push this back a week.
           </p>
         </Block>
 
