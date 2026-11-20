@@ -105,7 +105,7 @@ function AboutPage() {
                 loading="lazy"
                 className="h-10 w-auto lg:h-12"
               />
-              <span className="micro-sm text-muted-foreground">Our neighbours in the space →</span>
+              <span className="micro-sm text-muted-foreground">Sharing the space →</span>
             </a>
             <dl className="mt-8 grid gap-6 sm:grid-cols-2">
               <div>
@@ -129,12 +129,56 @@ function AboutPage() {
         </div>
       </section>
 
+      {/* 03 — meet the builder */}
+      <section className="section-y border-b border-border bg-bone">
+        <div className="container-sbs grid items-center gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+          <figure className="m-0">
+            <div className="aspect-square w-full overflow-hidden bg-charcoal">
+              <img
+                src="/images/team/yu-wei-wang.webp"
+                alt="Yu-Wei Wang, founder of Secret Builders Society"
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <figcaption className="micro-sm mt-3 text-muted-foreground">
+              Yu-Wei Wang — founder, buyer, builder
+            </figcaption>
+          </figure>
+          <div>
+            <SBSBuildRail index="03" label="Meet the Builder" />
+            <h2 className="mt-5 font-display text-[32px] leading-[1.06] lg:text-[42px]">
+              Yu-Wei Wang
+            </h2>
+            <div className="mt-6 max-w-xl space-y-4 text-[16px] leading-relaxed text-muted-foreground lg:text-[17px]">
+              <p>
+                Yu-Wei has spent more than two decades behind the counter of Vancouver&apos;s toy
+                and anime shops, and even longer as a serious collector. By day he manages Sakura
+                Media Metrotown. By night he&apos;s the bass player in a heavy metal band. He also
+                owns Unity Tattoo, cuts hair at Bosu Vancouver, and somewhere in between he started
+                Secret Builders Society: a small shelf of kits and figures he&apos;d actually buy
+                himself, inside the tattoo shop he built.
+              </p>
+              <p>
+                Every kit on our shelf is one he&apos;s picked. If you&apos;re not sure where to
+                start, ask him.
+              </p>
+            </div>
+            {/* TODO(Yu-Wei): replace with his own one-line quote */}
+            <blockquote className="mt-8 max-w-xl border-l-2 border-sbs-red pl-5 font-display text-xl leading-snug text-charcoal lg:text-2xl">
+              &ldquo;[One line from Yu-Wei — why he collects, or the first kit he ever
+              built.]&rdquo;
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
       {/* 03 — inside the shop gallery */}
       <section id="gallery" className="section-y scroll-mt-24 border-b border-border bg-white">
         <div className="container-sbs">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
-              <SBSBuildRail index="03" label="Inside the Shop" />
+              <SBSBuildRail index="04" label="Inside the Shop" />
               <h2 className="mt-5 font-display text-[32px] leading-[1.06] lg:text-[42px]">
                 Take a look around.
               </h2>

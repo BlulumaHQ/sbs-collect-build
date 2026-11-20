@@ -238,7 +238,17 @@ function ProductDetailPage() {
 
             {product.staffPick ? (
               <figure className="mt-6 border-l-2 border-sbs-red bg-bone px-4 py-3.5">
-                <figcaption className="micro text-sbs-red">Staff Pick</figcaption>
+                <figcaption className="flex items-center gap-2.5">
+                  <img
+                    src="/images/team/yu-wei-wang-avatar.webp"
+                    alt=""
+                    width={32}
+                    height={32}
+                    loading="lazy"
+                    className="h-8 w-8 rounded-full object-cover"
+                  />
+                  <span className="micro text-sbs-red">Staff Pick · Yu-Wei</span>
+                </figcaption>
                 <blockquote className="mt-1.5 whitespace-pre-line text-[15px] leading-relaxed text-charcoal">
                   {product.staffPick}
                 </blockquote>
