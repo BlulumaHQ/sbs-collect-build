@@ -161,7 +161,51 @@ function withReadableHandles(list: CommerceProduct[]): CommerceProduct[] {
   });
 }
 
-const products: CommerceProduct[] = withReadableHandles(catalog.products.map(normalize));
+/**
+ * Series families: supplier data spells one franchise many ways ("DRAGON BALL", "Dragon Ball Z",
+ * "Demon Slayer: Kimetsu no Yaiba"). Each family gets one label so filters, counts and the
+ * home page collection cards all agree.
+ */
+const SERIES_FAMILIES: [RegExp, string][] = [
+  [/^dragon ?ball/i, "Dragon Ball"],
+  [/demon slayer/i, "Demon Slayer"],
+  [/evangelion/i, "Evangelion"],
+  [/^naruto/i, "NARUTO"],
+  [/^one piece$/i, "ONE PIECE"],
+  [/pok[eé]mon/i, "Pokémon"],
+  [/my hero academia/i, "My Hero Academia"],
+  [/^star wars/i, "Star Wars"],
+  [/hatsune miku/i, "Hatsune Miku"],
+  [/jujutsu kaisen/i, "Jujutsu Kaisen"],
+  [/^haikyu/i, "Haikyu!!"],
+];
+
+const seriesKey = (value: string) =>
+  value.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9\u3040-\u9fff]+/g, "");
+
+/** Family label first; otherwise merge case/punctuation variants into the most common spelling. */
+function canonicalSeries(list: CommerceProduct[]): CommerceProduct[] {
+  const family = (s: string) => SERIES_FAMILIES.find(([re]) => re.test(s))?.[1];
+  const spellings = new Map<string, Map<string, number>>();
+  for (const p of list) {
+    if (!p.series || family(p.series)) continue;
+    const key = seriesKey(p.series);
+    const m = spellings.get(key) ?? new Map<string, number>();
+    m.set(p.series, (m.get(p.series) ?? 0) + 1);
+    spellings.set(key, m);
+  }
+  const best = new Map<string, string>();
+  for (const [key, m] of spellings) best.set(key, [...m.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? "");
+  return list.map((p) => {
+    if (!p.series) return p;
+    const label = family(p.series) ?? best.get(seriesKey(p.series)) ?? p.series;
+    return label === p.series ? p : { ...p, series: label };
+  });
+}
+
+const products: CommerceProduct[] = canonicalSeries(
+  withReadableHandles(catalog.products.map(normalize)),
+);
 const byHandle = new Map<string, CommerceProduct>();
 for (const p of products) {
   byHandle.set(p.handle, p);

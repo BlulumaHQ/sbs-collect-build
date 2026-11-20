@@ -15,7 +15,7 @@ function FilterGroup({ title, children }: { title: string; children: React.React
   return (
     <div className="border-b border-border py-5">
       <h3 className="micro mb-3 text-muted-foreground">{title}</h3>
-      <div className="flex flex-col gap-1.5">{children}</div>
+      <div className="flex flex-col gap-0.5">{children}</div>
     </div>
   );
 }
@@ -36,12 +36,24 @@ function Option({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`flex min-h-10 items-center justify-between gap-2 text-left text-sm lg:min-h-0 transition-colors duration-200 ${
-        active ? "text-sbs-red" : "text-charcoal/80 hover:text-sbs-red"
+      className={`group -mx-2 flex min-h-11 w-[calc(100%+1rem)] cursor-pointer items-center justify-between gap-3 rounded-md px-2 py-1.5 text-left text-[15px] transition-colors duration-150 lg:min-h-9 ${
+        active
+          ? "bg-sbs-red/10 font-medium text-sbs-red"
+          : "text-charcoal/85 hover:bg-charcoal/[0.06] hover:text-sbs-red"
       }`}
     >
       <span className="truncate">{label}</span>
-      {count !== undefined ? <span className="micro text-muted-foreground">{count}</span> : null}
+      {count !== undefined ? (
+        <span
+          className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums transition-colors duration-150 ${
+            active
+              ? "bg-sbs-red text-white"
+              : "bg-charcoal/[0.07] text-charcoal/70 group-hover:bg-sbs-red group-hover:text-white"
+          }`}
+        >
+          {count}
+        </span>
+      ) : null}
     </button>
   );
 }

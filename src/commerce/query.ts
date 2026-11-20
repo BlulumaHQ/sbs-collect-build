@@ -75,28 +75,47 @@ const PRICE_BANDS = [
   { min: 100, max: 100000 },
 ];
 
-export function computeFacets(scope: CommerceProduct[]): Facets {
+/**
+ * Filter options + counts. Each group is counted against the products that match every
+ * OTHER active filter, so a number next to an option is exactly what clicking it shows.
+ */
+export function computeFacets(scope: CommerceProduct[], search?: ShopSearch): Facets {
+  const without = (...keys: (keyof ShopSearch)[]) => {
+    if (!search) return scope;
+    const rest: ShopSearch = { ...search };
+    for (const k of keys) delete rest[k];
+    return filterProducts(scope, rest);
+  };
+  const forCategory = without("category");
+  const forGrade = without("grade");
+  const forGseries = without("gseries");
+  const forScale = without("scale");
+  const forSub = without("subcategory");
+  const forStatus = without("status");
+  const forVendor = without("vendor");
+  const forSeries = without("series");
+  const forPrice = without("minPrice", "maxPrice");
   return {
-    categories: ordered(tally(scope.map((p) => p.category)), CATEGORY_ORDER),
+    categories: ordered(tally(forCategory.map((p) => p.category)), CATEGORY_ORDER),
     grades: ordered(
-      tally(scope.map((p) => p.grade)),
+      tally(forGrade.map((p) => p.grade)),
       GUNPLA_GRADES.map((g) => g.code),
     ),
     gundamSeries: ordered(
-      tally(scope.map((p) => p.gundamSeries)),
+      tally(forGseries.map((p) => p.gundamSeries)),
       GUNDAM_SERIES.map((s) => s.code),
     ),
-    scales: sorted(tally(scope.map((p) => p.scale))),
-    subcategories: sorted(tally(scope.map((p) => p.subcategory))),
-    statuses: [...tally(scope.map((p) => p.status)).entries()].map(([value, count]) => ({
+    scales: sorted(tally(forScale.map((p) => p.scale))),
+    subcategories: sorted(tally(forSub.map((p) => p.subcategory))),
+    statuses: [...tally(forStatus.map((p) => p.status)).entries()].map(([value, count]) => ({
       value,
       count,
     })),
-    vendors: sorted(tally(scope.map((p) => p.vendor))),
-    series: sorted(tally(scope.map((p) => p.series))),
+    vendors: sorted(tally(forVendor.map((p) => p.vendor))),
+    series: sorted(tally(forSeries.map((p) => p.series))),
     priceBands: PRICE_BANDS.map((b) => ({
       ...b,
-      count: scope.filter((p) => p.price >= b.min && p.price <= b.max).length,
+      count: forPrice.filter((p) => p.price >= b.min && p.price <= b.max).length,
     })).filter((b) => b.count > 0),
   };
 }
@@ -121,6 +140,6 @@ export function paginate(scope: CommerceProduct[], search: ShopSearch): CatalogP
     total: results.length,
     page,
     pageCount,
-    facets: computeFacets(scope),
+    facets: computeFacets(scope, search),
   };
 }
