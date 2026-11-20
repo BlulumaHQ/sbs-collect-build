@@ -1,6 +1,6 @@
 {
  "shopDomain": "2zzz0q-zy.myshopify.com",
- "generatedAt": "2026-11-20T14:15:58.803Z",
+ "generatedAt": "2026-11-20T20:14:41.813Z",
  "products": [
   {
    "id": "10455198728472",
@@ -1540,7 +1540,7 @@
    "hot": null,
    "createdAt": "2026-11-14T02:15:59Z",
    "description": "Everything you need to start painting right away-a pack including exclusive paints and brushes for Gundam Assemble. [Includes] • Miniatures x3 • Unit cards x3 • Tactics cards x9 • Game tokens x1 set • Gundam Assemble colors x4 • Paintbrush x1",
-   "status": "preorder",
+   "status": "available",
    "price": 67.99,
    "currency": "CAD",
    "compareAtPrice": 74.99,
