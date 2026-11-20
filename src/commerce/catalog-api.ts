@@ -35,6 +35,9 @@ function lite(p: CommerceProduct): CommerceProduct {
     image: p.image,
     // Cards show the first image and swap to the second on hover.
     images: p.images.slice(0, 2),
+    // Photo framing (crop/centre) computed by the hourly sync — cards need both.
+    frame: p.frame,
+    hoverFrame: p.hoverFrame,
     variantId: p.variantId,
   };
 }
