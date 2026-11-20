@@ -75,7 +75,7 @@ function SearchPage() {
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder="Title, maker, series, SKU"
-            className="w-full border border-border bg-card px-4 py-3 text-sm outline-none focus:border-sbs-red"
+            className="w-full border border-border bg-card px-4 py-3 text-base outline-none focus:border-sbs-red"
           />
           <button
             type="submit"

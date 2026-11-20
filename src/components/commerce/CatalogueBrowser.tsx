@@ -4,6 +4,7 @@ import type { CatalogPage } from "@/commerce/query";
 import { ProductGrid } from "./ProductGrid";
 import { SortControl } from "./SortControl";
 import { ProductFilters } from "./ProductFilters";
+import { useDialog } from "@/lib/use-dialog";
 
 export function CatalogueBrowser({
   data,
@@ -20,6 +21,7 @@ export function CatalogueBrowser({
   showCategoryFilter?: boolean;
 }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const filterDialogRef = useDialog<HTMLDivElement>(mobileFiltersOpen, () => setMobileFiltersOpen(false));
 
   const { items, total, page, pageCount, facets } = data;
 
@@ -46,7 +48,7 @@ export function CatalogueBrowser({
             <button
               type="button"
               onClick={() => setMobileFiltersOpen(true)}
-              className="micro border border-border px-4 py-2 lg:hidden"
+              className="micro min-h-11 border border-border px-5 py-2 lg:hidden"
             >
               Filter
             </button>
@@ -72,6 +74,7 @@ export function CatalogueBrowser({
 
       {mobileFiltersOpen ? (
         <div
+          ref={filterDialogRef}
           className="fixed inset-0 z-[75] lg:hidden"
           role="dialog"
           aria-modal="true"
@@ -80,6 +83,7 @@ export function CatalogueBrowser({
           <button
             type="button"
             aria-label="Close filters"
+            tabIndex={-1}
             onClick={() => setMobileFiltersOpen(false)}
             className="absolute inset-0 h-full w-full bg-charcoal/70"
           />
@@ -88,8 +92,9 @@ export function CatalogueBrowser({
               <span className="micro">Filters</span>
               <button
                 type="button"
+                data-autofocus
                 onClick={() => setMobileFiltersOpen(false)}
-                className="micro text-muted-foreground hover:text-sbs-red"
+                className="micro inline-flex min-h-11 min-w-11 items-center justify-center px-3 -mr-3 text-muted-foreground hover:text-sbs-red"
               >
                 Done
               </button>

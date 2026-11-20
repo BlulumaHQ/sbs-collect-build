@@ -4,28 +4,33 @@ import { getCheckoutUrl } from "@/commerce/adapter";
 import { formatPrice } from "@/commerce/format";
 import { ProductStatusBadge } from "@/components/commerce/ProductStatusBadge";
 import { FreeShippingBar } from "@/components/commerce/FreeShippingBar";
+import { useDialog } from "@/lib/use-dialog";
 
 export function CartDrawer() {
   const { items, subtotal, currency, drawerOpen, closeDrawer, setQuantity, removeItem } = useCart();
   const checkoutUrl = getCheckoutUrl(items);
+  const dialogRef = useDialog<HTMLDivElement>(drawerOpen, closeDrawer);
+  const count = items.reduce((n, i) => n + i.quantity, 0);
 
   if (!drawerOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[80]" role="dialog" aria-modal="true" aria-label="Cart">
+    <div ref={dialogRef} className="fixed inset-0 z-[80]" role="dialog" aria-modal="true" aria-label="Cart">
       <button
         type="button"
         aria-label="Close cart"
+        tabIndex={-1}
         onClick={closeDrawer}
         className="absolute inset-0 h-full w-full bg-charcoal/70"
       />
       <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-border bg-card">
         <header className="flex items-center justify-between border-b border-border px-5 py-4">
-          <h2 className="micro text-foreground">Cart / {items.length} items</h2>
+          <h2 className="micro text-foreground">Cart / {count} {count === 1 ? "item" : "items"}</h2>
           <button
             type="button"
+            data-autofocus
             onClick={closeDrawer}
-            className="micro text-muted-foreground hover:text-sbs-red"
+            className="micro -mr-3 inline-flex min-h-11 min-w-11 items-center justify-center px-3 text-muted-foreground hover:text-sbs-red"
           >
             Close
           </button>
@@ -55,7 +60,7 @@ export function CartDrawer() {
                           type="button"
                           aria-label={`Decrease quantity of ${item.title}`}
                           onClick={() => setQuantity(item.id, item.quantity - 1)}
-                          className="px-2 py-1 text-sm hover:text-sbs-red"
+                          className="inline-flex h-11 w-11 items-center justify-center text-base hover:text-sbs-red"
                         >
                           −
                         </button>
@@ -64,7 +69,7 @@ export function CartDrawer() {
                           type="button"
                           aria-label={`Increase quantity of ${item.title}`}
                           onClick={() => setQuantity(item.id, item.quantity + 1)}
-                          className="px-2 py-1 text-sm hover:text-sbs-red"
+                          className="inline-flex h-11 w-11 items-center justify-center text-base hover:text-sbs-red"
                         >
                           +
                         </button>

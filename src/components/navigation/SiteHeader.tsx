@@ -134,7 +134,7 @@ export function SiteHeader() {
                   placeholder="Search products, brands, series, SKU or UPC"
                   aria-label="Search products, brands, series, SKU or UPC"
                   maxLength={120}
-                  className="h-13 w-full border border-border border-r-0 bg-white py-3.5 pl-11 pr-4 text-[15px] outline-none placeholder:text-muted-foreground focus:border-charcoal"
+                  className="h-13 w-full border border-border border-r-0 bg-white py-3.5 pl-11 pr-4 text-base outline-none placeholder:text-muted-foreground focus:border-charcoal"
                 />
               </div>
               <button
@@ -173,7 +173,7 @@ export function SiteHeader() {
               placeholder="Search products, brands, series, SKU…"
               aria-label="Search the catalogue"
               maxLength={120}
-              className="h-11 w-full border border-border border-r-0 bg-white px-3 text-[15px] outline-none focus:border-charcoal"
+              className="h-11 w-full border border-border border-r-0 bg-white px-3 text-base outline-none focus:border-charcoal"
             />
             <button type="submit" className="micro bg-sbs-red px-5 text-white">
               Go

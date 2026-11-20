@@ -36,7 +36,7 @@ function Option({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`flex items-center justify-between gap-2 text-left text-sm transition-colors duration-200 ${
+      className={`flex min-h-10 items-center justify-between gap-2 text-left text-sm lg:min-h-0 transition-colors duration-200 ${
         active ? "text-sbs-red" : "text-charcoal/80 hover:text-sbs-red"
       }`}
     >

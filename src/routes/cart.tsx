@@ -82,7 +82,7 @@ function CartPage() {
                             type="button"
                             aria-label={`Decrease quantity of ${item.title}`}
                             onClick={() => setQuantity(item.id, item.quantity - 1)}
-                            className="px-3 py-1.5 hover:text-sbs-red"
+                            className="inline-flex h-11 w-11 items-center justify-center hover:text-sbs-red"
                           >
                             −
                           </button>
@@ -91,7 +91,7 @@ function CartPage() {
                             type="button"
                             aria-label={`Increase quantity of ${item.title}`}
                             onClick={() => setQuantity(item.id, item.quantity + 1)}
-                            className="px-3 py-1.5 hover:text-sbs-red"
+                            className="inline-flex h-11 w-11 items-center justify-center hover:text-sbs-red"
                           >
                             +
                           </button>

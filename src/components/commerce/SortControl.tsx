@@ -21,7 +21,7 @@ export function SortControl({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value as SortKey)}
-        className="border border-border bg-card px-3 py-2 text-sm text-foreground"
+        className="border border-border min-h-11 bg-card px-3 py-2 text-base text-foreground sm:text-sm"
       >
         {SORT_OPTIONS.map((option) => (
           <option key={option.value} value={option.value}>
