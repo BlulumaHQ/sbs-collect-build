@@ -95,12 +95,16 @@ function normalize(p: RawProduct): CommerceProduct {
     gundamSeries: deriveGundamSeries({ gundamSeries: p.gundamSeries, title: p.title, isGundam }),
     // Pre-orders are never "new arrivals" — nothing has arrived yet.
     newArrival:
-      p.status !== "preorder" && (p.newArrival === true || isRecent(p.createdAt)) ? true : undefined,
+      p.status !== "preorder" && (p.newArrival === true || isRecent(p.createdAt))
+        ? true
+        : undefined,
     createdAt: clean(p.createdAt),
     description: clean(p.description),
     featured: p.featured === true ? true : undefined,
     // Supplier placeholders like "No Series" are not real series.
-    series: /^(no series|none|n\/a|others?)$/i.test(clean(p.series) ?? "") ? undefined : clean(p.series),
+    series: /^(no series|none|n\/a|others?)$/i.test(clean(p.series) ?? "")
+      ? undefined
+      : clean(p.series),
     character: clean(p.character),
     status: p.status as ProductStatus,
     price: p.price,
@@ -163,7 +167,28 @@ function withReadableHandles(list: CommerceProduct[]): CommerceProduct[] {
   });
 }
 
-const products: CommerceProduct[] = withReadableHandles(catalog.products.map(normalize));
+/** Feature photos chosen by the shop, keyed by readable handle. Shown first; the Shopify gallery follows. */
+const FEATURE_IMAGE_OVERRIDES: Record<string, string> = {
+  "godhand-brushwork-pro-point-brush-s":
+    "/images/product-photos/godhand-brushwork-pro-point-brush-s.webp",
+};
+
+function withFeatureOverrides(list: CommerceProduct[]): CommerceProduct[] {
+  return list.map((p) => {
+    const src = FEATURE_IMAGE_OVERRIDES[p.handle];
+    if (!src) return p;
+    return {
+      ...p,
+      image: src,
+      images: [src, ...p.images.filter((i) => i !== src)],
+      framing: undefined,
+    } as CommerceProduct;
+  });
+}
+
+const products: CommerceProduct[] = withFeatureOverrides(
+  withReadableHandles(catalog.products.map(normalize)),
+);
 const byHandle = new Map<string, CommerceProduct>();
 for (const p of products) {
   byHandle.set(p.handle, p);
@@ -301,12 +326,16 @@ export function getPreorderProducts(): CommerceProduct[] {
 }
 
 /** Lower-case and drop punctuation/spaces so "RX-78", "rx 78" and "rx78" all match. */
-const squash = (value: string) => value.toLowerCase().normalize("NFKD").replace(/[^a-z0-9\u3040-\u9fff]+/g, "");
+const squash = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[^a-z0-9\u3040-\u9fff]+/g, "");
 
 /** Shopper words → words that actually appear in product data. */
 const SEARCH_ALIASES: Record<string, string[]> = {
   "mr hobby": ["gsi creos", "mr."],
-  "mrhobby": ["gsi creos", "mr."],
+  mrhobby: ["gsi creos", "mr."],
   "mr color": ["gsi creos", "mr.color"],
   gunpla: ["gundam"],
   sanding: ["sand", "file", "ff board", "sponge", "polish"],
@@ -327,14 +356,30 @@ export function searchProducts(query: string): CommerceProduct[] {
   const terms = raw.split(/\s+/).filter(Boolean);
   const scored: { p: CommerceProduct; score: number }[] = [];
   for (const p of products) {
-    const fields = [p.title, p.vendor, p.category, p.subcategory, p.series, p.character, p.franchise, p.grade, p.scale, p.sku, p.upc]
+    const fields = [
+      p.title,
+      p.vendor,
+      p.category,
+      p.subcategory,
+      p.series,
+      p.character,
+      p.franchise,
+      p.grade,
+      p.scale,
+      p.sku,
+      p.upc,
+    ]
       .filter(Boolean)
       .map((f) => String(f));
     const hay = squash(fields.join(" "));
     const hayLower = fields.join(" ").toLowerCase();
     let ok = terms.every((t) => {
       const alias = SEARCH_ALIASES[t];
-      if (alias) return alias.some((a) => hayLower.includes(a) || hay.includes(squash(a))) || hay.includes(squash(t));
+      if (alias)
+        return (
+          alias.some((a) => hayLower.includes(a) || hay.includes(squash(a))) ||
+          hay.includes(squash(t))
+        );
       return hay.includes(squash(t));
     });
     if (!ok && aliasHit) ok = aliasHit.some((a) => hayLower.includes(a));
