@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { MapPin, Phone, Search, ShoppingBag } from "lucide-react";
+import { Menu, MapPin, Phone, Search, ShoppingBag, X } from "lucide-react";
 import { MegaMenu } from "./MegaMenu";
 import { GundamMegaMenu } from "./GundamMegaMenu";
 import { MobileNavigation } from "./MobileNavigation";
@@ -27,12 +27,26 @@ export function SiteHeader() {
   const navigate = useNavigate();
   const [mega, setMega] = useState<MegaKey>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  // Mobile: once scrolled, the header shrinks to one compact sticky bar (menu · logo · search · cart).
+  const [compact, setCompact] = useState(false);
+  const [mobileSearch, setMobileSearch] = useState(false);
+  const mobileSearchRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (mobileSearch) mobileSearchRef.current?.focus();
+  }, [mobileSearch]);
+  useEffect(() => {
+    const onScroll = () => setCompact(window.scrollY > 140);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   const [query, setQuery] = useState("");
   const { count, subtotal, openDrawer } = useCart();
 
   useEffect(() => {
     setMega(null);
     setMobileOpen(false);
+    setMobileSearch(false);
   }, [pathname]);
 
   const submit = (e: React.FormEvent) => {
@@ -45,7 +59,7 @@ export function SiteHeader() {
   return (
     <>
       <header
-        className="relative z-[60] bg-card lg:sticky lg:top-0"
+        className="sticky top-[-36px] z-[60] bg-card shadow-[0_1px_0_rgba(0,0,0,0.04)] lg:top-0"
         onMouseLeave={() => setMega(null)}
       >
         {/* TIER 1 — utility bar */}
@@ -95,14 +109,19 @@ export function SiteHeader() {
 
         {/* TIER 2 — brand + search + cart */}
         <div className="border-b border-border bg-card">
-          <div className="container-sbs flex items-center gap-6 py-4 lg:h-[108px] lg:py-0">
+          <div
+            className={`container-sbs flex items-center gap-3 transition-[padding] duration-200 sm:gap-6 lg:h-[108px] lg:py-0 ${
+              compact ? "py-1.5" : "py-3"
+            }`}
+          >
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
-              className="micro border border-border px-3 py-3 lg:hidden"
+              className="-ml-2 inline-flex h-11 min-w-11 items-center justify-center gap-1.5 px-2 lg:hidden"
             >
-              Menu
+              <Menu size={22} aria-hidden="true" />
+              <span className="micro-sm hidden sm:inline">Menu</span>
             </button>
 
             <Link to="/" aria-label="Secret Builders Society — home" className="shrink-0">
@@ -111,7 +130,9 @@ export function SiteHeader() {
                 alt="Secret Builders Society"
                 width={310}
                 height={87}
-                className="h-12 w-[168px] object-contain object-left md:h-[68px] md:w-[240px] lg:h-[86px] lg:w-[310px]"
+                className={`object-contain object-left transition-[height,width] duration-200 md:h-[68px] md:w-[240px] lg:h-[86px] lg:w-[310px] ${
+                  compact ? "h-9 w-[128px]" : "h-12 w-[168px]"
+                }`}
               />
             </Link>
 
@@ -145,12 +166,27 @@ export function SiteHeader() {
               </button>
             </form>
 
-            <div className="ml-auto flex shrink-0 items-center gap-3">
+            <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-3">
+              {compact ? (
+                <button
+                  type="button"
+                  onClick={() => setMobileSearch((v) => !v)}
+                  aria-label={mobileSearch ? "Close search" : "Search"}
+                  aria-expanded={mobileSearch}
+                  className="inline-flex h-11 w-11 items-center justify-center md:hidden"
+                >
+                  {mobileSearch ? (
+                    <X size={22} aria-hidden="true" />
+                  ) : (
+                    <Search size={22} aria-hidden="true" />
+                  )}
+                </button>
+              ) : null}
               <button
                 type="button"
                 onClick={openDrawer}
                 aria-label={`Cart, ${count} items, ${formatMoneyCAD(subtotal)}`}
-                className="inline-flex items-center gap-3 border border-charcoal bg-charcoal px-4 py-3 text-white transition-colors duration-200 hover:border-sbs-red hover:bg-sbs-red lg:px-5"
+                className="relative inline-flex min-h-11 items-center gap-3 border border-charcoal bg-charcoal px-3 py-2.5 text-white transition-colors duration-200 hover:border-sbs-red hover:bg-sbs-red sm:px-4 sm:py-3 lg:px-5"
               >
                 <ShoppingBag size={20} aria-hidden="true" />
                 <span className="hidden text-left leading-tight sm:block">
@@ -159,14 +195,23 @@ export function SiteHeader() {
                     {formatMoneyCAD(subtotal)}
                   </span>
                 </span>
-                <span className="micro-sm sm:hidden">{count}</span>
+                {count > 0 ? (
+                  <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-sbs-red px-1 text-[11px] font-semibold leading-none text-white ring-2 ring-card sm:hidden">
+                    {count}
+                  </span>
+                ) : null}
               </button>
             </div>
           </div>
 
           {/* mobile search */}
-          <form onSubmit={submit} role="search" className="container-sbs flex pb-4 md:hidden">
+          <form
+            onSubmit={submit}
+            role="search"
+            className={`container-sbs pb-3 md:hidden ${!compact || mobileSearch ? "flex" : "hidden"}`}
+          >
             <input
+              ref={mobileSearchRef}
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
