@@ -18,8 +18,8 @@ export interface GuideMeta {
 export const GUIDES: GuideMeta[] = [
   {
     slug: "gunpla-grades-explained",
-    image: "/images/guides/gunpla-grades-explained.webp",
-    imageAlt: "Building a Gundam kit with five RX-78-2 kits of different grades lined up on the workbench",
+    image: "/images/guides/gunpla-grades-explained-v2.webp",
+    imageAlt: "Building a Gundam kit at a home workbench with RX-78-2 kits of different grades lined up",
     path: "/guides/gunpla-grades-explained",
     title: "Gunpla Grades Explained: EG vs HG vs RG vs MG vs PG",
     seoTitle: "Gunpla Grades Explained: EG, HG, RG, MG, PG & SD | SBS Guides",
@@ -32,7 +32,7 @@ export const GUIDES: GuideMeta[] = [
   },
   {
     slug: "essential-gunpla-tools",
-    image: "/images/guides/essential-gunpla-tools.webp",
+    image: "/images/guides/essential-gunpla-tools-v2.webp",
     imageAlt: "Clipping a part from its runner with nippers, with a hobby knife, sanding sticks, tweezers and panel liner on the cutting mat",
     path: "/guides/essential-gunpla-tools",
     title: "Essential Tools for Your First Gunpla Build",
@@ -46,7 +46,7 @@ export const GUIDES: GuideMeta[] = [
   },
   {
     slug: "how-to-build-your-first-gundam",
-    image: "/images/guides/how-to-build-your-first-gundam.webp",
+    image: "/images/guides/how-to-build-your-first-gundam-v2.webp",
     imageAlt: "Assembling a first Gundam model kit at a workbench with the instruction manual open",
     path: "/guides/how-to-build-your-first-gundam",
     title: "How to Build Your First Gundam Model Kit",

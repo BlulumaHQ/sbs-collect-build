@@ -195,7 +195,13 @@ export function getNewArrivals(limit = 8): CommerceProduct[] {
   const fresh = products.filter((p) => p.newArrival && inStock(p)).sort(byNewest);
   // Nothing new yet (or no createdAt in an older snapshot): newest in-stock instead.
   const pool = fresh.length ? fresh : products.filter(inStock).sort(byNewest);
-  return pool.slice(0, limit);
+  // A different random set on every visit (Fisher–Yates on a copy).
+  const picks = [...pool];
+  for (let i = picks.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [picks[i], picks[j]] = [picks[j]!, picks[i]!];
+  }
+  return picks.slice(0, limit);
 }
 
 export function getAllProducts(): CommerceProduct[] {
