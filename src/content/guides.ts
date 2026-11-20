@@ -10,11 +10,16 @@ export interface GuideMeta {
   excerpt: string;
   readingMinutes: number;
   level: string;
+  /** Cover photo (public/images/guides/<slug>.webp) and its alt text. */
+  image: string;
+  imageAlt: string;
 }
 
 export const GUIDES: GuideMeta[] = [
   {
     slug: "gunpla-grades-explained",
+    image: "/images/guides/gunpla-grades-explained.webp",
+    imageAlt: "Building a Gundam kit with five RX-78-2 kits of different grades lined up on the workbench",
     path: "/guides/gunpla-grades-explained",
     title: "Gunpla Grades Explained: EG vs HG vs RG vs MG vs PG",
     seoTitle: "Gunpla Grades Explained: EG, HG, RG, MG, PG & SD | SBS Guides",
@@ -27,6 +32,8 @@ export const GUIDES: GuideMeta[] = [
   },
   {
     slug: "essential-gunpla-tools",
+    image: "/images/guides/essential-gunpla-tools.webp",
+    imageAlt: "Clipping a part from its runner with nippers, with a hobby knife, sanding sticks, tweezers and panel liner on the cutting mat",
     path: "/guides/essential-gunpla-tools",
     title: "Essential Tools for Your First Gunpla Build",
     seoTitle: "Essential Gunpla Tools for Beginners: Nippers, Sanding & Panel Lining | SBS Guides",
@@ -39,6 +46,8 @@ export const GUIDES: GuideMeta[] = [
   },
   {
     slug: "how-to-build-your-first-gundam",
+    image: "/images/guides/how-to-build-your-first-gundam.webp",
+    imageAlt: "Assembling a first Gundam model kit at a workbench with the instruction manual open",
     path: "/guides/how-to-build-your-first-gundam",
     title: "How to Build Your First Gundam Model Kit",
     seoTitle: "How to Build Your First Gundam Model Kit: Step-by-Step | SBS Guides",
@@ -65,7 +74,8 @@ export function guideHead(slug: GuideMeta["slug"]) {
       { property: "og:title", content: guide.seoTitle },
       { property: "og:description", content: guide.description },
       { property: "og:type", content: "article" },
-      { property: "og:url", content: guide.path },
+      { property: "og:url", content: `https://secretbuilderssociety.ca${guide.path}` },
+      { property: "og:image", content: `https://secretbuilderssociety.ca${guide.image.replace(".webp", "-share.jpg")}` },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: guide.path }],

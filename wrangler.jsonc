@@ -7,6 +7,9 @@
   "assets": {
     "directory": "dist/client"
   },
+  "send_email": [
+    { "name": "SEND_EMAIL", "destination_address": "jointhesbs@gmail.com" }
+  ],
   "observability": {
     "enabled": true
   }

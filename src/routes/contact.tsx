@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Clock, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { sendContactMessage } from "@/lib/contact-api";
 import {
   MAPS_DIRECTIONS_URL,
   MAPS_EMBED_SRC,
@@ -37,7 +38,10 @@ const FIELD =
 
 function ContactPage() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [openedAt] = useState(() => Date.now());
+  const [honeypot, setHoneypot] = useState("");
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -49,7 +53,7 @@ function ContactPage() {
   const set = (key: keyof typeof form) => (value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim() || !form.subject.trim() || !form.message.trim()) {
       setError("Please complete name, subject and message.");
@@ -60,10 +64,27 @@ function ContactPage() {
       return;
     }
     setError(null);
-    // No form backend yet: hand the message to the customer's own email app, addressed to the store.
-    const body = `${form.message}\n\n— ${form.name} (${form.email})`;
-    window.location.href = `mailto:${STORE.email}?subject=${encodeURIComponent(form.subject)}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+    setSending(true);
+    try {
+      const res = await sendContactMessage({
+        data: { ...form, website: honeypot, elapsed: Date.now() - openedAt },
+      });
+      if (res.ok) {
+        setSent(true);
+        return;
+      }
+      setError(
+        res.error === "send-failed"
+          ? `Sorry — your message couldn't be sent right now. Please email us at ${STORE.email} or call ${STORE.phone}.`
+          : res.error,
+      );
+    } catch {
+      setError(
+        `Sorry — your message couldn't be sent right now. Please email us at ${STORE.email}.`,
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -128,7 +149,12 @@ function ContactPage() {
                   <ul className="mt-2 space-y-1 text-[16px]">
                     {STORE.social.map((s) => (
                       <li key={s.label}>
-                        <a href={s.href} target="_blank" rel="noopener noreferrer" className="hover:text-sbs-red">
+                        <a
+                          href={s.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-sbs-red"
+                        >
                           {s.label} — {s.handle}
                         </a>
                       </li>
@@ -159,13 +185,13 @@ function ContactPage() {
             <p className="mt-4 font-display text-[26px] lg:text-[30px]">Send us a message</p>
 
             {sent ? (
-              <p className="mt-8 border border-sbs-red/30 bg-sbs-red/5 p-5 text-[16px] leading-relaxed">
-                Your email app should now open with your message to {STORE.email} — press Send there to
-                reach us. If nothing opened, email us directly at{" "}
-                <a href={`mailto:${STORE.email}`} className="text-sbs-red underline">
-                  {STORE.email}
-                </a>
-                .
+              <p
+                role="status"
+                className="mt-8 border border-sbs-red/30 bg-sbs-red/5 p-5 text-[16px] leading-relaxed"
+              >
+                Thanks, {form.name.split(" ")[0] || "there"} — your message has been sent. We'll
+                reply to {form.email}, usually within a few days (the store is open Friday to
+                Sunday).
               </p>
             ) : (
               <form onSubmit={submit} noValidate className="mt-7 space-y-5">
@@ -234,9 +260,26 @@ function ContactPage() {
                     onChange={(e) => set("message")(e.target.value)}
                   />
                 </div>
-                {error ? <p className="text-sm text-sbs-red">{error}</p> : null}
-                <button type="submit" className="btn-primary-sbs">
-                  Send message
+                <div
+                  aria-hidden="true"
+                  className="absolute -left-[9999px] h-px w-px overflow-hidden"
+                >
+                  <label htmlFor="cf-website">Website</label>
+                  <input
+                    id="cf-website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </div>
+                {error ? (
+                  <p role="alert" className="text-sm text-sbs-red">
+                    {error}
+                  </p>
+                ) : null}
+                <button type="submit" className="btn-primary-sbs" disabled={sending}>
+                  {sending ? "Sending…" : "Send message"}
                 </button>
               </form>
             )}
