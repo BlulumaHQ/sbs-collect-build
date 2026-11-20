@@ -6,9 +6,7 @@ import {
   MODEL_KIT_SUBCATEGORIES,
   SubcategoryLink,
 } from "./taxonomy";
-import { categorySlug, getProductsByCategorySlug } from "@/commerce/adapter";
-
-const accent = getProductsByCategorySlug("model-kits")[1];
+import { categorySlug } from "@/commerce/adapter";
 
 export function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
   return (
@@ -95,21 +93,22 @@ export function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
               {name}
             </Link>
           ))}
-          {accent ? (
-            <Link
-              to="/product/$handle"
-              params={{ handle: accent.handle }}
-              onClick={onNavigate}
-              className="mt-4 block border border-border bg-bone"
-            >
-              <img
-                src={accent.image}
-                alt={accent.title}
-                loading="lazy"
-                className="aspect-square w-full object-contain p-4"
-              />
-            </Link>
-          ) : null}
+          <Link
+            to="/gundam"
+            search={{ sort: "featured" }}
+            onClick={onNavigate}
+            className="group mt-4 block border border-border bg-white"
+          >
+            <img
+              src="/images/menu/rx-78-2-gundam.webp"
+              alt="RX-78-2 Gundam model kit"
+              loading="lazy"
+              className="aspect-square w-full object-contain p-2 transition-transform duration-300 group-hover:scale-[1.04]"
+            />
+            <span className="micro-sm block border-t border-border px-3 py-2 text-charcoal group-hover:text-sbs-red">
+              Shop Gundam →
+            </span>
+          </Link>
         </div>
       </div>
     </div>

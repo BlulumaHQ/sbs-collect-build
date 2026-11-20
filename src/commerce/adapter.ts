@@ -37,6 +37,7 @@ interface RawProduct {
   estimatedRelease?: string | null;
   preorderDeadline?: string | null;
   staffPick?: string | null;
+  hot?: boolean | null;
   compareAtPrice?: number | null;
   image: string;
   images?: string[] | null;
@@ -112,6 +113,7 @@ function normalize(p: RawProduct): CommerceProduct {
     estimatedRelease: formatRelease(clean(p.estimatedRelease)),
     preorderDeadline: clean(p.preorderDeadline),
     staffPick: clean(p.staffPick),
+    hot: p.hot === true ? true : undefined,
     compareAtPrice: p.compareAtPrice ?? undefined,
     image: p.image,
     images: p.images?.length ? p.images : [p.image],
@@ -192,6 +194,22 @@ export function getProductsByIds(ids: string[]): CommerceProduct[] {
   return ids
     .map((id) => products.find((p) => p.id === id))
     .filter((p): p is CommerceProduct => Boolean(p));
+}
+
+/**
+ * Hero "On Our Shelf": products tagged `hot` first, then the shop's own
+ * in-stock listings (not the Plamod supplier feed), Gundam first.
+ */
+export function getHotProducts(limit = 3): CommerceProduct[] {
+  const inStock = products.filter((p) => p.status === "available" || p.status === "last-one");
+  const tagged = inStock.filter((p) => p.hot);
+  const own = inStock
+    .filter((p) => !p.hot && !p.handle.startsWith("plamod-"))
+    .sort(
+      (a, b) =>
+        Number(b.franchise === "Gundam") - Number(a.franchise === "Gundam") || b.price - a.price,
+    );
+  return [...tagged, ...own].slice(0, limit);
 }
 
 export function getCategories(): CommerceCategory[] {
