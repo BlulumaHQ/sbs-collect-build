@@ -1,10 +1,9 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { fetchListing } from "@/commerce/catalog-api";
 import { CatalogueBrowser } from "@/components/commerce/CatalogueBrowser";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
-import { ProductGrid } from "@/components/commerce/ProductGrid";
 
 export const Route = createFileRoute("/search")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -89,7 +88,33 @@ function SearchPage() {
               showFilters={false}
             />
           ) : q ? (
-            <ProductGrid products={[]} emptyMessage="No products found." />
+            <div className="border border-border bg-card p-6">
+              <p className="text-[16px]">No products found for “{q}”.</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Try a shorter word, a model number or a maker — or browse a category:
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Link to="/gundam" search={{ sort: "featured" }} className="micro border border-border px-4 py-3 hover:border-sbs-red hover:text-sbs-red">
+                  Gundam
+                </Link>
+                {[
+                  ["figures", "Figures"],
+                  ["model-kits", "Model Kits"],
+                  ["hobby-supplies", "Hobby Supplies"],
+                  ["blind-boxes", "Blind Boxes"],
+                ].map(([slug, label]) => (
+                  <Link
+                    key={slug}
+                    to="/shop/$category"
+                    params={{ category: slug! }}
+                    search={{ sort: "featured" }}
+                    className="micro border border-border px-4 py-3 hover:border-sbs-red hover:text-sbs-red"
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            </div>
           ) : null}
         </div>
       </div>

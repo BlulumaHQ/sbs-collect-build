@@ -207,26 +207,56 @@ export function getPreorderProducts(): CommerceProduct[] {
   return products.filter((p) => p.status === "preorder");
 }
 
+/** Lower-case and drop punctuation/spaces so "RX-78", "rx 78" and "rx78" all match. */
+const squash = (value: string) => value.toLowerCase().normalize("NFKD").replace(/[^a-z0-9\u3040-\u9fff]+/g, "");
+
+/** Shopper words → words that actually appear in product data. */
+const SEARCH_ALIASES: Record<string, string[]> = {
+  "mr hobby": ["gsi creos", "mr."],
+  "mrhobby": ["gsi creos", "mr."],
+  "mr color": ["gsi creos", "mr.color"],
+  gunpla: ["gundam"],
+  sanding: ["sand", "file", "ff board", "sponge", "polish"],
+  sandpaper: ["sand", "file", "ff board"],
+  nipper: ["nipper", "cutter"],
+  nippers: ["nipper", "cutter"],
+  glue: ["cement", "glue"],
+  paint: ["paint", "color", "colour", "lacquer", "acrylic"],
+  topcoat: ["top coat", "clear"],
+  nendo: ["nendoroid"],
+};
+
+/** Every word must match some field (AND), comparing squashed text so hyphens and spaces don't matter. */
 export function searchProducts(query: string): CommerceProduct[] {
-  const q = query.trim().toLowerCase();
-  if (!q) return [];
-  return products.filter((p) =>
-    [
-      p.title,
-      p.vendor,
-      p.category,
-      p.subcategory,
-      p.series,
-      p.character,
-      p.franchise,
-      p.grade,
-      p.scale,
-      p.sku,
-      p.upc,
-    ]
+  const raw = query.trim().toLowerCase();
+  if (!raw) return [];
+  const aliasHit = SEARCH_ALIASES[raw];
+  const terms = raw.split(/\s+/).filter(Boolean);
+  const scored: { p: CommerceProduct; score: number }[] = [];
+  for (const p of products) {
+    const fields = [p.title, p.vendor, p.category, p.subcategory, p.series, p.character, p.franchise, p.grade, p.scale, p.sku, p.upc]
       .filter(Boolean)
-      .some((field) => String(field).toLowerCase().includes(q)),
-  );
+      .map((f) => String(f));
+    const hay = squash(fields.join(" "));
+    const hayLower = fields.join(" ").toLowerCase();
+    let ok = terms.every((t) => {
+      const alias = SEARCH_ALIASES[t];
+      if (alias) return alias.some((a) => hayLower.includes(a) || hay.includes(squash(a))) || hay.includes(squash(t));
+      return hay.includes(squash(t));
+    });
+    if (!ok && aliasHit) ok = aliasHit.some((a) => hayLower.includes(a));
+    if (!ok) continue;
+    const title = squash(p.title);
+    const whole = squash(raw);
+    let score = 0;
+    if (p.sku && squash(p.sku) === whole) score += 100;
+    if (p.upc && squash(p.upc) === whole) score += 100;
+    if (title.startsWith(whole)) score += 20;
+    if (title.includes(whole)) score += 10;
+    if (p.status === "available") score += 2;
+    scored.push({ p, score });
+  }
+  return scored.sort((a, b) => b.score - a.score).map((x) => x.p);
 }
 
 export function getRelatedProducts(product: CommerceProduct, limit = 4): CommerceProduct[] {
