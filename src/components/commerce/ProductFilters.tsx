@@ -1,3 +1,4 @@
+import { Children, isValidElement, useState } from "react";
 import type { Facets } from "@/commerce/query";
 import type { ShopSearch } from "@/commerce/search-schema";
 import { formatPrice } from "@/commerce/format";
@@ -11,11 +12,29 @@ const FILTER_STATUS_LABEL: Record<string, string> = {
 import { categorySlug } from "@/commerce/adapter";
 import { GUNPLA_GRADES, GUNDAM_SERIES } from "@/commerce/attributes";
 
+const VISIBLE_OPTIONS = 8;
+
 function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
+  const items = Children.toArray(children);
+  const [expanded, setExpanded] = useState(false);
+  // Keep the list open if the chosen option sits below the fold.
+  const activeHidden = items
+    .slice(VISIBLE_OPTIONS)
+    .some((c) => isValidElement<{ active?: boolean }>(c) && c.props.active);
+  const showAll = expanded || activeHidden || items.length <= VISIBLE_OPTIONS + 2;
   return (
-    <div className="border-b border-border py-5">
-      <h3 className="micro mb-3 text-muted-foreground">{title}</h3>
-      <div className="flex flex-col gap-1.5">{children}</div>
+    <div className="border-b border-border py-4">
+      <h3 className="micro mb-2 text-muted-foreground">{title}</h3>
+      <div className="flex flex-col">{showAll ? items : items.slice(0, VISIBLE_OPTIONS)}</div>
+      {items.length > VISIBLE_OPTIONS + 2 && !activeHidden ? (
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          className="micro mt-1 min-h-11 text-left text-sbs-red hover:underline lg:min-h-9"
+        >
+          {expanded ? "Show less" : `Show all ${items.length}`}
+        </button>
+      ) : null}
     </div>
   );
 }
@@ -36,8 +55,10 @@ function Option({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`flex min-h-10 items-center justify-between gap-2 text-left text-sm lg:min-h-0 transition-colors duration-200 ${
-        active ? "text-sbs-red" : "text-charcoal/80 hover:text-sbs-red"
+      className={`-mx-2 flex min-h-11 w-[calc(100%+1rem)] items-center justify-between gap-2 px-2 text-left text-[15px] transition-colors duration-200 lg:min-h-9 ${
+        active
+          ? "bg-sbs-red/10 font-medium text-sbs-red"
+          : "text-charcoal/85 hover:bg-charcoal/5 hover:text-sbs-red"
       }`}
     >
       <span className="truncate">{label}</span>
