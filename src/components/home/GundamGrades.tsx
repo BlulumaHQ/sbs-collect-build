@@ -48,10 +48,16 @@ export function GundamGrades({ index }: { index: string }) {
             const n = counts[g.code] ?? 0;
             const inner = (
               <>
-                <span className="font-display text-[44px] leading-none tracking-tight transition-colors duration-200 group-hover:text-sbs-red lg:text-[52px]">
-                  {g.code}
+                <span className="flex h-[76px] items-center lg:h-[88px]">
+                  <img
+                    src={`/images/grades/${g.code.toLowerCase()}.webp`}
+                    alt={`${g.name} (${g.code}) logo`}
+                    loading="lazy"
+                    decoding="async"
+                    className="max-h-full max-w-full object-contain object-left transition-transform duration-300 group-hover:scale-[1.04]"
+                  />
                 </span>
-                <span className="micro-sm mt-3 block text-foreground">{g.name}</span>
+                <span className="micro-sm mt-4 block text-foreground transition-colors group-hover:text-sbs-red">{g.name}</span>
                 <span className="mt-1 block text-[13px] text-muted-foreground">
                   {SCALE[g.code]} · {BLURB[g.code]}
                 </span>

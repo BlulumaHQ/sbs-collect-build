@@ -9,8 +9,7 @@ function sizedSrc(src: string, width: number): string {
 /**
  * A product photo placed in a square box using its pre-computed frame
  * (scripts/image-framing.mjs): solid-background shots are trimmed and centred so
- * the toy is never cropped; busy photos are cover-cropped around their most
- * interesting area. Photos without a frame are shown whole (contain).
+ * the toy is never cropped; busy photos are shown whole (contain) — never cropped. Photos without a frame are shown whole (contain).
  *
  * `className` goes on the absolutely positioned layer (use it for hover effects).
  */
@@ -53,19 +52,20 @@ export function FramedImage({
     );
   }
 
-  const cover = frame?.m === "c";
+  // Busy / full-bleed photos (frame "c") are shown whole too: never crop a product photo —
+  // a tall pen or a long, thin box must be seen end to end.
+  const busy = frame?.m === "c";
   return (
     <div
       className={`absolute inset-0 overflow-hidden bg-white ${className}`}
       aria-hidden={ariaHidden}
     >
       <img
-        src={sizedSrc(src, cover ? frame.rw : 800)}
+        src={sizedSrc(src, busy ? frame.rw : 800)}
         alt={alt}
         loading={loading}
         decoding="async"
-        className={`h-full w-full ${cover ? "object-cover" : "object-contain p-[6%]"}`}
-        style={cover ? { objectPosition: `${frame.x}% ${frame.y}%` } : undefined}
+        className={`h-full w-full object-contain ${busy ? "p-[3%]" : "p-[6%]"}`}
       />
     </div>
   );
