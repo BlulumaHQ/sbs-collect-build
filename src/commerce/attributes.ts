@@ -57,6 +57,8 @@ export function deriveGrade(input: {
   if (explicit && GRADE_CODES.has(explicit)) return explicit as GunplaGrade;
   // Title tokens only count on Gundam model kits — "HG" in an apparel name is meaningless.
   if (input.category !== "Model Kits" || !isGundamTitle(input.title, input.subcategory)) return undefined;
+  // Decals, option parts and stands mention a grade in the title but are not kits of that grade.
+  if (input.subcategory === "Kit Accessories") return undefined;
   const upper = input.title.toUpperCase();
   // MGSD is an SD-style kit sold under the MG line; treat as MG only when explicit.
   for (const [pattern, grade] of GRADE_TOKENS) if (pattern.test(upper)) return grade;

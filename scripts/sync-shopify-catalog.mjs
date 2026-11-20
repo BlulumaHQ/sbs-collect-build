@@ -92,7 +92,7 @@ export function mapProduct(node, shopName = "") {
     gundamSeries: tagValue(tags, "gundam-series"),
     newArrival: tags.some((t) => t.toLowerCase() === "new-arrival") || null,
     featured: tags.some((t) => t.toLowerCase() === "featured") || null,
-    status: available ? "available" : "sold-out",
+    status: tags.some((t) => t.toLowerCase() === "preorder") ? "preorder" : available ? "available" : "sold-out",
     price,
     currency: variant.price?.currencyCode ?? "CAD",
     compareAtPrice: compareAt && compareAt > price ? compareAt : null,

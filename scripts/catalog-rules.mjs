@@ -17,25 +17,61 @@ export const PLAMOD_CATEGORY = {
   "plastic model kits": "Model Kits",
   "figures": "Figures",
   "blind box": "Blind Boxes",
+  "capsule toy": "Blind Boxes",
   "tools / supplies": "Hobby Supplies",
   "plush": "Plush",
   "apparel": "Apparel",
   "character goods": "Character Goods",
+  "life style": "Character Goods",
+  "puzzles & toys": "Character Goods",
 };
 
-/** Plamod `subcategory:` tag → storefront subcategory. */
-export const PLAMOD_SUBCATEGORY = {
-  "gunpla": "Gunpla",
-  "sci-fi": "Sci-Fi",
-  "character model": "Character Kits",
-  "model kit acc": "Kit Accessories",
-  "prize figure": "Prize Figures",
-  "scale figure": "Scale Figures",
-  "non-scale figure": "Non-Scale Figures",
-  "markers": "Brushes & Markers",
-  "tools": "Tools",
-  "paints": "Paints",
+/** Plamod `category/subcategory` pairs that move to another storefront category. */
+export const PLAMOD_CATEGORY_OVERRIDE = {
+  "life style/plush": "Plush",
+  "life style/clothing": "Apparel",
 };
+
+/** Plamod `subcategory:` tag → storefront subcategory (keys are lower-case). */
+export const PLAMOD_SUBCATEGORY = {
+  // Model Kits
+  "gunpla": "Gunpla",
+  "character model kits": "Character Kits",
+  "character model": "Character Kits",
+  "mech model kits": "Mech Kits",
+  "scale model kits": "Scale Kits",
+  "original series model kits": "Original Series",
+  "sci-fi": "Sci-Fi",
+  "model kit accessories": "Kit Accessories",
+  "model kit acc": "Kit Accessories",
+  "decals": "Kit Accessories",
+  // Figures
+  "scale figure": "Scale Figures",
+  "non scale figure": "Non-Scale Figures",
+  "non-scale figure": "Non-Scale Figures",
+  "action figure": "Action Figures",
+  "prize figure": "Prize Figures",
+  "statue": "Statues",
+  "figure accessories": "Figure Accessories",
+  "dolls": "Chibi Figures",
+  // Hobby Supplies
+  "paints": "Paints",
+  "primers / thinners": "Paints",
+  "sprays": "Paints",
+  "air brushes": "Airbrushes",
+  "tools": "Tools",
+  "nippers": "Tools",
+  "polishing": "Finishing",
+  "brushes": "Brushes & Markers",
+  "markers": "Brushes & Markers",
+  "shelving": "Display Cases & Storage",
+};
+
+/** Product-type / title refinements applied after the Plamod subcategory. */
+export const SUBCATEGORY_REFINE = [
+  { category: "Figures", test: /^(nendoroid|figuarts mini|hello! good smile|lookup)$/i, field: "type", subcategory: "Chibi Figures" },
+  { category: "Hobby Supplies", test: /compressor/i, field: "title", subcategory: "Compressors" },
+];
 
 /** Title rules, first match wins. */
 export const TITLE_RULES = [
@@ -103,9 +139,16 @@ export function isPlaceholderVendor(vendor, shopName) {
 }
 
 export function classify({ title, productType, shopifyCategory, plamodCategory, plamodSubcategory }) {
-  const pc = plamodCategory && PLAMOD_CATEGORY[plamodCategory.toLowerCase()];
+  const pcKey = (plamodCategory ?? "").trim().toLowerCase();
+  const psKey = (plamodSubcategory ?? "").trim().toLowerCase();
+  const pc = PLAMOD_CATEGORY_OVERRIDE[`${pcKey}/${psKey}`] ?? PLAMOD_CATEGORY[pcKey];
   if (pc) {
-    return { category: pc, subcategory: (plamodSubcategory && PLAMOD_SUBCATEGORY[plamodSubcategory.toLowerCase()]) || null };
+    let subcategory = PLAMOD_SUBCATEGORY[psKey] ?? null;
+    for (const r of SUBCATEGORY_REFINE) {
+      const text = r.field === "type" ? (productType ?? "") : (title ?? "");
+      if (r.category === pc && r.test.test(text)) subcategory = r.subcategory;
+    }
+    return { category: pc, subcategory };
   }
   const byTitle = first(TITLE_RULES, title);
   if (byTitle) return { category: byTitle.category, subcategory: byTitle.subcategory ?? null };
