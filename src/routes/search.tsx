@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { fetchCatalogPage } from "@/commerce/api";
 import { Pagination } from "@/components/commerce/CatalogueBrowser";
@@ -92,7 +92,37 @@ function SearchPage() {
         ) : null}
 
         <div className="mt-8">
-          {q ? <ProductGrid products={results} emptyMessage="No products found." /> : null}
+          {q ? (
+            results.length ? <ProductGrid products={results} /> : (
+            <div className="border border-border bg-card p-6">
+              <p className="text-[16px]">No products found for “{q}”.</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Try a shorter word, a model number or a maker — or browse a category:
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Link to="/gundam" search={{ sort: "featured" }} className="micro border border-border px-4 py-3 hover:border-sbs-red hover:text-sbs-red">
+                  Gundam
+                </Link>
+                {[
+                  ["figures", "Figures"],
+                  ["model-kits", "Model Kits"],
+                  ["hobby-supplies", "Hobby Supplies"],
+                  ["blind-boxes", "Blind Boxes"],
+                ].map(([slug, label]) => (
+                  <Link
+                    key={slug}
+                    to="/shop/$category"
+                    params={{ category: slug! }}
+                    search={{ sort: "featured" }}
+                    className="micro border border-border px-4 py-3 hover:border-sbs-red hover:text-sbs-red"
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            )
+          ) : null}
           {data && data.pageCount > 1 ? (
             <Pagination
               page={data.page}
