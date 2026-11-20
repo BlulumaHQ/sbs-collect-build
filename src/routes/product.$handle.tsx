@@ -2,7 +2,13 @@ import { useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { getProductByHandle, getRelatedProducts } from "@/commerce/adapter";
 import type { CommerceProduct } from "@/types/commerce";
-import { formatPrice, STATUS_CTA, getBadge, isPurchasable, discountPercent } from "@/commerce/format";
+import {
+  formatPrice,
+  STATUS_CTA,
+  getBadge,
+  isPurchasable,
+  discountPercent,
+} from "@/commerce/format";
 import { useCart } from "@/commerce/cart";
 import { useTrackRecentlyViewed } from "@/commerce/recently-viewed";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -15,7 +21,10 @@ import { gradeName, gundamSeriesName } from "@/commerce/attributes";
 
 /** Factual one-line summary built only from verified catalogue attributes. */
 function productSummary(p: CommerceProduct): string {
-  const parts = [p.grade && p.grade !== "OTHER" ? `${gradeName(p.grade)} (${p.grade})` : null, p.scale ? `${p.scale} scale` : null]
+  const parts = [
+    p.grade && p.grade !== "OTHER" ? `${gradeName(p.grade)} (${p.grade})` : null,
+    p.scale ? `${p.scale} scale` : null,
+  ]
     .filter(Boolean)
     .join(", ");
   const kind = p.subcategory ?? p.category;
@@ -61,7 +70,12 @@ export const Route = createFileRoute("/product/$handle")({
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "Home", item: "/" },
               { "@type": "ListItem", position: 2, name: "Shop", item: "/shop" },
-              { "@type": "ListItem", position: 3, name: product.category, item: `/shop/${product.categorySlug}` },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: product.category,
+                item: `/shop/${product.categorySlug}`,
+              },
               { "@type": "ListItem", position: 4, name: product.title },
             ],
           }),
@@ -104,9 +118,21 @@ function ProductDetailPage() {
     ...(product.vendor ? [{ label: "Brand", value: product.vendor }] : []),
     { label: "Category", value: product.category },
     ...(product.franchise ? [{ label: "Franchise", value: product.franchise }] : []),
-    ...(product.grade ? [{ label: "Grade", value: product.grade === "OTHER" ? gradeName(product.grade) : `${product.grade} · ${gradeName(product.grade)}` }] : []),
+    ...(product.grade
+      ? [
+          {
+            label: "Grade",
+            value:
+              product.grade === "OTHER"
+                ? gradeName(product.grade)
+                : `${product.grade} · ${gradeName(product.grade)}`,
+          },
+        ]
+      : []),
     ...(product.scale ? [{ label: "Scale", value: product.scale }] : []),
-    ...(product.gundamSeries ? [{ label: "Gundam Series", value: gundamSeriesName(product.gundamSeries) }] : []),
+    ...(product.gundamSeries
+      ? [{ label: "Gundam Series", value: gundamSeriesName(product.gundamSeries) }]
+      : []),
     ...(product.subcategory ? [{ label: "Subcategory", value: product.subcategory }] : []),
     ...(product.series ? [{ label: "Series", value: product.series }] : []),
     ...(product.character ? [{ label: "Character", value: product.character }] : []),
@@ -145,7 +171,7 @@ function ProductDetailPage() {
                 alt={product.title}
                 width={1200}
                 height={1200}
-                className={`h-full w-full object-cover object-center transition-transform duration-500 ease-out ${
+                className={`h-full w-full object-contain p-[4%] transition-transform duration-500 ease-out ${
                   zoom ? "scale-[1.12]" : "scale-100"
                 }`}
               />
@@ -169,7 +195,13 @@ function ProductDetailPage() {
                       i === active ? "border-sbs-red" : "border-border hover:border-charcoal/40"
                     }`}
                   >
-                    <img src={src} alt="" aria-hidden="true" loading="lazy" className="h-full w-full object-cover" />
+                    <img
+                      src={src}
+                      alt=""
+                      aria-hidden="true"
+                      loading="lazy"
+                      className="h-full w-full object-contain p-1"
+                    />
                   </button>
                 ))}
               </div>
@@ -180,15 +212,15 @@ function ProductDetailPage() {
           <div>
             <SBSBuildRail index="01" label="Product Detail" />
             <p className="micro mt-6 text-muted-foreground">{product.vendor}</p>
-            <h1 className="mt-3 font-display text-3xl leading-tight md:text-4xl">{product.title}</h1>
+            <h1 className="mt-3 font-display text-3xl leading-tight md:text-4xl">
+              {product.title}
+            </h1>
             {product.series ? (
               <p className="mt-3 text-sm text-muted-foreground">{product.series}</p>
             ) : null}
 
             <div className="mt-6 flex flex-wrap items-baseline gap-3">
-              <span
-                className={`font-display text-3xl ${off ? "text-sbs-red" : "text-foreground"}`}
-              >
+              <span className={`font-display text-3xl ${off ? "text-sbs-red" : "text-foreground"}`}>
                 {formatPrice(product.price, product.currency)}
               </span>
               {off ? (
@@ -212,15 +244,17 @@ function ProductDetailPage() {
             </button>
 
             <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
+              <li>Ships across Canada in 1–5 business days. Free shipping on orders CA$300+.</li>
               <li>
-                Ships across Canada in 1–5 business days. Free shipping on orders CA$300+.
-              </li>
-              <li>
-                Store pickup at {STORE.addressLine}, {STORE.city} once we email you that your order is ready.
+                Store pickup at {STORE.addressLine}, {STORE.city} once we email you that your order
+                is ready.
               </li>
               <li>Online ordering isn’t live yet — this cart is a storefront preview.</li>
               {product.status === "preorder" ? (
-                <li>Release dates are estimates. Please order preorders separately from in-stock items.</li>
+                <li>
+                  Release dates are estimates. Please order preorders separately from in-stock
+                  items.
+                </li>
               ) : null}
               <li>
                 <Link to="/shipping-information" className="text-sbs-red hover:underline">
@@ -229,7 +263,9 @@ function ProductDetailPage() {
               </li>
             </ul>
 
-            <p className="mt-8 text-[15px] leading-relaxed text-muted-foreground">{productSummary(product)}</p>
+            <p className="mt-8 text-[15px] leading-relaxed text-muted-foreground">
+              {productSummary(product)}
+            </p>
 
             <dl className="mt-6 border-t border-border">
               {metadata.map((row) => (

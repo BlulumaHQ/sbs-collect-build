@@ -1,5 +1,6 @@
 import shopifyCatalog from "@/data/shopify-products.json";
 import type {
+  ImageFrame,
   CommerceCategory,
   CommerceProduct,
   CommerceSeries,
@@ -46,6 +47,8 @@ interface RawProduct {
   newArrival?: boolean | null;
   /** Shopify tag `featured` — shown in the home page "Featured Picks". */
   featured?: boolean | null;
+  frame?: ImageFrame | null;
+  hoverFrame?: ImageFrame | null;
 }
 
 export const CATEGORY_ORDER = [
@@ -78,35 +81,38 @@ function clean(value: string | null | undefined): string | undefined {
 
 function normalize(p: RawProduct): CommerceProduct {
   const subcategory = clean(p.subcategory);
-  const isGundam = clean(p.franchise)?.toLowerCase() === "gundam" || isGundamTitle(p.title, subcategory);
+  const isGundam =
+    clean(p.franchise)?.toLowerCase() === "gundam" || isGundamTitle(p.title, subcategory);
   return {
-  id: p.id,
-  handle: p.handle,
-  title: p.title,
-  vendor: p.vendor,
-  category: p.category,
-  categorySlug: categorySlug(p.category),
-  subcategory,
-  franchise: clean(p.franchise) ?? (isGundam ? "Gundam" : undefined),
-  grade: deriveGrade({ grade: p.grade, title: p.title, category: p.category, subcategory }),
-  scale: deriveScale({ scale: p.scale, title: p.title }),
-  gundamSeries: deriveGundamSeries({ gundamSeries: p.gundamSeries, title: p.title, isGundam }),
-  newArrival: p.newArrival === true ? true : undefined,
-  featured: p.featured === true ? true : undefined,
-  series: clean(p.series),
-  character: clean(p.character),
-  status: p.status as ProductStatus,
-  price: p.price,
-  currency: p.currency,
-  packPrice: p.packPrice ?? undefined,
-  packSize: p.packSize ?? undefined,
-  sku: clean(p.sku),
-  upc: clean(p.upc),
-  estimatedRelease: clean(p.estimatedRelease),
-  compareAtPrice: p.compareAtPrice ?? undefined,
-  image: p.image,
-  images: p.images?.length ? p.images : [p.image],
-  variantId: clean(p.variantId),
+    id: p.id,
+    handle: p.handle,
+    title: p.title,
+    vendor: p.vendor,
+    category: p.category,
+    categorySlug: categorySlug(p.category),
+    subcategory,
+    franchise: clean(p.franchise) ?? (isGundam ? "Gundam" : undefined),
+    grade: deriveGrade({ grade: p.grade, title: p.title, category: p.category, subcategory }),
+    scale: deriveScale({ scale: p.scale, title: p.title }),
+    gundamSeries: deriveGundamSeries({ gundamSeries: p.gundamSeries, title: p.title, isGundam }),
+    newArrival: p.newArrival === true ? true : undefined,
+    featured: p.featured === true ? true : undefined,
+    series: clean(p.series),
+    character: clean(p.character),
+    status: p.status as ProductStatus,
+    price: p.price,
+    currency: p.currency,
+    packPrice: p.packPrice ?? undefined,
+    packSize: p.packSize ?? undefined,
+    sku: clean(p.sku),
+    upc: clean(p.upc),
+    estimatedRelease: clean(p.estimatedRelease),
+    compareAtPrice: p.compareAtPrice ?? undefined,
+    image: p.image,
+    images: p.images?.length ? p.images : [p.image],
+    variantId: clean(p.variantId),
+    frame: p.frame ?? undefined,
+    hoverFrame: p.hoverFrame ?? undefined,
   };
 }
 
@@ -230,7 +236,9 @@ export function getVendors(): CommerceVendor[] {
 }
 
 export function getSubcategories(scope: CommerceProduct[] = products): string[] {
-  return [...new Set(scope.map((p) => p.subcategory).filter((v): v is string => Boolean(v)))].sort();
+  return [
+    ...new Set(scope.map((p) => p.subcategory).filter((v): v is string => Boolean(v))),
+  ].sort();
 }
 
 export function getGundamProducts(): CommerceProduct[] {
@@ -245,7 +253,19 @@ export function searchProducts(query: string): CommerceProduct[] {
   const q = query.trim().toLowerCase();
   if (!q) return [];
   return products.filter((p) =>
-    [p.title, p.vendor, p.category, p.subcategory, p.series, p.character, p.franchise, p.grade, p.scale, p.sku, p.upc]
+    [
+      p.title,
+      p.vendor,
+      p.category,
+      p.subcategory,
+      p.series,
+      p.character,
+      p.franchise,
+      p.grade,
+      p.scale,
+      p.sku,
+      p.upc,
+    ]
       .filter(Boolean)
       .some((field) => String(field).toLowerCase().includes(q)),
   );

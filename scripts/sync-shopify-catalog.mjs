@@ -17,9 +17,11 @@
  * Products without an sbs-category tag are classified by scripts/catalog-rules.mjs
  * (Plamod category tags, then title rules, then the Shopify product category).
  * Only products published to the storefront's sales channel are returned.
+ * Each product photo is also framed for the square cards (scripts/image-framing.mjs).
  */
 import { writeFileSync } from "node:fs";
 import { classify, guessSeries, guessVendor, isPlaceholderVendor } from "./catalog-rules.mjs";
+import { frameProducts } from "./image-framing.mjs";
 import { fileURLToPath } from "node:url";
 
 const OUT = fileURLToPath(new URL("../src/data/shopify-products.json", import.meta.url));
@@ -92,7 +94,11 @@ export function mapProduct(node, shopName = "") {
     gundamSeries: tagValue(tags, "gundam-series"),
     newArrival: tags.some((t) => t.toLowerCase() === "new-arrival") || null,
     featured: tags.some((t) => t.toLowerCase() === "featured") || null,
-    status: tags.some((t) => t.toLowerCase() === "preorder") ? "preorder" : available ? "available" : "sold-out",
+    status: tags.some((t) => t.toLowerCase() === "preorder")
+      ? "preorder"
+      : available
+        ? "available"
+        : "sold-out",
     price,
     currency: variant.price?.currencyCode ?? "CAD",
     compareAtPrice: compareAt && compareAt > price ? compareAt : null,
@@ -101,6 +107,8 @@ export function mapProduct(node, shopName = "") {
     variantId: numericId(variant.id),
     image,
     images: images.length ? images : [image],
+    // image:full | image:cover | image:top — manual photo framing override
+    imageFit: tagValue(tags, "image")?.toLowerCase() ?? null,
   };
 }
 
@@ -139,6 +147,7 @@ async function main() {
     if (!page.pageInfo.hasNextPage) break;
     cursor = page.pageInfo.endCursor;
   }
+  await frameProducts(products);
   const out = { shopDomain: domain, generatedAt: new Date().toISOString(), products };
   writeFileSync(OUT, `${JSON.stringify(out, null, 1)}\n`);
   console.log(`Wrote ${products.length} products (${skipped} skipped: no variant or image).`);

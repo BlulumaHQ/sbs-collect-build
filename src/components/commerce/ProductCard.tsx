@@ -3,10 +3,11 @@ import type { CommerceProduct } from "@/types/commerce";
 import { formatPrice, STATUS_CTA, getBadge, isPurchasable } from "@/commerce/format";
 import { ProductStatusBadge } from "./ProductStatusBadge";
 import { useCart } from "@/commerce/cart";
+import { FramedImage } from "./FramedImage";
 
 /**
  * Retail product card.
- * Fixed image box (1:1, white, object-cover) + fixed-height text block so every
+ * Fixed image box (1:1, photo framed per image — see FramedImage) + fixed-height text block so every
  * card in a row lines up regardless of title length.
  */
 export function ProductCard({
@@ -31,23 +32,22 @@ export function ProductCard({
         aria-label={product.title}
       >
         <div className="relative aspect-square w-full overflow-hidden bg-white">
-          <img
+          <FramedImage
             src={product.image}
+            frame={product.frame}
             alt={product.title}
             loading={eager ? "eager" : "lazy"}
-            decoding="async"
-            className={`absolute inset-0 h-full w-full object-cover object-center transition-[transform,opacity] duration-500 ease-out ${
+            className={`transition-[transform,opacity] duration-500 ease-out ${
               hover ? "group-hover:opacity-0" : "group-hover:scale-[1.06]"
             }`}
           />
           {hover ? (
-            <img
+            <FramedImage
               src={hover}
+              frame={product.hoverFrame}
               alt=""
-              aria-hidden="true"
-              loading="lazy"
-              decoding="async"
-              className="absolute inset-0 h-full w-full object-cover object-center opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
+              ariaHidden
+              className="opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
             />
           ) : null}
 
