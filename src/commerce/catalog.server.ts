@@ -93,7 +93,9 @@ function normalize(p: RawProduct): CommerceProduct {
     grade: deriveGrade({ grade: p.grade, title: p.title, category: p.category, subcategory }),
     scale: deriveScale({ scale: p.scale, title: p.title }),
     gundamSeries: deriveGundamSeries({ gundamSeries: p.gundamSeries, title: p.title, isGundam }),
-    newArrival: p.newArrival === true || isRecent(p.createdAt) ? true : undefined,
+    // Pre-orders are never "new arrivals" — nothing has arrived yet.
+    newArrival:
+      p.status !== "preorder" && (p.newArrival === true || isRecent(p.createdAt)) ? true : undefined,
     createdAt: clean(p.createdAt),
     description: clean(p.description),
     featured: p.featured === true ? true : undefined,
@@ -189,11 +191,10 @@ export function getFeaturedProducts(limit = 8): CommerceProduct[] {
 export function getNewArrivals(limit = 8): CommerceProduct[] {
   const byNewest = (a: CommerceProduct, b: CommerceProduct) =>
     (b.createdAt ?? "").localeCompare(a.createdAt ?? "");
-  const fresh = products.filter((p) => p.newArrival && p.status !== "sold-out").sort(byNewest);
+  const inStock = (p: CommerceProduct) => p.status === "available" || p.status === "last-one";
+  const fresh = products.filter((p) => p.newArrival && inStock(p)).sort(byNewest);
   // Nothing new yet (or no createdAt in an older snapshot): newest in-stock instead.
-  const pool = fresh.length
-    ? fresh
-    : products.filter((p) => p.status !== "sold-out").sort(byNewest);
+  const pool = fresh.length ? fresh : products.filter(inStock).sort(byNewest);
   return pool.slice(0, limit);
 }
 
