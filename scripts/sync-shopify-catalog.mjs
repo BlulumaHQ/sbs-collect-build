@@ -22,7 +22,7 @@
  * Only products published to the storefront's sales channel are returned.
  * Each product photo is also framed for the square cards (scripts/image-framing.mjs).
  */
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { classify, guessSeries, guessVendor, isPlaceholderVendor } from "./catalog-rules.mjs";
 import { frameProducts } from "./image-framing.mjs";
 import { fileURLToPath } from "node:url";
@@ -62,7 +62,7 @@ function numericId(gid) {
 }
 
 /** Map one Storefront API product node to the RawProduct shape used by the adapter. */
-export function mapProduct(node, shopName = "") {
+export function mapProduct(node, shopName = "", previous = new Map()) {
   const tags = node.tags ?? [];
   let category = tagValue(tags, "sbs-category");
   let subcategory = tagValue(tags, "sbs-subcategory");
@@ -80,9 +80,16 @@ export function mapProduct(node, shopName = "") {
   const vendor = isPlaceholderVendor(node.vendor, shopName) ? guessVendor(node.title) : node.vendor;
   const variant = node.variants?.nodes?.[0];
   if (!variant) return null;
-  const images = (node.images?.nodes ?? []).map((i) => i.url).filter(Boolean);
-  const image = node.featuredImage?.url ?? images[0] ?? "";
-  if (!image) return null;
+  let images = (node.images?.nodes ?? []).map((i) => i.url).filter(Boolean);
+  let image = node.featuredImage?.url ?? images[0] ?? "";
+  if (!image) {
+    // Photos mid-replacement in Shopify (e.g. a bulk image import): keep last snapshot's photos
+    // so the product doesn't vanish from the site for a sync or two.
+    const prev = previous.get(node.handle);
+    if (!prev?.image) return null;
+    image = prev.image;
+    images = prev.images?.length ? prev.images : [prev.image];
+  }
   const price = Number(variant.price?.amount ?? 0);
   const compareAt = variant.compareAtPrice?.amount ? Number(variant.compareAtPrice.amount) : null;
   const available = variant.availableForSale ?? node.availableForSale;
@@ -150,13 +157,20 @@ async function main() {
   const products = [];
   const shopRes = await storefront(domain, token, "{ shop { name } }");
   const shopName = shopRes.shop?.name ?? "";
+  let previous = new Map();
+  try {
+    const prev = JSON.parse(readFileSync(OUT, "utf8"));
+    previous = new Map((prev.products ?? []).map((p) => [p.handle, p]));
+  } catch {
+    /* first run */
+  }
   let cursor = null;
   let skipped = 0;
   for (;;) {
     const data = await storefront(domain, token, QUERY, { cursor });
     const page = data.products;
     for (const node of page.nodes) {
-      const mapped = mapProduct(node, shopName);
+      const mapped = mapProduct(node, shopName, previous);
       if (mapped) products.push(mapped);
       else skipped += 1;
     }
