@@ -7,6 +7,7 @@ import type {
   CommerceVendor,
   ProductStatus,
 } from "@/types/commerce";
+import { formatRelease } from "./format";
 import { deriveGrade, deriveGundamSeries, deriveScale, isGundamTitle } from "./attributes";
 
 /**
@@ -34,6 +35,7 @@ interface RawProduct {
   sku?: string | null;
   upc?: string | null;
   estimatedRelease?: string | null;
+  preorderDeadline?: string | null;
   compareAtPrice?: number | null;
   image: string;
   images?: string[] | null;
@@ -106,7 +108,8 @@ function normalize(p: RawProduct): CommerceProduct {
     packSize: p.packSize ?? undefined,
     sku: clean(p.sku),
     upc: clean(p.upc),
-    estimatedRelease: clean(p.estimatedRelease),
+    estimatedRelease: formatRelease(clean(p.estimatedRelease)),
+    preorderDeadline: clean(p.preorderDeadline),
     compareAtPrice: p.compareAtPrice ?? undefined,
     image: p.image,
     images: p.images?.length ? p.images : [p.image],

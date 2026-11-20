@@ -67,7 +67,9 @@ export function ProductFilters({
 
   const countBy = (predicate: (p: CommerceProduct) => boolean) => scope.filter(predicate).length;
 
-  const subcategories = [...new Set(scope.map((p) => p.subcategory).filter(Boolean))].sort() as string[];
+  const subcategories = [
+    ...new Set(scope.map((p) => p.subcategory).filter(Boolean)),
+  ].sort() as string[];
   const statuses = [...new Set(scope.map((p) => p.status))] as ProductStatus[];
   const vendors = [...new Set(scope.map((p) => p.vendor).filter(Boolean))].sort();
   const seriesList = [...new Set(scope.map((p) => p.series).filter(Boolean))].sort() as string[];
@@ -87,8 +89,16 @@ export function ProductFilters({
 
   const hasActive =
     Boolean(
-      search.subcategory || search.status || search.vendor || search.series || search.category ||
-        search.grade || search.scale || search.gseries || search.sale || search.new,
+      search.subcategory ||
+      search.status ||
+      search.vendor ||
+      search.series ||
+      search.category ||
+      search.grade ||
+      search.scale ||
+      search.gseries ||
+      search.sale ||
+      search.new,
     ) ||
     search.minPrice !== undefined ||
     search.maxPrice !== undefined;

@@ -14,6 +14,8 @@
  *   sbs-category:<Figures|Model Kits|...>  sbs-subcategory:<menu name>
  *   franchise:Gundam  grade:<HG|...>  gundam-series:<uc|...>  series:<name>  new-arrival
  *   featured  (home page "Featured Picks", and first in the shop's "Featured" sort)
+ *   preorder  release:<YYYY-MM>  preorder-deadline:<YYYY-MM-DD>  (pre-order ship month / close date)
+ *   image:<full|cover|top>  (manual card photo framing)
  * Products without an sbs-category tag are classified by scripts/catalog-rules.mjs
  * (Plamod category tags, then title rules, then the Shopify product category).
  * Only products published to the storefront's sales channel are returned.
@@ -94,11 +96,12 @@ export function mapProduct(node, shopName = "") {
     gundamSeries: tagValue(tags, "gundam-series"),
     newArrival: tags.some((t) => t.toLowerCase() === "new-arrival") || null,
     featured: tags.some((t) => t.toLowerCase() === "featured") || null,
-    status: tags.some((t) => t.toLowerCase() === "preorder")
-      ? "preorder"
-      : available
-        ? "available"
-        : "sold-out",
+    status:
+      tags.some((t) => t.toLowerCase() === "preorder") || /not-released/.test(node.handle)
+        ? "preorder"
+        : available
+          ? "available"
+          : "sold-out",
     price,
     currency: variant.price?.currencyCode ?? "CAD",
     compareAtPrice: compareAt && compareAt > price ? compareAt : null,
@@ -109,6 +112,9 @@ export function mapProduct(node, shopName = "") {
     images: images.length ? images : [image],
     // image:full | image:cover | image:top — manual photo framing override
     imageFit: tagValue(tags, "image")?.toLowerCase() ?? null,
+    // Pre-order details: release:2027-02  preorder-deadline:2026-12-15
+    estimatedRelease: tagValue(tags, "release"),
+    preorderDeadline: tagValue(tags, "preorder-deadline"),
   };
 }
 

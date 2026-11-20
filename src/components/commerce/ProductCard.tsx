@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { CommerceProduct } from "@/types/commerce";
-import { formatPrice, STATUS_CTA, getBadge, isPurchasable } from "@/commerce/format";
+import { formatPrice, getBadge, canBuy, ctaLabel } from "@/commerce/format";
 import { ProductStatusBadge } from "./ProductStatusBadge";
 import { useCart } from "@/commerce/cart";
 import { FramedImage } from "./FramedImage";
@@ -18,7 +18,7 @@ export function ProductCard({
   eager?: boolean;
 }) {
   const { addItem } = useCart();
-  const purchasable = isPurchasable(product.status);
+  const purchasable = canBuy(product);
   const badge = getBadge(product);
   const hover = product.images[1];
   const onSale = Boolean(product.compareAtPrice && product.compareAtPrice > product.price);
@@ -80,6 +80,11 @@ export function ProductCard({
               {formatPrice(product.compareAtPrice!, product.currency)}
             </span>
           ) : null}
+          {product.status === "preorder" && product.estimatedRelease ? (
+            <span className="micro-sm ml-auto shrink-0 text-amber-700">
+              Ships {product.estimatedRelease}
+            </span>
+          ) : null}
         </div>
 
         <button
@@ -88,7 +93,7 @@ export function ProductCard({
           onClick={() => purchasable && addItem(product)}
           className="micro mt-4 w-full border border-charcoal/25 px-3 py-2.5 text-charcoal transition-colors duration-200 hover:border-sbs-red hover:bg-sbs-red hover:text-white disabled:cursor-not-allowed disabled:border-border disabled:text-muted-foreground disabled:hover:bg-transparent disabled:hover:text-muted-foreground"
         >
-          {STATUS_CTA[product.status]}
+          {ctaLabel(product)}
         </button>
       </div>
     </article>

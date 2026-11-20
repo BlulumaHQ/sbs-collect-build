@@ -94,7 +94,12 @@ export function CatalogueBrowser({
       </div>
 
       {mobileFiltersOpen ? (
-        <div className="fixed inset-0 z-[75] lg:hidden" role="dialog" aria-modal="true" aria-label="Filters">
+        <div
+          className="fixed inset-0 z-[75] lg:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Filters"
+        >
           <button
             type="button"
             aria-label="Close filters"

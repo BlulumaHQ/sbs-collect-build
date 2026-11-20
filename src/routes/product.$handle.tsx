@@ -4,9 +4,11 @@ import { getProductByHandle, getRelatedProducts } from "@/commerce/adapter";
 import type { CommerceProduct } from "@/types/commerce";
 import {
   formatPrice,
-  STATUS_CTA,
   getBadge,
-  isPurchasable,
+  canBuy,
+  ctaLabel,
+  preorderClosed,
+  formatDeadline,
   discountPercent,
 } from "@/commerce/format";
 import { useCart } from "@/commerce/cart";
@@ -104,7 +106,7 @@ function ProductDetailPage() {
   const product = getProductByHandle(handle) as CommerceProduct;
   const { addItem } = useCart();
   const related = getRelatedProducts(product);
-  const purchasable = isPurchasable(product.status);
+  const purchasable = canBuy(product);
   const badge = getBadge(product);
   const off = discountPercent(product);
   const [active, setActive] = useState(0);
@@ -234,17 +236,41 @@ function ProductDetailPage() {
             </div>
             <p className="micro mt-2 text-muted-foreground">Priced in {STORE.currency}.</p>
 
+            {product.status === "preorder" ? (
+              <div className="mt-6 border border-amber-300 bg-amber-50 px-4 py-3.5 text-sm leading-relaxed text-amber-900">
+                <p className="micro text-amber-800">Pre-order</p>
+                <p className="mt-1.5">
+                  {product.estimatedRelease
+                    ? `Expected to ship ${product.estimatedRelease}.`
+                    : "Ships as soon as it arrives from the manufacturer."}{" "}
+                  {product.preorderDeadline
+                    ? preorderClosed(product)
+                      ? "Pre-orders for this item are now closed."
+                      : `Pre-orders close ${formatDeadline(product.preorderDeadline)}.`
+                    : null}
+                </p>
+                <p className="mt-1.5 text-amber-800/80">
+                  Release dates are set by the manufacturer and can change.
+                </p>
+              </div>
+            ) : null}
+
             <button
               type="button"
               disabled={!purchasable}
               onClick={() => purchasable && addItem(product)}
               className="micro mt-7 w-full border border-sbs-red bg-sbs-red px-6 py-4 text-white transition-colors duration-200 hover:border-sbs-red-deep hover:bg-sbs-red-deep disabled:cursor-not-allowed disabled:border-border disabled:bg-muted disabled:text-muted-foreground"
             >
-              {STATUS_CTA[product.status]}
+              {ctaLabel(product)}
             </button>
 
             <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
-              <li>Ships across Canada in 1–5 business days. Free shipping on orders CA$300+.</li>
+              <li>
+                {product.status === "preorder"
+                  ? "Ships across Canada once it arrives."
+                  : "Ships across Canada in 1–5 business days."}{" "}
+                Free shipping on orders CA$300+.
+              </li>
               <li>
                 Store pickup at {STORE.addressLine}, {STORE.city} once we email you that your order
                 is ready.
@@ -312,7 +338,7 @@ function ProductDetailPage() {
             onClick={() => purchasable && addItem(product)}
             className="micro shrink-0 border border-sbs-red bg-sbs-red px-6 py-3.5 text-white disabled:border-border disabled:bg-muted disabled:text-muted-foreground"
           >
-            {STATUS_CTA[product.status]}
+            {ctaLabel(product)}
           </button>
         </div>
       </div>

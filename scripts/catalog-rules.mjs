@@ -15,12 +15,12 @@
 /** Plamod `category:` tag → storefront category. */
 export const PLAMOD_CATEGORY = {
   "plastic model kits": "Model Kits",
-  "figures": "Figures",
+  figures: "Figures",
   "blind box": "Blind Boxes",
   "capsule toy": "Blind Boxes",
   "tools / supplies": "Hobby Supplies",
-  "plush": "Plush",
-  "apparel": "Apparel",
+  plush: "Plush",
+  apparel: "Apparel",
   "character goods": "Character Goods",
   "life style": "Character Goods",
   "puzzles & toys": "Character Goods",
@@ -35,7 +35,7 @@ export const PLAMOD_CATEGORY_OVERRIDE = {
 /** Plamod `subcategory:` tag → storefront subcategory (keys are lower-case). */
 export const PLAMOD_SUBCATEGORY = {
   // Model Kits
-  "gunpla": "Gunpla",
+  gunpla: "Gunpla",
   "character model kits": "Character Kits",
   "character model": "Character Kits",
   "mech model kits": "Mech Kits",
@@ -44,38 +44,46 @@ export const PLAMOD_SUBCATEGORY = {
   "sci-fi": "Sci-Fi",
   "model kit accessories": "Kit Accessories",
   "model kit acc": "Kit Accessories",
-  "decals": "Kit Accessories",
+  decals: "Kit Accessories",
   // Figures
   "scale figure": "Scale Figures",
   "non scale figure": "Non-Scale Figures",
   "non-scale figure": "Non-Scale Figures",
   "action figure": "Action Figures",
   "prize figure": "Prize Figures",
-  "statue": "Statues",
+  statue: "Statues",
   "figure accessories": "Figure Accessories",
-  "dolls": "Chibi Figures",
+  dolls: "Chibi Figures",
   // Hobby Supplies
-  "paints": "Paints",
+  paints: "Paints",
   "primers / thinners": "Paints",
-  "sprays": "Paints",
+  sprays: "Paints",
   "air brushes": "Airbrushes",
-  "tools": "Tools",
-  "nippers": "Tools",
-  "polishing": "Finishing",
-  "brushes": "Brushes & Markers",
-  "markers": "Brushes & Markers",
-  "shelving": "Display Cases & Storage",
+  tools: "Tools",
+  nippers: "Tools",
+  polishing: "Finishing",
+  brushes: "Brushes & Markers",
+  markers: "Brushes & Markers",
+  shelving: "Display Cases & Storage",
 };
 
 /** Product-type / title refinements applied after the Plamod subcategory. */
 export const SUBCATEGORY_REFINE = [
-  { category: "Figures", test: /^(nendoroid|figuarts mini|hello! good smile|lookup)$/i, field: "type", subcategory: "Chibi Figures" },
+  {
+    category: "Figures",
+    test: /^(nendoroid|figuarts mini|hello! good smile|lookup)$/i,
+    field: "type",
+    subcategory: "Chibi Figures",
+  },
   { category: "Hobby Supplies", test: /compressor/i, field: "title", subcategory: "Compressors" },
 ];
 
 /** Title rules, first match wins. */
 export const TITLE_RULES = [
-  { test: /blind box|hidden dissectibles|nendoroid surprise|kwistal fwenz|good night/i, category: "Blind Boxes" },
+  {
+    test: /blind box|hidden dissectibles|nendoroid surprise|kwistal fwenz|good night/i,
+    category: "Blind Boxes",
+  },
   { test: /gundam marker/i, category: "Hobby Supplies", subcategory: "Brushes & Markers" },
   { test: /nipper|tool set|tweezer|sanding/i, category: "Hobby Supplies", subcategory: "Tools" },
   { test: /paint pack|paint set/i, category: "Hobby Supplies", subcategory: "Paints" },
@@ -83,9 +91,21 @@ export const TITLE_RULES = [
   { test: /\bqmsv\b/i, category: "Figures", subcategory: "Chibi Figures" },
   { test: /mega cat project/i, category: "Figures", subcategory: "Non-Scale Figures" },
   { test: /grandista|digivice/i, category: "Figures", subcategory: "Prize Figures" },
-  { test: /pok[eé]mon.*(model kit|select series)/i, category: "Model Kits", subcategory: "Character Kits" },
-  { test: /vehicle model|death star|star destroyer|millennium falcon/i, category: "Model Kits", subcategory: "Sci-Fi" },
-  { test: /gundam|gunpla|zaku|beargguy|pandagguy|\bgbft\b|\bmgsd\b|entry grade/i, category: "Model Kits", subcategory: "Gunpla" },
+  {
+    test: /pok[eé]mon.*(model kit|select series)/i,
+    category: "Model Kits",
+    subcategory: "Character Kits",
+  },
+  {
+    test: /vehicle model|death star|star destroyer|millennium falcon/i,
+    category: "Model Kits",
+    subcategory: "Sci-Fi",
+  },
+  {
+    test: /gundam|gunpla|zaku|beargguy|pandagguy|\bgbft\b|\bmgsd\b|entry grade/i,
+    category: "Model Kits",
+    subcategory: "Gunpla",
+  },
   { test: /model kit/i, category: "Model Kits" },
 ];
 
@@ -138,7 +158,13 @@ export function isPlaceholderVendor(vendor, shopName) {
   return !v || v === "my store" || (shopName && v === shopName.trim().toLowerCase());
 }
 
-export function classify({ title, productType, shopifyCategory, plamodCategory, plamodSubcategory }) {
+export function classify({
+  title,
+  productType,
+  shopifyCategory,
+  plamodCategory,
+  plamodSubcategory,
+}) {
   const pcKey = (plamodCategory ?? "").trim().toLowerCase();
   const psKey = (plamodSubcategory ?? "").trim().toLowerCase();
   const pc = PLAMOD_CATEGORY_OVERRIDE[`${pcKey}/${psKey}`] ?? PLAMOD_CATEGORY[pcKey];

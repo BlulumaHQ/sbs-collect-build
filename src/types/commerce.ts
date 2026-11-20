@@ -34,6 +34,8 @@ export interface CommerceProduct {
   sku?: string | undefined;
   upc?: string | undefined;
   estimatedRelease?: string | undefined;
+  /** Last day pre-orders are accepted (YYYY-MM-DD). */
+  preorderDeadline?: string | undefined;
   image: string;
   /** Ordered gallery. Always contains at least `image`. */
   images: string[];
