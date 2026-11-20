@@ -31,8 +31,11 @@ export const STORE = {
   /** One wording for walk-in visits everywhere. */
   walkIn:
     "Walk-ins are welcome Friday–Sunday, 12–7 PM, to browse our in-store shelves. We keep a small curated selection in store — most of the online catalogue is ordered in for you.",
-  /** Social accounts have not been supplied yet — prototype buttons only. */
-  social: [{ label: "Facebook" }, { label: "Instagram" }, { label: "TikTok" }, { label: "X" }],
+  /** The shop's social accounts (no TikTok or X yet). */
+  social: [
+    { label: "Instagram", handle: "@secretbuilderssociety", href: "https://www.instagram.com/secretbuilderssociety/" },
+    { label: "Facebook", handle: "Secret Builders Society", href: "https://www.facebook.com/profile.php?id=61591124742042" },
+  ],
 } as const;
 
 export const UNITY_TATTOO_URL = "https://unity-tattoo.com/";

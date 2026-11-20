@@ -24,28 +24,7 @@ const CARE_LINKS = [
   { label: "Account", to: "/account" as const },
 ];
 
-function TikTokIcon({ size = 18 }: { size?: number }) {
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
-      <path d="M16.5 3c.4 2.2 1.7 3.6 3.9 3.8v2.5c-1.4.1-2.7-.3-3.9-1v5.9c0 4.4-4.2 7.1-7.9 5.3-2.4-1.2-3.4-4-2.7-6.5.7-2.4 3-3.9 5.6-3.6v2.6c-.4-.1-.8-.2-1.2-.1-1.4.1-2.4 1.2-2.4 2.6 0 1.5 1.3 2.7 2.8 2.6 1.4-.1 2.4-1.2 2.4-2.6V3h3.4z" />
-    </svg>
-  );
-}
-
-function XIcon({ size = 18 }: { size?: number }) {
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
-      <path d="M17.5 3h3.1l-6.8 7.8L21.8 21h-6.2l-4.4-5.7L6.1 21H3l7.3-8.3L2.6 3h6.4l4 5.3L17.5 3zm-1.1 16.2h1.7L7.7 4.7H5.9l10.5 14.5z" />
-    </svg>
-  );
-}
-
-const SOCIALS = [
-  { label: "Facebook", Icon: Facebook },
-  { label: "Instagram", Icon: Instagram },
-  { label: "TikTok", Icon: TikTokIcon },
-  { label: "X", Icon: XIcon },
-];
+const SOCIAL_ICONS = { Facebook, Instagram } as const;
 
 function MobileAccordion({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -79,18 +58,22 @@ export function SiteFooter() {
             character goods and apparel.
           </p>
           <ul className="mt-4 flex flex-wrap gap-2 lg:mt-6 lg:gap-3">
-            {SOCIALS.map(({ label, Icon }) => (
-              <li key={label}>
-                <button
-                  type="button"
-                  title="Social profile coming soon"
-                  aria-label={`${label} — coming soon`}
-                  className="flex h-9 w-9 items-center justify-center border border-white/20 text-white/75 transition-colors duration-200 hover:border-sbs-red hover:text-white lg:h-11 lg:w-11"
-                >
-                  <Icon size={16} />
-                </button>
-              </li>
-            ))}
+            {STORE.social.map(({ label, href }) => {
+              const Icon = SOCIAL_ICONS[label];
+              return (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Secret Builders Society on ${label}`}
+                    className="flex h-11 w-11 items-center justify-center border border-white/20 text-white/75 transition-colors duration-200 hover:border-sbs-red hover:text-white"
+                  >
+                    <Icon size={18} />
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </div>
 

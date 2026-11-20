@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { Clock, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import {
@@ -119,6 +119,21 @@ function ContactPage() {
                       {STORE.email}
                     </a>
                   </p>
+                </div>
+              </li>
+              <li className="flex gap-4">
+                <Instagram className="mt-1 shrink-0 text-sbs-red" size={22} aria-hidden="true" />
+                <div>
+                  <h3 className="micro-sm text-muted-foreground">Follow us</h3>
+                  <ul className="mt-2 space-y-1 text-[16px]">
+                    {STORE.social.map((s) => (
+                      <li key={s.label}>
+                        <a href={s.href} target="_blank" rel="noopener noreferrer" className="hover:text-sbs-red">
+                          {s.label} — {s.handle}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </li>
               <li className="flex gap-4">
