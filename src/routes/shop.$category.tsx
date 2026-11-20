@@ -66,7 +66,11 @@ function CategoryPage() {
         </p>
         {category.slug === "model-kits" ? (
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link to="/gundam" search={{ sort: "featured" }} className="micro text-sbs-red hover:underline">
+            <Link
+              to="/gundam"
+              search={{ sort: "featured" }}
+              className="micro text-sbs-red hover:underline"
+            >
               Shop Gundam by grade →
             </Link>
             <Link to="/guides" className="micro text-sbs-red hover:underline">

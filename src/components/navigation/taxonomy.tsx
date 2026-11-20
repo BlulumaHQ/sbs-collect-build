@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { CATEGORY_ORDER, categorySlug } from "@/commerce/adapter";
+import { getVisibleCategories } from "@/commerce/adapter";
 
 export const FIGURE_SUBCATEGORIES = [
   "Scale Figures",
@@ -31,12 +31,15 @@ export const HOBBY_SUPPLY_SUBCATEGORIES = [
   "Display Cases & Storage",
 ];
 
-export const DIRECT_CATEGORIES = ["Plush", "Blind Boxes", "Character Goods", "Apparel"];
+const VISIBLE = getVisibleCategories();
+const hasProducts = (name: string) => VISIBLE.some((c) => c.name === name);
 
-export const PRIMARY_CATEGORIES = CATEGORY_ORDER.map((name) => ({
-  name,
-  slug: categorySlug(name),
-}));
+/** Empty categories (0 products) are hidden everywhere in navigation. */
+export const DIRECT_CATEGORIES = ["Plush", "Blind Boxes", "Character Goods", "Apparel"].filter(
+  hasProducts,
+);
+
+export const PRIMARY_CATEGORIES = VISIBLE.map(({ name, slug }) => ({ name, slug }));
 
 export function SubcategoryLink({
   categoryPath,

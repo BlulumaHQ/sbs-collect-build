@@ -18,7 +18,8 @@ export const Route = createFileRoute("/shop/")({
       { property: "og:title", content: "Shop | Secret Builders Society" },
       {
         property: "og:description",
-        content: "Figures, model kits, Gunpla and collector goods from Secret Builders Society, Vancouver.",
+        content:
+          "Figures, model kits, Gunpla and collector goods from Secret Builders Society, Vancouver.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

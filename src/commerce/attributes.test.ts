@@ -10,7 +10,10 @@ test("grade title tokens only apply to Gundam model kits", () => {
   assert.equal(deriveGrade({ title: "HG 1/144 Gundam Aerial", category: "Model Kits" }), "HG");
   assert.equal(deriveGrade({ title: "MG RX-78-2 Gundam Ver.3.0", category: "Model Kits" }), "MG");
   assert.equal(deriveGrade({ title: "HG Hoodie Gundam", category: "Apparel" }), undefined);
-  assert.equal(deriveGrade({ title: "Pokemon Model Kit XERNEAS", category: "Model Kits" }), undefined);
+  assert.equal(
+    deriveGrade({ title: "Pokemon Model Kit XERNEAS", category: "Model Kits" }),
+    undefined,
+  );
 });
 
 test("grade is never guessed when no token is present", () => {
@@ -21,7 +24,10 @@ test("scale is read from 1/N tokens only", () => {
   assert.equal(deriveScale({ title: "1/72 Scale Darkstar Plastic Model Kit" }), "1/72");
   assert.equal(deriveScale({ title: "Mr. Color 132 - Earth Green" }), undefined);
   assert.equal(deriveScale({ scale: "1/100", title: "x" }), "1/100");
-  assert.equal(deriveScale({ title: "1/2,700,000 DEATH STAR II & 1/14,500 STAR DESTROYER" }), undefined);
+  assert.equal(
+    deriveScale({ title: "1/2,700,000 DEATH STAR II & 1/14,500 STAR DESTROYER" }),
+    undefined,
+  );
 });
 
 test("Gundam series requires a Gundam product", () => {

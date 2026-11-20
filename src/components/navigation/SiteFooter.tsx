@@ -4,7 +4,6 @@ import { Facebook, Instagram } from "lucide-react";
 import { PRIMARY_CATEGORIES } from "./taxonomy";
 import { STORE } from "@/config/store";
 import { PaymentMethods } from "@/components/home/PaymentMethods";
-import { useRewards } from "@/components/rewards/RewardsProvider";
 
 const EXPLORE_LINKS = [
   { label: "Gundam", to: "/gundam" as const },
@@ -48,13 +47,7 @@ const SOCIALS = [
   { label: "X", Icon: XIcon },
 ];
 
-function MobileAccordion({
-  title,
-  children,
-}: {
-  title: string;
-  children: ReactNode;
-}) {
+function MobileAccordion({ title, children }: { title: string; children: ReactNode }) {
   return (
     <details className="group border-b border-white/12 lg:hidden">
       <summary className="flex cursor-pointer list-none items-center justify-between py-3 text-[15px] font-medium text-white/90">
@@ -67,8 +60,6 @@ function MobileAccordion({
 }
 
 export function SiteFooter() {
-  const { openRewards } = useRewards();
-
   return (
     <footer className="bg-charcoal text-white">
       <div className="container-sbs grid gap-8 py-10 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1.2fr] lg:gap-10 lg:py-20">
@@ -139,15 +130,6 @@ export function SiteFooter() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <button
-                  type="button"
-                  onClick={openRewards}
-                  className="text-[15px] text-white/80 hover:text-sbs-red"
-                >
-                  Rewards
-                </button>
-              </li>
             </ul>
           </MobileAccordion>
 
@@ -221,15 +203,6 @@ export function SiteFooter() {
                 </Link>
               </li>
             ))}
-            <li>
-              <button
-                type="button"
-                onClick={openRewards}
-                className="text-[15px] text-white/80 hover:text-sbs-red"
-              >
-                Rewards
-              </button>
-            </li>
           </ul>
         </nav>
 

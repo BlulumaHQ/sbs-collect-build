@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   getAllProducts,
-  getCategories,
+  getVisibleCategories,
   getPreorderProducts,
   getFeaturedProducts,
   getSaleProducts,
@@ -26,18 +26,91 @@ const HOME_SERIES: {
   override?: string;
   fallback: string;
 }[] = [
-  { name: "Gundam (Gunpla)", series: "Gundam", keys: ["gundam", "gunpla"], to: "/gundam", fallback: "/images/categories/model-kits.webp" },
-  { name: "Pokémon", series: "Pokémon", keys: ["pokémon", "pokemon"], to: "/shop", fallback: "/images/collections/pokemon.jpg", override: "/images/uploads/20261115-secret-builders-society-pokemon-star-war.webp" },
-  { name: "One Piece", series: "ONE PIECE", keys: ["one piece"], to: "/shop", fallback: "/images/collections/one-piece.jpg" },
-  { name: "Dragon Ball", series: "Dragon Ball", keys: ["dragon ball"], to: "/shop", fallback: "/images/categories/figures.webp" },
-  { name: "Naruto", series: "NARUTO", keys: ["naruto"], to: "/shop", fallback: "/images/categories/blind-boxes.webp" },
-  { name: "Evangelion", series: "Evangelion", keys: ["evangelion"], to: "/shop", fallback: "/images/categories/figures.webp" },
-  { name: "Demon Slayer", series: "Demon Slayer", keys: ["demon slayer", "kimetsu"], to: "/shop", fallback: "/images/categories/figures.webp" },
-  { name: "Jujutsu Kaisen", series: "Jujutsu Kaisen", keys: ["jujutsu", "jujustu"], to: "/shop", fallback: "/images/categories/plush.webp" },
-  { name: "My Hero Academia", series: "My Hero Academia", keys: ["my hero academia", "boku no hero"], to: "/shop", fallback: "/images/categories/character-goods.webp" },
-  { name: "Haikyu!!", series: "Haikyu!!", keys: ["haikyu"], to: "/shop", fallback: "/images/categories/character-goods.webp" },
-  { name: "Hatsune Miku", series: "Hatsune Miku", keys: ["hatsune", "miku"], to: "/shop", fallback: "/images/collections/hatsune-miku.svg" },
-  { name: "Star Wars", series: "Star Wars", keys: ["star wars", "star destroyer", "millennium falcon", "death star"], to: "/shop", fallback: "/images/categories/model-kits.webp" },
+  {
+    name: "Gundam (Gunpla)",
+    series: "Gundam",
+    keys: ["gundam", "gunpla"],
+    to: "/gundam",
+    fallback: "/images/categories/model-kits.webp",
+  },
+  {
+    name: "Pokémon",
+    series: "Pokémon",
+    keys: ["pokémon", "pokemon"],
+    to: "/shop",
+    fallback: "/images/collections/pokemon.jpg",
+    override: "/images/uploads/20261115-secret-builders-society-pokemon-star-war.webp",
+  },
+  {
+    name: "One Piece",
+    series: "ONE PIECE",
+    keys: ["one piece"],
+    to: "/shop",
+    fallback: "/images/collections/one-piece.jpg",
+  },
+  {
+    name: "Dragon Ball",
+    series: "Dragon Ball",
+    keys: ["dragon ball"],
+    to: "/shop",
+    fallback: "/images/categories/figures.webp",
+  },
+  {
+    name: "Naruto",
+    series: "NARUTO",
+    keys: ["naruto"],
+    to: "/shop",
+    fallback: "/images/categories/blind-boxes.webp",
+  },
+  {
+    name: "Evangelion",
+    series: "Evangelion",
+    keys: ["evangelion"],
+    to: "/shop",
+    fallback: "/images/categories/figures.webp",
+  },
+  {
+    name: "Demon Slayer",
+    series: "Demon Slayer",
+    keys: ["demon slayer", "kimetsu"],
+    to: "/shop",
+    fallback: "/images/categories/figures.webp",
+  },
+  {
+    name: "Jujutsu Kaisen",
+    series: "Jujutsu Kaisen",
+    keys: ["jujutsu", "jujustu"],
+    to: "/shop",
+    fallback: "/images/categories/plush.webp",
+  },
+  {
+    name: "My Hero Academia",
+    series: "My Hero Academia",
+    keys: ["my hero academia", "boku no hero"],
+    to: "/shop",
+    fallback: "/images/categories/character-goods.webp",
+  },
+  {
+    name: "Haikyu!!",
+    series: "Haikyu!!",
+    keys: ["haikyu"],
+    to: "/shop",
+    fallback: "/images/categories/character-goods.webp",
+  },
+  {
+    name: "Hatsune Miku",
+    series: "Hatsune Miku",
+    keys: ["hatsune", "miku"],
+    to: "/shop",
+    fallback: "/images/collections/hatsune-miku.svg",
+  },
+  {
+    name: "Star Wars",
+    series: "Star Wars",
+    keys: ["star wars", "star destroyer", "millennium falcon", "death star"],
+    to: "/shop",
+    fallback: "/images/categories/model-kits.webp",
+  },
 ];
 
 export const Route = createFileRoute("/")({
@@ -71,7 +144,7 @@ function HomePage() {
   const featured = getFeaturedProducts();
   const preorders = getPreorderProducts().slice(0, 4);
   const onSale = getSaleProducts().slice(0, 4);
-  const categories = getCategories();
+  const categories = getVisibleCategories();
   const allProducts = getAllProducts();
   const homeSeries = HOME_SERIES.map((entry) => {
     const matches = allProducts.filter((p) =>
@@ -218,7 +291,9 @@ function HomePage() {
               <Link
                 key={entry.name}
                 to={entry.to}
-                search={entry.to === "/shop" ? { sort: "featured", series: entry.series } : undefined}
+                search={
+                  entry.to === "/shop" ? { sort: "featured", series: entry.series } : undefined
+                }
                 className="group relative block aspect-video overflow-hidden bg-charcoal"
               >
                 <img
@@ -246,7 +321,6 @@ function HomePage() {
 
       {/* NEWSLETTER */}
       <Newsletter />
-
     </>
   );
 }

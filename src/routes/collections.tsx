@@ -61,7 +61,9 @@ function CollectionsPage() {
                   <span className="clamp-1 block font-display text-lg text-white">
                     {entry.name}
                   </span>
-                  <span className="micro-sm mt-1 block text-white/65">{entry.count} {entry.count === 1 ? "product" : "products"}</span>
+                  <span className="micro-sm mt-1 block text-white/65">
+                    {entry.count} {entry.count === 1 ? "product" : "products"}
+                  </span>
                 </span>
               </Link>
             ))}

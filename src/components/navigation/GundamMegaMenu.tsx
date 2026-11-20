@@ -3,7 +3,8 @@ import { getGundamProducts } from "@/commerce/adapter";
 import { GUNDAM_SERIES, GUNPLA_GRADES } from "@/commerce/attributes";
 import { GUIDES } from "@/content/guides";
 
-const linkCls = "flex items-baseline justify-between gap-3 py-1 text-sm text-charcoal/80 transition-colors duration-200 hover:text-sbs-red";
+const linkCls =
+  "flex items-baseline justify-between gap-3 py-1 text-sm text-charcoal/80 transition-colors duration-200 hover:text-sbs-red";
 
 function Count({ n }: { n: number }) {
   return <span className="micro-sm text-muted-foreground">{n}</span>;
@@ -18,10 +19,26 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
   const count = (pred: (p: (typeof scope)[number]) => boolean) => scope.filter(pred).length;
 
   const availability = [
-    { label: "In Stock", search: { sort: "featured" as const, status: "available" }, n: count((p) => p.status === "available") },
-    { label: "New Arrivals", search: { sort: "featured" as const, new: true }, n: count((p) => Boolean(p.newArrival)) },
-    { label: "Preorders", search: { sort: "featured" as const, status: "preorder" }, n: count((p) => p.status === "preorder") },
-    { label: "On Sale", search: { sort: "featured" as const, sale: true }, n: count((p) => Boolean(p.compareAtPrice && p.compareAtPrice > p.price)) },
+    {
+      label: "In Stock",
+      search: { sort: "featured" as const, status: "available" },
+      n: count((p) => p.status === "available"),
+    },
+    {
+      label: "New Arrivals",
+      search: { sort: "featured" as const, new: true },
+      n: count((p) => Boolean(p.newArrival)),
+    },
+    {
+      label: "Preorders",
+      search: { sort: "featured" as const, status: "preorder" },
+      n: count((p) => p.status === "preorder"),
+    },
+    {
+      label: "On Sale",
+      search: { sort: "featured" as const, sale: true },
+      n: count((p) => Boolean(p.compareAtPrice && p.compareAtPrice > p.price)),
+    },
   ];
 
   return (
@@ -33,12 +50,22 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
             const n = count((p) => p.grade === g.code);
             const label = g.code === "OTHER" ? g.name : `${g.code} · ${g.name}`;
             return (
-              <Link key={g.code} to="/gundam" search={{ sort: "featured", grade: g.code }} onClick={onNavigate} className={linkCls}>
+              <Link
+                key={g.code}
+                to="/gundam"
+                search={{ sort: "featured", grade: g.code }}
+                onClick={onNavigate}
+                className={linkCls}
+              >
                 {label} <Count n={n} />
               </Link>
             );
           })}
-          <Link to="/guides/gunpla-grades-explained" onClick={onNavigate} className="micro-sm mt-3 text-foreground hover:text-sbs-red">
+          <Link
+            to="/guides/gunpla-grades-explained"
+            onClick={onNavigate}
+            className="micro-sm mt-3 text-foreground hover:text-sbs-red"
+          >
             Learn about grades →
           </Link>
           {scope.length === 0 ? (
@@ -51,7 +78,13 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
         <div className="flex flex-col gap-1">
           <span className="micro mb-2 text-sbs-red">Shop by Series</span>
           {GUNDAM_SERIES.map((s) => (
-            <Link key={s.code} to="/gundam" search={{ sort: "featured", gseries: s.code }} onClick={onNavigate} className={linkCls}>
+            <Link
+              key={s.code}
+              to="/gundam"
+              search={{ sort: "featured", gseries: s.code }}
+              onClick={onNavigate}
+              className={linkCls}
+            >
               {s.name} <Count n={count((p) => p.gundamSeries === s.code)} />
             </Link>
           ))}
@@ -60,11 +93,22 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
         <div className="flex flex-col gap-1">
           <span className="micro mb-2 text-sbs-red">Shop by Availability</span>
           {availability.map((a) => (
-            <Link key={a.label} to="/gundam" search={a.search} onClick={onNavigate} className={linkCls}>
+            <Link
+              key={a.label}
+              to="/gundam"
+              search={a.search}
+              onClick={onNavigate}
+              className={linkCls}
+            >
               {a.label} <Count n={a.n} />
             </Link>
           ))}
-          <Link to="/gundam" search={{ sort: "featured" }} onClick={onNavigate} className="micro mt-4 text-foreground hover:text-sbs-red">
+          <Link
+            to="/gundam"
+            search={{ sort: "featured" }}
+            onClick={onNavigate}
+            className="micro mt-4 text-foreground hover:text-sbs-red"
+          >
             All Gundam →
           </Link>
         </div>
@@ -72,7 +116,12 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
         <div className="flex flex-col gap-1 border-l border-border pl-6">
           <span className="micro mb-2 text-sbs-red">Build &amp; Learn</span>
           {GUIDES.map((g) => (
-            <Link key={g.slug} to={g.path} onClick={onNavigate} className="py-1 text-sm text-charcoal/80 hover:text-sbs-red">
+            <Link
+              key={g.slug}
+              to={g.path}
+              onClick={onNavigate}
+              className="py-1 text-sm text-charcoal/80 hover:text-sbs-red"
+            >
               {g.title}
             </Link>
           ))}
@@ -85,7 +134,11 @@ export function GundamMegaMenu({ onNavigate }: { onNavigate: () => void }) {
           >
             Tools &amp; Hobby Supplies
           </Link>
-          <Link to="/guides" onClick={onNavigate} className="micro mt-4 text-foreground hover:text-sbs-red">
+          <Link
+            to="/guides"
+            onClick={onNavigate}
+            className="micro mt-4 text-foreground hover:text-sbs-red"
+          >
             All guides →
           </Link>
         </div>

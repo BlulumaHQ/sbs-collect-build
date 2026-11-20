@@ -53,9 +53,12 @@ function GundamPage() {
       </div>
       <h1 className="mt-5 font-display text-4xl md:text-6xl">Gundam Model Kits</h1>
       <p className="mt-5 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
-        Gunpla from entry-level snap kits to large-scale centrepieces. Filter by grade or series below, or
-        start with our <Link to="/guides/gunpla-grades-explained" className="text-sbs-red underline">guide to
-        Gunpla grades</Link>.
+        Gunpla from entry-level snap kits to large-scale centrepieces. Filter by grade or series
+        below, or start with our{" "}
+        <Link to="/guides/gunpla-grades-explained" className="text-sbs-red underline">
+          guide to Gunpla grades
+        </Link>
+        .
       </p>
 
       <nav aria-label="Shop by grade" className="mt-8 flex flex-wrap gap-2">
@@ -73,7 +76,9 @@ function GundamPage() {
               }}
               aria-pressed={active}
               className={`micro border px-4 py-2.5 transition-colors duration-200 ${
-                active ? "border-sbs-red bg-sbs-red text-white" : "border-border hover:border-sbs-red hover:text-sbs-red"
+                active
+                  ? "border-sbs-red bg-sbs-red text-white"
+                  : "border-border hover:border-sbs-red hover:text-sbs-red"
               }`}
             >
               {g.code === "OTHER" ? "Other" : g.code}

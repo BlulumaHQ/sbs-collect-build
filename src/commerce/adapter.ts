@@ -201,6 +201,11 @@ export function getCategories(): CommerceCategory[] {
   });
 }
 
+/** Categories that currently have products — empty ones stay out of menus and the home page. */
+export function getVisibleCategories(): CommerceCategory[] {
+  return getCategories().filter((c) => c.count > 0);
+}
+
 export function getCategoryBySlug(slug: string): CommerceCategory | undefined {
   return getCategories().find((c) => c.slug === slug);
 }

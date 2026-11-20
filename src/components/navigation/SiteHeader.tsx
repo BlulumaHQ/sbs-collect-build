@@ -114,7 +114,6 @@ export function SiteHeader() {
                 height={87}
                 className="h-12 w-[168px] object-contain object-left md:h-[68px] md:w-[240px] lg:h-[86px] lg:w-[310px]"
               />
-
             </Link>
 
             <form
@@ -139,7 +138,10 @@ export function SiteHeader() {
                   className="h-13 w-full border border-border border-r-0 bg-white py-3.5 pl-11 pr-4 text-[15px] outline-none placeholder:text-muted-foreground focus:border-charcoal"
                 />
               </div>
-              <button type="submit" className="micro bg-sbs-red px-8 text-white hover:bg-sbs-red-deep">
+              <button
+                type="submit"
+                className="micro bg-sbs-red px-8 text-white hover:bg-sbs-red-deep"
+              >
                 Search
               </button>
             </form>
@@ -200,7 +202,9 @@ export function SiteHeader() {
               onClick={() => setMega((v) => (v === "gundam" ? null : "gundam"))}
               onMouseEnter={() => setMega("gundam")}
               className={`text-[14px] font-semibold uppercase tracking-wide transition-colors duration-200 ${
-                mega === "gundam" || pathname === "/gundam" ? "text-sbs-red" : "text-sbs-red/90 hover:text-sbs-red"
+                mega === "gundam" || pathname === "/gundam"
+                  ? "text-sbs-red"
+                  : "text-sbs-red/90 hover:text-sbs-red"
               }`}
             >
               Gundam

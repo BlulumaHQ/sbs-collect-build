@@ -15,7 +15,8 @@ export const Route = createFileRoute("/faq")({
       { property: "og:title", content: "FAQ | Secret Builders Society" },
       {
         property: "og:description",
-        content: "Common questions about SBS preorders, shipping, store pickup in Vancouver and store visits.",
+        content:
+          "Common questions about SBS preorders, shipping, store pickup in Vancouver and store visits.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

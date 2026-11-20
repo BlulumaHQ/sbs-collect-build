@@ -34,7 +34,6 @@ const BRAND_LOGO_FILES: Record<string, string> = {
   threezero: "threezero-logo.svg",
 };
 
-
 /** Series that have photographic franchise key art (jpg); the rest use SVG plates. */
 const SERIES_JPG = new Set([
   "blue-lock",
@@ -89,4 +88,3 @@ export const CATEGORY_ARTWORK: Record<string, { src: string; alt: string }> = {
     alt: "Anime apparel collage: hoodies, tees, knit sweaters, accessories and cosplay pieces",
   },
 };
-

@@ -10,7 +10,8 @@ export const Route = createFileRoute("/preorders")({
       { title: "Preorders | Secret Builders Society" },
       {
         name: "description",
-        content: "Demo catalogue items currently listed with preorder status at Secret Builders Society.",
+        content:
+          "Demo catalogue items currently listed with preorder status at Secret Builders Society.",
       },
       { property: "og:title", content: "Preorders | Secret Builders Society" },
       {

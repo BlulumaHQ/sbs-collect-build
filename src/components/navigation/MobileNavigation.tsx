@@ -5,7 +5,6 @@ import { GUNPLA_GRADES } from "@/commerce/attributes";
 import { getGundamProducts } from "@/commerce/adapter";
 import { GUIDES } from "@/content/guides";
 import { STORE } from "@/config/store";
-import { useRewards } from "@/components/rewards/RewardsProvider";
 
 const NAV = [
   { label: "Preorders", to: "/preorders" as const },
@@ -29,11 +28,15 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
   const [shopOpen, setShopOpen] = useState(true);
   const [gundamOpen, setGundamOpen] = useState(false);
   const gundam = getGundamProducts();
-  const { openRewards } = useRewards();
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[85] lg:hidden" role="dialog" aria-modal="true" aria-label="Menu">
+    <div
+      className="fixed inset-0 z-[85] lg:hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu"
+    >
       <div className="absolute inset-0 flex h-full flex-col bg-card">
         <div className="flex h-[64px] shrink-0 items-center justify-between border-b border-border px-5">
           <img
@@ -92,13 +95,24 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
           </button>
           {gundamOpen ? (
             <div className="border-b border-border py-4">
-              <Link to="/gundam" search={{ sort: "featured" }} onClick={onClose} className="block py-1.5 text-[15px] text-sbs-red">
+              <Link
+                to="/gundam"
+                search={{ sort: "featured" }}
+                onClick={onClose}
+                className="block py-1.5 text-[15px] text-sbs-red"
+              >
                 All Gundam
               </Link>
               <p className="micro-sm mt-3 text-muted-foreground">Shop by grade</p>
               <div className="mt-2 grid grid-cols-4 gap-2">
                 {GUNPLA_GRADES.filter((g) => g.code !== "OTHER").map((g) => (
-                  <Link key={g.code} to="/gundam" search={{ sort: "featured", grade: g.code }} onClick={onClose} className="micro border border-border py-2 text-center">
+                  <Link
+                    key={g.code}
+                    to="/gundam"
+                    search={{ sort: "featured", grade: g.code }}
+                    onClick={onClose}
+                    className="micro border border-border py-2 text-center"
+                  >
                     {g.code}
                   </Link>
                 ))}
@@ -106,12 +120,21 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
               {gundam.length === 0 ? (
                 <p className="mt-2 text-xs text-muted-foreground">No Gundam kits listed yet.</p>
               ) : null}
-              <Link to="/guides/gunpla-grades-explained" onClick={onClose} className="micro-sm mt-3 block text-sbs-red">
+              <Link
+                to="/guides/gunpla-grades-explained"
+                onClick={onClose}
+                className="micro-sm mt-3 block text-sbs-red"
+              >
                 Learn about grades →
               </Link>
               <p className="micro-sm mt-4 text-muted-foreground">Build &amp; learn</p>
               {GUIDES.map((g) => (
-                <Link key={g.slug} to={g.path} onClick={onClose} className="block py-1.5 text-[15px] text-charcoal/80">
+                <Link
+                  key={g.slug}
+                  to={g.path}
+                  onClick={onClose}
+                  className="block py-1.5 text-[15px] text-charcoal/80"
+                >
                   {g.title}
                 </Link>
               ))}
@@ -128,17 +151,6 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
               {item.label}
             </Link>
           ))}
-
-          <button
-            type="button"
-            onClick={() => {
-              onClose();
-              openRewards();
-            }}
-            className="block w-full border-b border-border py-3 text-left font-display text-2xl text-sbs-red"
-          >
-            Rewards
-          </button>
 
           <div className="mt-8">
             <h2 className="micro text-muted-foreground">Customer Care</h2>

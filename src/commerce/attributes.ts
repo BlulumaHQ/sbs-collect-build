@@ -56,7 +56,8 @@ export function deriveGrade(input: {
   const explicit = input.grade?.trim().toUpperCase();
   if (explicit && GRADE_CODES.has(explicit)) return explicit as GunplaGrade;
   // Title tokens only count on Gundam model kits — "HG" in an apparel name is meaningless.
-  if (input.category !== "Model Kits" || !isGundamTitle(input.title, input.subcategory)) return undefined;
+  if (input.category !== "Model Kits" || !isGundamTitle(input.title, input.subcategory))
+    return undefined;
   // Decals, option parts and stands mention a grade in the title but are not kits of that grade.
   if (input.subcategory === "Kit Accessories") return undefined;
   const upper = input.title.toUpperCase();
@@ -65,7 +66,10 @@ export function deriveGrade(input: {
   return undefined;
 }
 
-export function deriveScale(input: { scale?: string | null | undefined; title: string }): string | undefined {
+export function deriveScale(input: {
+  scale?: string | null | undefined;
+  title: string;
+}): string | undefined {
   const explicit = input.scale?.trim();
   if (explicit && /^1\/\d{1,4}$/.test(explicit)) return explicit;
   const match = input.title.match(/(?:^|[^\d/])(1\/\d{1,4})(?![\d/,.])/);

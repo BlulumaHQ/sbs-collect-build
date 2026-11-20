@@ -30,8 +30,8 @@ function PickupPage() {
       <h1 className="mt-5 font-display text-4xl md:text-5xl">Store Pickup Information</h1>
       <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">
         Pickup is free at our Vancouver store. Most items ship to us from our warehouse, so{" "}
-        <strong className="text-foreground">please wait for our “Ready for pickup” email</strong> before you
-        visit. Prefer delivery? We also{" "}
+        <strong className="text-foreground">please wait for our “Ready for pickup” email</strong>{" "}
+        before you visit. Prefer delivery? We also{" "}
         <Link to="/shipping-information" className="text-sbs-red hover:underline">
           ship across Canada
         </Link>
@@ -70,15 +70,15 @@ function PickupPage() {
 
         <Block title="How pickup works">
           <p>
-            Choose “Pickup” at checkout. We’ll email you as soon as your order is ready — usually within 2–5
-            business days. Bring your order number and collect it during store hours.
+            Choose “Pickup” at checkout. We’ll email you as soon as your order is ready — usually
+            within 2–5 business days. Bring your order number and collect it during store hours.
           </p>
         </Block>
 
         <Block title="Preorders">
           <p>
-            Release dates shown on preorder items are estimates and may change. We’ll email you when your
-            preorder arrives and is ready for pickup.
+            Release dates shown on preorder items are estimates and may change. We’ll email you when
+            your preorder arrives and is ready for pickup.
           </p>
         </Block>
       </div>

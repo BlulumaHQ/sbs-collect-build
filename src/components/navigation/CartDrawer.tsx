@@ -19,7 +19,11 @@ export function CartDrawer() {
       <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-border bg-card">
         <header className="flex items-center justify-between border-b border-border px-5 py-4">
           <h2 className="micro text-foreground">Cart / {items.length} items</h2>
-          <button type="button" onClick={closeDrawer} className="micro text-muted-foreground hover:text-sbs-red">
+          <button
+            type="button"
+            onClick={closeDrawer}
+            className="micro text-muted-foreground hover:text-sbs-red"
+          >
             Close
           </button>
         </header>
@@ -62,7 +66,9 @@ export function CartDrawer() {
                           +
                         </button>
                       </div>
-                      <span className="text-sm">{formatPrice(item.price * item.quantity, item.currency)}</span>
+                      <span className="text-sm">
+                        {formatPrice(item.price * item.quantity, item.currency)}
+                      </span>
                     </div>
                     <button
                       type="button"

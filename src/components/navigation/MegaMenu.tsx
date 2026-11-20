@@ -38,10 +38,19 @@ export function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
           >
             Collections
           </Link>
-          <Link to="/gundam" search={{ sort: "featured" }} onClick={onNavigate} className="text-sm text-charcoal/80 hover:text-sbs-red">
+          <Link
+            to="/gundam"
+            search={{ sort: "featured" }}
+            onClick={onNavigate}
+            className="text-sm text-charcoal/80 hover:text-sbs-red"
+          >
             Gundam
           </Link>
-          <Link to="/guides" onClick={onNavigate} className="text-sm text-charcoal/80 hover:text-sbs-red">
+          <Link
+            to="/guides"
+            onClick={onNavigate}
+            className="text-sm text-charcoal/80 hover:text-sbs-red"
+          >
             Guides
           </Link>
           <Link

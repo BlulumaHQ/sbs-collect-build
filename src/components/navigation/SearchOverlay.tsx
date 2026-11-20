@@ -31,7 +31,12 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[70]" role="dialog" aria-modal="true" aria-label="Search products">
+    <div
+      className="fixed inset-0 z-[70]"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Search products"
+    >
       <button
         type="button"
         aria-label="Close search"
@@ -82,7 +87,9 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
                     />
                     <span className="min-w-0 flex-1">
                       <span className="micro block text-muted-foreground">{product.vendor}</span>
-                      <span className="block truncate text-sm text-foreground">{product.title}</span>
+                      <span className="block truncate text-sm text-foreground">
+                        {product.title}
+                      </span>
                     </span>
                     <span className="micro shrink-0 text-foreground">
                       {formatPrice(product.price, product.currency)}
@@ -95,7 +102,11 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
         </div>
 
         <div className="mt-6 flex items-center justify-between">
-          <button type="button" onClick={onClose} className="micro text-muted-foreground hover:text-sbs-red">
+          <button
+            type="button"
+            onClick={onClose}
+            className="micro text-muted-foreground hover:text-sbs-red"
+          >
             Close
           </button>
           <Link
