@@ -87,8 +87,11 @@ function productSummary(p: CommerceProduct): string {
     .join(", ");
   const kind = p.subcategory ?? p.category;
   const from = p.series ? ` from ${p.series}` : "";
-  return `${p.title}${p.vendor ? ` by ${p.vendor}` : ""}${parts ? ` — ${parts}` : ""}. ${kind}${from}, priced in ${p.currency}. Ships across Canada or pick up in ${STORE.city}.`;
+  return `${p.title}${p.vendor && !/^others?$/i.test(p.vendor) ? ` by ${p.vendor}` : ""}${parts ? ` — ${parts}` : ""}. ${kind}${from}. Official licensed product. Prices in ${p.currency} — ships across Canada or pick up in ${STORE.city}.`;
 }
+
+/** Grades we recommend to first-time builders (snap-fit, simple). */
+const BEGINNER_GRADES = new Set(["EG", "HG", "SD"]);
 
 export const Route = createFileRoute("/product/$handle")({
   loader: async ({ params }) => {
@@ -340,6 +343,22 @@ function ProductDetailPage() {
                 </Link>
               </li>
             </ul>
+
+            {product.grade && BEGINNER_GRADES.has(product.grade) ? (
+              <div className="mt-8 border-l-2 border-sbs-red bg-sbs-red/5 p-4 text-[15px] leading-relaxed">
+                <p className="font-medium">Great first kit</p>
+                <p className="mt-1 text-muted-foreground">
+                  Snap-fit — no glue or paint needed. A pair of plastic nippers makes it easier. Suitable
+                  for ages 8+ with a little help.
+                </p>
+                <Link
+                  to="/guides/gunpla-grades-explained"
+                  className="micro mt-2 inline-block text-sbs-red hover:underline"
+                >
+                  Gunpla grades explained →
+                </Link>
+              </div>
+            ) : null}
 
             {product.description ? (
               <div className="mt-8 whitespace-pre-line text-[15px] leading-relaxed text-muted-foreground">
