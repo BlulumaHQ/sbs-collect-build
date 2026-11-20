@@ -171,6 +171,8 @@ function withReadableHandles(list: CommerceProduct[]): CommerceProduct[] {
 const FEATURE_IMAGE_OVERRIDES: Record<string, string> = {
   "godhand-brushwork-pro-point-brush-s":
     "/images/product-photos/godhand-brushwork-pro-point-brush-s.webp",
+  "lulu-the-piggy-lululand-tender-elephant-lu-plush":
+    "/images/product-photos/lulu-tender-elephant-plush-feature.jpg",
 };
 
 function withFeatureOverrides(list: CommerceProduct[]): CommerceProduct[] {
