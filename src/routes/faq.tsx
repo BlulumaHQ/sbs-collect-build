@@ -42,7 +42,7 @@ const FAQS = [
   },
   {
     q: "Do you ship?",
-    a: "Yes, we ship across Canada. In-stock orders ship within 1–5 business days, and orders of CA$300 or more get free standard shipping. Shipping costs and options are shown at checkout.",
+    a: "Yes, we ship across Canada. We order from our supplier every Monday and ship on Friday: orders placed by Monday 11:59 PM (Pacific) ship that Friday, later orders the following Friday. Orders of CA$300 or more get free standard shipping. Shipping costs and options are shown at checkout.",
   },
   {
     q: "How does store pickup work?",

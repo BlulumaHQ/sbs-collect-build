@@ -5,7 +5,7 @@ import { STORE } from "@/config/store";
 
 const TITLE = "Shipping & Pickup Policy | Secret Builders Society";
 const DESCRIPTION =
-  "Secret Builders Society ships across Canada. In-stock orders ship in 1–5 business days, with free standard shipping on orders CA$300+. Store pickup in Vancouver once we email you that your order is ready.";
+  "Secret Builders Society ships across Canada. In-stock orders ship on Fridays, with free standard shipping on orders CA$300+. Store pickup in Vancouver once we email you that your order is ready.";
 
 export const Route = createFileRoute("/shipping-information")({
   head: () => ({
@@ -38,9 +38,9 @@ function ShippingPage() {
       <div className="mt-12 grid gap-10 md:grid-cols-2">
         <Block title="Order processing">
           <p>
-            In-stock orders are packed and shipped within 1–5 business days. We don’t ship on
-            weekends or statutory holidays. During busy periods, processing may take slightly
-            longer.
+            We order from our supplier every Monday and ship on Friday. Orders placed by Monday
+            11:59 PM (Pacific) are expected to ship that Friday; orders placed Tuesday–Sunday ship
+            the following Friday. Statutory holidays can push this back a week.
           </p>
         </Block>
 

@@ -5,10 +5,12 @@ import { formatPrice } from "@/commerce/format";
 import { ProductStatusBadge } from "@/components/commerce/ProductStatusBadge";
 import { FreeShippingBar } from "@/components/commerce/FreeShippingBar";
 import { useDialog } from "@/lib/use-dialog";
+import { useEstimatedReadyDate } from "@/lib/ready-date";
 
 export function CartDrawer() {
   const { items, subtotal, currency, drawerOpen, closeDrawer, setQuantity, removeItem } = useCart();
   const checkoutUrl = getCheckoutUrl(items);
+  const readyDate = useEstimatedReadyDate();
   const dialogRef = useDialog<HTMLDivElement>(drawerOpen, closeDrawer);
   const count = items.reduce((n, i) => n + i.quantity, 0);
 
@@ -118,7 +120,13 @@ export function CartDrawer() {
             View cart
           </Link>
           <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            Secure checkout by Shopify. Ships across Canada (free on CA$300+) or pick up in Vancouver.
+            {readyDate ? (
+              <>
+                <strong className="text-foreground">In-stock items estimated ready {readyDate}.</strong>{" "}
+              </>
+            ) : null}
+            Pickup orders: please wait for our ready email before coming in. Secure checkout by
+            Shopify; ships across Canada (free on CA$300+).
           </p>
         </footer>
       </aside>

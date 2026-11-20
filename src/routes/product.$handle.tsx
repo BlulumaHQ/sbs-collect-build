@@ -19,6 +19,7 @@ import { ProductStatusBadge } from "@/components/commerce/ProductStatusBadge";
 import { ProductCard } from "@/components/commerce/ProductCard";
 import { RecentlyViewed } from "@/components/commerce/RecentlyViewed";
 import { STORE } from "@/config/store";
+import { useEstimatedReadyDate } from "@/lib/ready-date";
 import { JsonLd } from "@/components/JsonLd";
 import { gradeName, gundamSeriesName } from "@/commerce/attributes";
 
@@ -149,6 +150,7 @@ function ProductDetailPage() {
   const { product, related } = Route.useLoaderData();
   const { addItem } = useCart();
   const purchasable = canBuy(product);
+  const readyDate = useEstimatedReadyDate();
   const badge = getBadge(product);
   const off = discountPercent(product);
   const [active, setActive] = useState(0);
@@ -327,15 +329,21 @@ function ProductDetailPage() {
             </button>
 
             <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
+              {product.status !== "preorder" && readyDate ? (
+                <li className="text-[15px] text-foreground">
+                  <strong>Estimated ready: {readyDate}</strong> — ships that day or ready for pickup.
+                  <span className="block text-sm text-muted-foreground">{STORE.orderCutoff}</span>
+                </li>
+              ) : null}
               <li>
                 {product.status === "preorder"
                   ? "Ships across Canada once it arrives."
-                  : "Ships across Canada in 1–5 business days."}{" "}
+                  : "Ships across Canada; delivery takes 1–5 business days after it ships."}{" "}
                 Free shipping on orders CA$300+.
               </li>
               <li>
-                Store pickup at {STORE.addressLine}, {STORE.city} — usually ready the following Fri–Sun;
-                we email you when it’s ready.
+                Store pickup at {STORE.addressLine}, {STORE.city} — please wait for our email saying
+                your order is ready before coming in.
               </li>
               {product.status === "preorder" ? (
                 <li>
