@@ -74,19 +74,21 @@ export function ProductCard({
           {product.title}
         </Link>
 
-        <div className="mt-3 flex min-h-[26px] items-baseline gap-2">
-          <span
-            className={`font-display text-base tracking-tight ${onSale ? "text-sbs-red" : "text-foreground"}`}
-          >
-            {formatPrice(product.price, product.currency)}
-          </span>
-          {onSale ? (
-            <span className="text-xs text-muted-foreground line-through">
-              {formatPrice(product.compareAtPrice!, product.currency)}
+        <div className="mt-3 flex min-h-[46px] flex-col gap-1">
+          <div className="flex items-baseline gap-2">
+            <span
+              className={`font-display text-base tracking-tight ${onSale ? "text-sbs-red" : "text-foreground"}`}
+            >
+              {formatPrice(product.price, product.currency)}
             </span>
-          ) : null}
+            {onSale ? (
+              <span className="text-xs text-muted-foreground line-through">
+                {formatPrice(product.compareAtPrice!, product.currency)}
+              </span>
+            ) : null}
+          </div>
           {product.status === "preorder" && product.estimatedRelease ? (
-            <span className="micro-sm ml-auto shrink-0 text-amber-700">
+            <span className="text-[11px] font-medium uppercase tracking-[0.08em] text-amber-700">
               Ships {product.estimatedRelease}
             </span>
           ) : null}
