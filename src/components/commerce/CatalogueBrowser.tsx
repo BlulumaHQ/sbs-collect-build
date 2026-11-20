@@ -7,6 +7,7 @@ import { fetchListing, type CatalogueScope } from "@/commerce/catalog-api";
 import { ProductGrid } from "./ProductGrid";
 import { SortControl } from "./SortControl";
 import { ProductFilters } from "./ProductFilters";
+import { useDialog } from "@/lib/use-dialog";
 
 /**
  * Catalogue page body. The route loader supplies the first page (filtered and
@@ -32,6 +33,7 @@ export function CatalogueBrowser({
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [items, setItems] = useState<CommerceProduct[]>(listing.items);
   const [loading, setLoading] = useState(false);
+  const filterDialogRef = useDialog<HTMLDivElement>(mobileFiltersOpen, () => setMobileFiltersOpen(false));
 
   // A new first page arrives whenever filters, sort or scope change.
   useEffect(() => {
@@ -73,7 +75,7 @@ export function CatalogueBrowser({
               <button
                 type="button"
                 onClick={() => setMobileFiltersOpen(true)}
-                className="micro border border-border px-4 py-2 lg:hidden"
+                className="micro min-h-11 border border-border px-5 py-2 lg:hidden"
               >
                 Filter
               </button>
@@ -102,10 +104,11 @@ export function CatalogueBrowser({
       </div>
 
       {showFilters && mobileFiltersOpen ? (
-        <div className="fixed inset-0 z-[75] lg:hidden" role="dialog" aria-modal="true" aria-label="Filters">
+        <div ref={filterDialogRef} className="fixed inset-0 z-[75] lg:hidden" role="dialog" aria-modal="true" aria-label="Filters">
           <button
             type="button"
             aria-label="Close filters"
+            tabIndex={-1}
             onClick={() => setMobileFiltersOpen(false)}
             className="absolute inset-0 h-full w-full bg-charcoal/70"
           />
@@ -114,8 +117,9 @@ export function CatalogueBrowser({
               <span className="micro">Filters</span>
               <button
                 type="button"
+                data-autofocus
                 onClick={() => setMobileFiltersOpen(false)}
-                className="micro text-muted-foreground hover:text-sbs-red"
+                className="micro inline-flex min-h-11 min-w-11 items-center justify-center px-3 -mr-3 text-muted-foreground hover:text-sbs-red"
               >
                 Done
               </button>

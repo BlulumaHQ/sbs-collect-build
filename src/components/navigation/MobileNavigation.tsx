@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { PRIMARY_CATEGORIES } from "./taxonomy";
 import { GUNPLA_GRADES } from "@/commerce/attributes";
 import { useNavSummary } from "@/commerce/nav-summary";
+import { useDialog } from "@/lib/use-dialog";
 import { GUIDES } from "@/content/guides";
 import { STORE } from "@/config/store";
 
@@ -28,10 +29,11 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
   const [shopOpen, setShopOpen] = useState(true);
   const [gundamOpen, setGundamOpen] = useState(false);
   const { gundam } = useNavSummary();
+  const dialogRef = useDialog<HTMLDivElement>(open, onClose);
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[85] lg:hidden" role="dialog" aria-modal="true" aria-label="Menu">
+    <div ref={dialogRef} className="fixed inset-0 z-[85] lg:hidden" role="dialog" aria-modal="true" aria-label="Menu">
       <div className="absolute inset-0 flex h-full flex-col bg-card">
         <div className="flex h-[64px] shrink-0 items-center justify-between border-b border-border px-5">
           <img
@@ -39,7 +41,7 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
             alt="Secret Builders Society"
             className="h-9 w-[170px] object-contain"
           />
-          <button type="button" onClick={onClose} className="micro text-muted-foreground">
+          <button type="button" data-autofocus onClick={onClose} className="micro inline-flex min-h-11 min-w-11 items-center justify-center px-3 -mr-3 text-muted-foreground">
             Close
           </button>
         </div>

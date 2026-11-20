@@ -33,7 +33,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 const FIELD =
-  "mt-2 h-12 w-full border border-border bg-white px-4 text-[15px] outline-none focus:border-sbs-red";
+  "mt-2 h-12 w-full border border-border bg-white px-4 text-base outline-none focus:border-sbs-red";
 
 function ContactPage() {
   const [sent, setSent] = useState(false);
@@ -214,7 +214,7 @@ function ContactPage() {
                   <textarea
                     id="cf-message"
                     rows={6}
-                    className="mt-2 w-full border border-border bg-white px-4 py-3 text-[15px] outline-none focus:border-sbs-red"
+                    className="mt-2 w-full border border-border bg-white px-4 py-3 text-base outline-none focus:border-sbs-red"
                     value={form.message}
                     onChange={(e) => set("message")(e.target.value)}
                   />
