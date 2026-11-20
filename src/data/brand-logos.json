@@ -1,0 +1,277 @@
+{
+  "52toys": {
+    "h": 51,
+    "src": "/images/brands/plamod/52toys.webp",
+    "w": 240
+  },
+  "aniplex": {
+    "h": 59,
+    "src": "/images/brands/plamod/aniplex.webp",
+    "w": 208
+  },
+  "azone": {
+    "h": 57,
+    "src": "/images/brands/plamod/azone.webp",
+    "w": 215
+  },
+  "bandai": {
+    "h": 100,
+    "src": "/images/brands/plamod/bandai.webp",
+    "w": 102
+  },
+  "bandai-hobby": {
+    "h": 85,
+    "src": "/images/brands/plamod/bandai-hobby.webp",
+    "w": 145
+  },
+  "bellfine": {
+    "h": 100,
+    "src": "/images/brands/plamod/bellfine.webp",
+    "w": 75
+  },
+  "bushiroad-creative": {
+    "h": 59,
+    "src": "/images/brands/plamod/bushiroad-creative.webp",
+    "w": 210
+  },
+  "capcom": {
+    "h": 51,
+    "src": "/images/brands/plamod/capcom.webp",
+    "w": 241
+  },
+  "claynel": {
+    "h": 64,
+    "src": "/images/brands/plamod/claynel.webp",
+    "w": 192
+  },
+  "eastern-model": {
+    "h": 78,
+    "src": "/images/brands/plamod/eastern-model.webp",
+    "w": 158
+  },
+  "elcoco": {
+    "h": 90,
+    "src": "/images/brands/plamod/elcoco.webp",
+    "w": 137
+  },
+  "ensky": {
+    "h": 27,
+    "src": "/images/brands/plamod/ensky.webp",
+    "w": 260
+  },
+  "estream": {
+    "h": 79,
+    "src": "/images/brands/plamod/estream.webp",
+    "w": 155
+  },
+  "flame-toys": {
+    "h": 100,
+    "src": "/images/brands/plamod/flame-toys.webp",
+    "w": 120
+  },
+  "freeing": {
+    "h": 87,
+    "src": "/images/brands/plamod/freeing.webp",
+    "w": 142
+  },
+  "furyu": {
+    "h": 60,
+    "src": "/images/brands/plamod/furyu.webp",
+    "w": 205
+  },
+  "gaahleri": {
+    "h": 49,
+    "src": "/images/brands/plamod/gaahleri.webp",
+    "w": 251
+  },
+  "godhand": {
+    "h": 100,
+    "src": "/images/brands/plamod/godhand.webp",
+    "w": 100
+  },
+  "good-smile-arts-shanghai": {
+    "h": 100,
+    "src": "/images/brands/plamod/good-smile-arts-shanghai.webp",
+    "w": 100
+  },
+  "good-smile-company": {
+    "h": 59,
+    "src": "/images/brands/plamod/good-smile-company.webp",
+    "w": 208
+  },
+  "goodsmile-moment": {
+    "h": 88,
+    "src": "/images/brands/plamod/goodsmile-moment.webp",
+    "w": 140
+  },
+  "gsi-creos": {
+    "h": 46,
+    "src": "/images/brands/plamod/gsi-creos.webp",
+    "w": 260
+  },
+  "hasegawa": {
+    "h": 96,
+    "src": "/images/brands/plamod/hasegawa.webp",
+    "w": 129
+  },
+  "hiya-toys": {
+    "h": 100,
+    "src": "/images/brands/plamod/hiya-toys.webp",
+    "w": 66
+  },
+  "hobby-stock": {
+    "h": 58,
+    "src": "/images/brands/plamod/hobby-stock.webp",
+    "w": 213
+  },
+  "joytoy": {
+    "h": 54,
+    "src": "/images/brands/plamod/joytoy.webp",
+    "w": 229
+  },
+  "kadokawa": {
+    "h": 70,
+    "src": "/images/brands/plamod/kadokawa.webp",
+    "w": 175
+  },
+  "kaiyodo": {
+    "h": 45,
+    "src": "/images/brands/plamod/kaiyodo.webp",
+    "w": 260
+  },
+  "kotobukiya": {
+    "h": 61,
+    "src": "/images/brands/plamod/kotobukiya.webp",
+    "w": 201
+  },
+  "marimo-craft": {
+    "h": 100,
+    "src": "/images/brands/plamod/marimo-craft.webp",
+    "w": 110
+  },
+  "max-factory": {
+    "h": 56,
+    "src": "/images/brands/plamod/max-factory.webp",
+    "w": 218
+  },
+  "max-limited": {
+    "h": 100,
+    "src": "/images/brands/plamod/max-limited.webp",
+    "w": 100
+  },
+  "medicom-toy": {
+    "h": 100,
+    "src": "/images/brands/plamod/medicom-toy.webp",
+    "w": 87
+  },
+  "medicos-entertainment": {
+    "h": 66,
+    "src": "/images/brands/plamod/medicos-entertainment.webp",
+    "w": 187
+  },
+  "megahouse": {
+    "h": 100,
+    "src": "/images/brands/plamod/megahouse.webp",
+    "w": 87
+  },
+  "mighty-jaxx": {
+    "h": 67,
+    "src": "/images/brands/plamod/mighty-jaxx.webp",
+    "w": 185
+  },
+  "miniart": {
+    "h": 72,
+    "src": "/images/brands/plamod/miniart.webp",
+    "w": 170
+  },
+  "myethos": {
+    "h": 58,
+    "src": "/images/brands/plamod/myethos.webp",
+    "w": 214
+  },
+  "phat-company": {
+    "h": 87,
+    "src": "/images/brands/plamod/phat-company.webp",
+    "w": 141
+  },
+  "plum-pmoa": {
+    "h": 65,
+    "src": "/images/brands/plamod/plum-pmoa.webp",
+    "w": 191
+  },
+  "prime-1-studio": {
+    "h": 99,
+    "src": "/images/brands/plamod/prime-1-studio.webp",
+    "w": 125
+  },
+  "proof": {
+    "h": 66,
+    "src": "/images/brands/plamod/proof.webp",
+    "w": 185
+  },
+  "sega": {
+    "h": 63,
+    "src": "/images/brands/plamod/sega.webp",
+    "w": 195
+  },
+  "sparmax": {
+    "h": 62,
+    "src": "/images/brands/plamod/sparmax.webp",
+    "w": 200
+  },
+  "square-enix": {
+    "h": 63,
+    "src": "/images/brands/plamod/square-enix.webp",
+    "w": 195
+  },
+  "star-ace": {
+    "h": 62,
+    "src": "/images/brands/plamod/star-ace.webp",
+    "w": 199
+  },
+  "syuto-seiko": {
+    "h": 59,
+    "src": "/images/brands/plamod/syuto-seiko.webp",
+    "w": 208
+  },
+  "taito": {
+    "h": 63,
+    "src": "/images/brands/plamod/taito.webp",
+    "w": 197
+  },
+  "tamashii-nations": {
+    "h": 99,
+    "src": "/images/brands/plamod/tamashii-nations.webp",
+    "w": 124
+  },
+  "the-scale-modellers-supply-sms": {
+    "h": 68,
+    "src": "/images/brands/plamod/the-scale-modellers-supply-sms.webp",
+    "w": 182
+  },
+  "threezero": {
+    "h": 100,
+    "src": "/images/brands/plamod/threezero.webp",
+    "w": 100
+  },
+  "toptoy": {
+    "h": 57,
+    "src": "/images/brands/plamod/toptoy.webp",
+    "w": 217
+  },
+  "union-creative": {
+    "h": 84,
+    "src": "/images/brands/plamod/union-creative.webp",
+    "w": 147
+  },
+  "wave-co": {
+    "h": 67,
+    "src": "/images/brands/plamod/wave-co.webp",
+    "w": 185
+  },
+  "wonderful-works": {
+    "h": 30,
+    "src": "/images/brands/plamod/wonderful-works.webp",
+    "w": 260
+  }
+}

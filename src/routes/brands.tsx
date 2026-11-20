@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { fetchVendors } from "@/commerce/api";
-import { brandLogo } from "@/commerce/artwork";
+import { brandLogo, brandLogoSized } from "@/commerce/artwork";
+
+/** Brands with fewer products than this stay off the directory. */
+const MIN_PRODUCTS = 5;
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 
@@ -25,7 +28,9 @@ export const Route = createFileRoute("/brands")({
 });
 
 function BrandsPage() {
-  const vendors = Route.useLoaderData();
+  const vendors = Route.useLoaderData().filter(
+    (v) => v.count >= MIN_PRODUCTS && v.name.toLowerCase() !== "others",
+  );
 
   return (
     <>
@@ -44,7 +49,8 @@ function BrandsPage() {
         <div className="container-sbs">
           <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
             {vendors.map((vendor) => {
-              const logo = brandLogo(vendor.name);
+              const sized = brandLogoSized(vendor.name);
+              const logo = sized?.src ?? brandLogo(vendor.name);
               return (
                 <Link
                   key={vendor.name}
@@ -58,7 +64,10 @@ function BrandsPage() {
                         src={logo}
                         alt={vendor.name}
                         loading="lazy"
-                        className="max-h-[96px] w-auto max-w-[85%] object-contain transition-transform duration-200 group-hover:scale-[1.04]"
+                        width={sized?.w}
+                        height={sized?.h}
+                        style={sized ? { width: sized.w, height: "auto" } : undefined}
+                        className="max-h-[100px] max-w-[88%] object-contain transition-transform duration-200 group-hover:scale-[1.04]"
                       />
                     ) : (
                       <span className="text-center font-display text-xl">{vendor.name}</span>

@@ -1,4 +1,5 @@
 import { slugify } from "./adapter";
+import brandLogoData from "@/data/brand-logos.json";
 
 /**
  * Local artwork resolvers.
@@ -45,6 +46,13 @@ const SERIES_JPG = new Set([
   "pokemon",
   "street-fighter",
 ]);
+
+/** Plamod brand marks, trimmed and scaled to equal visual weight (scripts in sbs-work/brand_logos.py). */
+const BRAND_LOGOS = brandLogoData as Record<string, { src: string; w: number; h: number }>;
+
+export function brandLogoSized(vendor: string): { src: string; w: number; h: number } | null {
+  return BRAND_LOGOS[slugify(vendor)] ?? null;
+}
 
 export function brandLogo(vendor: string): string | null {
   const file = BRAND_LOGO_FILES[slugify(vendor)];
