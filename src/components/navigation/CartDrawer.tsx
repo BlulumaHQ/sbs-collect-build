@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useCart } from "@/commerce/cart";
 import { formatPrice } from "@/commerce/format";
 import { ProductStatusBadge } from "@/components/commerce/ProductStatusBadge";
+import { FreeShippingBar } from "@/components/commerce/FreeShippingBar";
 
 export function CartDrawer() {
   const { items, subtotal, currency, drawerOpen, closeDrawer, setQuantity, removeItem } = useCart();
@@ -85,6 +86,11 @@ export function CartDrawer() {
         </div>
 
         <footer className="border-t border-border px-5 py-5">
+          {items.length > 0 ? (
+            <div className="mb-4">
+              <FreeShippingBar subtotal={subtotal} currency={currency} />
+            </div>
+          ) : null}
           <div className="flex items-center justify-between">
             <span className="micro text-muted-foreground">Subtotal</span>
             <span className="font-display text-lg">{formatPrice(subtotal, currency)}</span>
@@ -97,7 +103,7 @@ export function CartDrawer() {
             View cart
           </Link>
           <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            Storefront preview — no order is placed. Ships across Canada or pick up in Vancouver.
+            Ships across Canada or pick up in Vancouver.
           </p>
         </footer>
       </aside>

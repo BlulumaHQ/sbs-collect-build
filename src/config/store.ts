@@ -13,6 +13,8 @@ export const STORE = {
   phoneHref: "tel:7789286412",
   email: "info@secretbuilderssociety.ca",
   currency: "CAD",
+  /** Free standard shipping threshold (CAD). Shopify shipping rates must match. */
+  freeShippingThreshold: 300,
   currencyLabel: "Canada (CAD $)",
   mapsQuery: "1395 Commercial Drive, Vancouver, BC",
   hours: [

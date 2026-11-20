@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { ProductStatusBadge } from "@/components/commerce/ProductStatusBadge";
 import { EmptyState } from "@/components/EmptyState";
+import { FreeShippingBar } from "@/components/commerce/FreeShippingBar";
 
 export const Route = createFileRoute("/cart")({
   head: () => ({
@@ -121,6 +122,9 @@ function CartPage() {
 
             <aside className="h-fit border border-border bg-card p-6">
               <h2 className="micro text-muted-foreground">Summary</h2>
+              <div className="mt-5">
+                <FreeShippingBar subtotal={subtotal} currency={currency} />
+              </div>
               <div className="mt-5 flex items-center justify-between border-t border-border pt-5">
                 <span className="micro">Subtotal</span>
                 <span className="font-display text-2xl">{formatPrice(subtotal, currency)}</span>
