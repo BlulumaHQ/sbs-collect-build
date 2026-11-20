@@ -44,8 +44,8 @@ function ShippingPage() {
 
         <Block title="Delivery time">
           <p>
-            Once shipped, orders within Canada usually arrive in 1–3 business days. Free standard shipping takes
-            3–9 business days.
+            Once shipped, orders usually arrive in 1–5 business days depending on your province (BC is usually
+            fastest). Free standard shipping takes 3–9 business days.
           </p>
         </Block>
 

@@ -17,7 +17,6 @@ import { SiteHeader } from "@/components/navigation/SiteHeader";
 import { SiteFooter } from "@/components/navigation/SiteFooter";
 import { CartDrawer } from "@/components/navigation/CartDrawer";
 import { RewardsProvider } from "@/components/rewards/RewardsProvider";
-import { RewardsLauncher, RewardsModal } from "@/components/rewards/Rewards";
 import { fetchNavSummary } from "@/commerce/catalog-api";
 
 
@@ -28,7 +27,7 @@ function NotFoundComponent() {
         <p className="micro text-sbs-red">404</p>
         <h1 className="mt-4 font-display text-4xl">Page not found</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          This page does not exist in the Secret Builders Society prototype.
+          This page doesn’t exist or may have moved.
         </p>
         <Link
           to="/shop"
@@ -134,8 +133,6 @@ function RootComponent() {
           </main>
           <SiteFooter />
           <CartDrawer />
-          <RewardsLauncher />
-          <RewardsModal />
         </RewardsProvider>
       </CartProvider>
     </QueryClientProvider>

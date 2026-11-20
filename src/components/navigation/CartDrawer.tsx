@@ -1,10 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { useCart } from "@/commerce/cart";
+import { getCheckoutUrl } from "@/commerce/constants";
 import { formatPrice } from "@/commerce/format";
 import { ProductStatusBadge } from "@/components/commerce/ProductStatusBadge";
 
 export function CartDrawer() {
   const { items, subtotal, currency, drawerOpen, closeDrawer, setQuantity, removeItem } = useCart();
+  const checkoutUrl = getCheckoutUrl(items);
 
   if (!drawerOpen) return null;
 
@@ -83,15 +85,23 @@ export function CartDrawer() {
             <span className="micro text-muted-foreground">Subtotal</span>
             <span className="font-display text-lg">{formatPrice(subtotal, currency)}</span>
           </div>
+          {checkoutUrl ? (
+            <a
+              href={checkoutUrl}
+              className="micro mt-4 block border border-sbs-red bg-sbs-red px-5 py-3.5 text-center text-white transition-colors duration-200 hover:border-sbs-red-deep hover:bg-sbs-red-deep"
+            >
+              Checkout
+            </a>
+          ) : null}
           <Link
             to="/cart"
             onClick={closeDrawer}
-            className="micro mt-4 block border border-charcoal px-5 py-3 text-center text-charcoal transition-colors duration-200 hover:bg-charcoal hover:text-white"
+            className="micro mt-3 block border border-charcoal px-5 py-3 text-center text-charcoal transition-colors duration-200 hover:bg-charcoal hover:text-white"
           >
             View cart
           </Link>
           <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            Storefront preview — no order is placed. Ships across Canada or pick up in Vancouver.
+            Secure checkout by Shopify. Ships across Canada (free on CA$300+) or pick up in Vancouver.
           </p>
         </footer>
       </aside>

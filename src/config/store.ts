@@ -19,6 +19,12 @@ export const STORE = {
     { day: "Fri – Sun", time: "12 PM – 7 PM" },
     { day: "Mon – Thu", time: "Closed" },
   ],
+  /** One wording for pickup timing everywhere (FAQ, pickup page, product page, cart). */
+  pickupLeadTime:
+    "Most items are ordered in from our supplier once a week, so pickup orders are usually ready the following Friday–Sunday. We email you when your order is ready — no same-day pickup.",
+  /** One wording for walk-in visits everywhere. */
+  walkIn:
+    "Walk-ins are welcome Friday–Sunday, 12–7 PM, to browse our in-store shelves. We keep a small curated selection in store — most of the online catalogue is ordered in for you.",
   /** Social accounts have not been supplied yet — prototype buttons only. */
   social: [{ label: "Facebook" }, { label: "Instagram" }, { label: "TikTok" }, { label: "X" }],
 } as const;

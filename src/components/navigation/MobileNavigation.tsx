@@ -5,7 +5,6 @@ import { GUNPLA_GRADES } from "@/commerce/attributes";
 import { useNavSummary } from "@/commerce/nav-summary";
 import { GUIDES } from "@/content/guides";
 import { STORE } from "@/config/store";
-import { useRewards } from "@/components/rewards/RewardsProvider";
 
 const NAV = [
   { label: "Preorders", to: "/preorders" as const },
@@ -29,7 +28,6 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
   const [shopOpen, setShopOpen] = useState(true);
   const [gundamOpen, setGundamOpen] = useState(false);
   const { gundam } = useNavSummary();
-  const { openRewards } = useRewards();
   if (!open) return null;
 
   return (
@@ -128,17 +126,6 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
               {item.label}
             </Link>
           ))}
-
-          <button
-            type="button"
-            onClick={() => {
-              onClose();
-              openRewards();
-            }}
-            className="block w-full border-b border-border py-3 text-left font-display text-2xl text-sbs-red"
-          >
-            Rewards
-          </button>
 
           <div className="mt-8">
             <h2 className="micro text-muted-foreground">Customer Care</h2>

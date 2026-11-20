@@ -136,13 +136,13 @@ function CartPage() {
                   disabled
                   className="micro mt-6 w-full cursor-not-allowed border border-border bg-muted px-5 py-4 text-muted-foreground"
                 >
-                  Online checkout not live yet
+                  Some items can’t be checked out — please contact us
                 </button>
               )}
               <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
                 {checkoutUrl
                   ? "Secure checkout on Shopify. Ships across Canada (free on CA$300+), or choose store pickup — we email you when your order is ready."
-                  : "Online checkout isn’t live yet. Orders will ship across Canada or be ready for store pickup in Vancouver."}
+                  : "One or more items in your cart can’t be ordered online. Remove them or contact us and we’ll help."}
               </p>
             </aside>
           </div>

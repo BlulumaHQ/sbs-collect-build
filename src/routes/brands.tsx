@@ -80,11 +80,6 @@ function BrandsPage() {
               );
             })}
           </div>
-
-          <p className="micro-sm mt-8 text-muted-foreground">
-            Brand marks shown are prototype plates — official manufacturer logos will replace them
-            once supplied.
-          </p>
         </div>
       </section>
     </>

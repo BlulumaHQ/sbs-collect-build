@@ -10,7 +10,7 @@ export const Route = createFileRoute("/faq")({
       {
         name: "description",
         content:
-          "Answers about the Secret Builders Society storefront prototype, preorders, currency, shipping across Canada, store pickup in Vancouver, store visits and online ordering plans.",
+          "Answers about preorders, payment, currency, shipping across Canada, store pickup in Vancouver and visiting Secret Builders Societyg plans.",
       },
       { property: "og:title", content: "FAQ | Secret Builders Society" },
       {
@@ -33,11 +33,11 @@ const FAQS = [
   },
   {
     q: "How do preorders work?",
-    a: "Products marked PREORDER represent upcoming products in the current storefront prototype. Release information, when available, is an estimate and may change. If you order preorders and in-stock items together, we ship everything once all preorder items arrive, so we recommend ordering them separately.",
+    a: "Products marked PREORDER are upcoming releases. You pay when you order, and we ship (or hold for pickup) as soon as the item arrives. Release dates are estimates set by the manufacturer and may change; if a release is cancelled you get a full refund. If you order preorders and in-stock items together, we ship everything once all preorder items arrive, so we recommend ordering them separately.",
   },
   {
-    q: "Can I order online now?",
-    a: "Not yet. The current website is a storefront preview and does not take orders or payments. Online ordering will be enabled before the store launches publicly.",
+    q: "How do I pay?",
+    a: "Checkout is handled securely by Shopify. We accept major credit cards, Shop Pay, Apple Pay and Google Pay. All prices are in Canadian dollars, so there are no duties for Canadian orders.",
   },
   {
     q: "Do you ship?",
@@ -45,11 +45,11 @@ const FAQS = [
   },
   {
     q: "How does store pickup work?",
-    a: `Choose "Pickup" at checkout. Most items ship to us from our warehouse, so please wait for our "Ready for pickup" email (usually within 2–4 business days), then collect your order at ${STORE.addressLine} during store hours.`,
+    a: `Choose "Pickup" at checkout. ${STORE.pickupLeadTime} Collect your order at ${STORE.addressLine} during store hours.`,
   },
   {
     q: "Can I visit the store?",
-    a: `Secret Builders Society is located at ${STORE.addressLine}, ${STORE.city}, ${STORE.region}. Store hours are Friday through Sunday, 12:00 PM to 7:00 PM. Closed Monday through Thursday.`,
+    a: `Yes. Secret Builders Society is at ${STORE.addressLine}, ${STORE.city}, ${STORE.region}, inside Unity Tattoo. ${STORE.walkIn} Closed Monday through Thursday.`,
   },
   {
     q: "How can I contact the store?",
@@ -61,7 +61,7 @@ const FAQS = [
   },
   {
     q: "Can I create a customer account?",
-    a: "Customer accounts will be enabled when the Shopify storefront launches.",
+    a: "You can check out as a guest. Your order confirmation email has a link to track your order.",
   },
 ];
 

@@ -11,7 +11,6 @@ import { PopularBrands } from "@/components/home/PopularBrands";
 import { StoreInfo } from "@/components/home/StoreInfo";
 import { GundamGrades } from "@/components/home/GundamGrades";
 import { BeginnersCorner } from "@/components/home/BeginnersCorner";
-import { Newsletter } from "@/components/home/Newsletter";
 
 const HOME_SERIES: {
   name: string;
@@ -236,7 +235,6 @@ function HomePage() {
       <RecentlyViewed index="10" />
 
       {/* NEWSLETTER */}
-      <Newsletter />
 
     </>
   );

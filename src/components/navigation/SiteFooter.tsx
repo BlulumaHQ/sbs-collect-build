@@ -4,7 +4,6 @@ import { Facebook, Instagram } from "lucide-react";
 import { PRIMARY_CATEGORIES } from "./taxonomy";
 import { STORE } from "@/config/store";
 import { PaymentMethods } from "@/components/home/PaymentMethods";
-import { useRewards } from "@/components/rewards/RewardsProvider";
 
 const EXPLORE_LINKS = [
   { label: "Gundam", to: "/gundam" as const },
@@ -67,7 +66,6 @@ function MobileAccordion({
 }
 
 export function SiteFooter() {
-  const { openRewards } = useRewards();
 
   return (
     <footer className="bg-charcoal text-white">
@@ -139,15 +137,6 @@ export function SiteFooter() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <button
-                  type="button"
-                  onClick={openRewards}
-                  className="text-[15px] text-white/80 hover:text-sbs-red"
-                >
-                  Rewards
-                </button>
-              </li>
             </ul>
           </MobileAccordion>
 
@@ -221,15 +210,6 @@ export function SiteFooter() {
                 </Link>
               </li>
             ))}
-            <li>
-              <button
-                type="button"
-                onClick={openRewards}
-                className="text-[15px] text-white/80 hover:text-sbs-red"
-              >
-                Rewards
-              </button>
-            </li>
           </ul>
         </nav>
 

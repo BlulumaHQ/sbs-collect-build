@@ -9,6 +9,9 @@
 
 export const SHOP_DOMAIN = "2zzz0q-zy.myshopify.com";
 
+/** Shopify customer accounts (order history, tracking) — passwordless sign-in. */
+export const CUSTOMER_ACCOUNT_URL = "https://shopify.com/100625940760/account";
+
 export const CATEGORY_ORDER = [
   "Figures",
   "Model Kits",
