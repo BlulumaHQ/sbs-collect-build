@@ -85,7 +85,7 @@ function BrandSlide({ active, first }: { active: boolean; first: boolean }) {
           </Title>
           <p className="max-w-[560px] text-base leading-relaxed text-white/85 lg:text-xl">
             Vancouver&apos;s builders&apos; society — Gunpla, figures and tools, hand-picked by a
-            25-year toy-trade veteran. Inside a working tattoo shop.
+            21-year toy-trade veteran. Inside a working tattoo shop.
           </p>
           <div className="flex flex-wrap gap-3 pt-1">
             <Cta to="/gundam" label="Shop Gunpla" variant="red" active={active} />
