@@ -19,7 +19,8 @@ export const GUIDES: GuideMeta[] = [
   {
     slug: "gunpla-grades-explained",
     image: "/images/guides/gunpla-grades-explained-v2.webp",
-    imageAlt: "Building a Gundam kit at a home workbench with RX-78-2 kits of different grades lined up",
+    imageAlt:
+      "Building a Gundam kit at a home workbench with RX-78-2 kits of different grades lined up",
     path: "/guides/gunpla-grades-explained",
     title: "Gunpla Grades Explained: EG vs HG vs RG vs MG vs PG",
     seoTitle: "Gunpla Grades Explained: EG, HG, RG, MG, PG & SD | SBS Guides",
@@ -33,7 +34,8 @@ export const GUIDES: GuideMeta[] = [
   {
     slug: "essential-gunpla-tools",
     image: "/images/guides/essential-gunpla-tools-v2.webp",
-    imageAlt: "Clipping a part from its runner with nippers, with a hobby knife, sanding sticks, tweezers and panel liner on the cutting mat",
+    imageAlt:
+      "Clipping a part from its runner with nippers, with a hobby knife, sanding sticks, tweezers and panel liner on the cutting mat",
     path: "/guides/essential-gunpla-tools",
     title: "Essential Tools for Your First Gunpla Build",
     seoTitle: "Essential Gunpla Tools for Beginners: Nippers, Sanding & Panel Lining | SBS Guides",
@@ -75,7 +77,7 @@ export function guideHead(slug: GuideMeta["slug"]) {
       { property: "og:description", content: guide.description },
       { property: "og:type", content: "article" },
       { property: "og:url", content: `https://secretbuilderssociety.ca${guide.path}` },
-      { property: "og:image", content: `https://secretbuilderssociety.ca${guide.image.replace(".webp", "-share.jpg")}` },
+      { property: "og:image", content: "https://secretbuilderssociety.ca/images/og-share.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: guide.path }],

@@ -43,15 +43,6 @@ function GuidesIndex() {
             to={g.path}
             className="card-retail group flex flex-col overflow-hidden"
           >
-            <div className="aspect-[4/3] overflow-hidden bg-bone">
-              <img
-                src={g.image}
-                alt={g.imageAlt}
-                loading="lazy"
-                decoding="async"
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-              />
-            </div>
             <div className="flex flex-1 flex-col p-6">
               <span className="micro text-sbs-red">{String(i + 1).padStart(2, "0")}</span>
               <h2 className="mt-4 font-display text-2xl leading-tight group-hover:text-sbs-red">
