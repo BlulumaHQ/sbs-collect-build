@@ -1,6 +1,6 @@
 {
  "shopDomain": "2zzz0q-zy.myshopify.com",
- "generatedAt": "2026-11-21T17:27:24.493Z",
+ "generatedAt": "2026-11-21T21:39:20.791Z",
  "products": [
   {
    "id": "10455198728472",
@@ -1194,7 +1194,7 @@
    "status": "available",
    "price": 19.99,
    "currency": "CAD",
-   "compareAtPrice": null,
+   "compareAtPrice": 24.99,
    "sku": "MGH84911",
    "upc": "4535123849114",
    "variantId": "52809438101784",
