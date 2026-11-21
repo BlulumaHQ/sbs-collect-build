@@ -190,9 +190,18 @@ function withFeatureOverrides(list: CommerceProduct[]): CommerceProduct[] {
   });
 }
 
+/**
+ * Plamod sells blind boxes only as full packs (e.g. 6 per pack), so single boxes from the
+ * supplier feed can't be ordered. Hide them; Yu-Wei's own blind-box listings stay (Nov 21 2026).
+ */
+function isSupplierBlindBox(p: CommerceProduct): boolean {
+  const h = p.shopifyHandle ?? p.handle;
+  return p.category === "Blind Boxes" && h.startsWith("plamod-");
+}
+
 const products: CommerceProduct[] = withFeatureOverrides(
   withReadableHandles(catalog.products.map(normalize)),
-);
+).filter((p) => !isSupplierBlindBox(p));
 const byHandle = new Map<string, CommerceProduct>();
 for (const p of products) {
   byHandle.set(p.handle, p);
