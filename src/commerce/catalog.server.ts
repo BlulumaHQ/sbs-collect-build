@@ -45,6 +45,7 @@ interface RawProduct {
   preorderDeadline?: string | null;
   staffPick?: string | null;
   hot?: boolean | null;
+  confirmStock?: boolean | null;
   compareAtPrice?: number | null;
   image: string;
   images?: string[] | null;
@@ -117,6 +118,7 @@ function normalize(p: RawProduct): CommerceProduct {
     preorderDeadline: clean(p.preorderDeadline),
     staffPick: clean(p.staffPick),
     hot: p.hot === true ? true : undefined,
+    confirmStock: p.confirmStock === true ? true : undefined,
     compareAtPrice: p.compareAtPrice ?? undefined,
     image: p.image,
     images: p.images?.length ? p.images : [p.image],

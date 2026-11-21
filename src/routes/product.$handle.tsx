@@ -100,7 +100,11 @@ export const Route = createFileRoute("/product/$handle")({
     if (!data) throw notFound();
     // Old Shopify-coded URL (e.g. /product/plamod-52t01081) → readable one, permanently.
     if (data.product.handle !== params.handle) {
-      throw redirect({ to: "/product/$handle", params: { handle: data.product.handle }, statusCode: 301 });
+      throw redirect({
+        to: "/product/$handle",
+        params: { handle: data.product.handle },
+        statusCode: 301,
+      });
     }
     return data;
   },
@@ -321,9 +325,15 @@ function ProductDetailPage() {
             </button>
 
             <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
+              {product.confirmStock && product.status !== "preorder" ? (
+                <li className="text-[13px] font-medium uppercase tracking-[0.06em] text-amber-700">
+                  Limited supplier stock — we&apos;ll confirm your order within 1 business day.
+                </li>
+              ) : null}
               {product.status !== "preorder" && readyDate ? (
                 <li className="text-[15px] text-foreground">
-                  <strong>Estimated ready: {readyDate}</strong> — ships that day or ready for pickup.
+                  <strong>Estimated ready: {readyDate}</strong> — ships that day or ready for
+                  pickup.
                   <span className="block text-sm text-muted-foreground">{STORE.orderCutoff}</span>
                 </li>
               ) : null}
@@ -354,8 +364,8 @@ function ProductDetailPage() {
               <div className="mt-8 border-l-2 border-sbs-red bg-sbs-red/5 p-4 text-[15px] leading-relaxed">
                 <p className="font-medium">Great first kit</p>
                 <p className="mt-1 text-muted-foreground">
-                  Snap-fit — no glue or paint needed. A pair of plastic nippers makes it easier. Suitable
-                  for ages 8+ with a little help.
+                  Snap-fit — no glue or paint needed. A pair of plastic nippers makes it easier.
+                  Suitable for ages 8+ with a little help.
                 </p>
                 <Link
                   to="/guides/gunpla-grades-explained"

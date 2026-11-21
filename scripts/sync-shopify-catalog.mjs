@@ -108,6 +108,8 @@ export function mapProduct(node, shopName = "", previous = new Map()) {
     featured: tags.some((t) => t.toLowerCase() === "featured") || null,
     // Home hero "On Our Shelf" picks
     hot: tags.some((t) => t.toLowerCase() === "hot") || null,
+    // Supplier has only a few left: product page says we confirm the order (tag set by the Plamod sync)
+    confirmStock: tags.some((t) => t.toLowerCase() === "confirm-stock") || null,
     createdAt: node.createdAt ?? null,
     // Plain-text product description from Shopify (trimmed to keep the snapshot lean)
     description: (node.description ?? "").replace(/\s+\n/g, "\n").trim().slice(0, 2000) || null,

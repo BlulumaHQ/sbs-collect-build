@@ -49,6 +49,8 @@ export interface CommerceProduct {
   staffPick?: string | undefined;
   /** Shopify tag `hot` — shown in the home hero "On Our Shelf" slide. */
   hot?: true | undefined;
+  /** Shopify tag `confirm-stock` — supplier stock is low; we confirm the order before charging. */
+  confirmStock?: true | undefined;
   image: string;
   /** Ordered gallery. Always contains at least `image`. */
   images: string[];
