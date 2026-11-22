@@ -1,6 +1,6 @@
 {
  "shopDomain": "2zzz0q-zy.myshopify.com",
- "generatedAt": "2026-11-22T06:19:37.923Z",
+ "generatedAt": "2026-11-22T23:36:50.264Z",
  "products": [
   {
    "id": "10455198728472",
@@ -46359,7 +46359,7 @@
    "confirmStock": null,
    "createdAt": "2026-11-20T09:25:12Z",
    "description": "Pack of 5 / 5 入This item is sold only as a pack of 5, exactly as supplied by the maker.此商品只以 5 入整包出售，內容與原廠包裝相同。The perfect size for storing small items.Comes with a carabiner so you can attach it to your bag.Size: Approx. H70 x W80 x D20mmWeight: Approx. 25gMaterial: PVCCountry of Origin: China*The product photo is a sample, so the actual product may differ slightly. Please note.*Please note that due to manufacturing reasons, the actual character design may differ slightly from the actual product. Manufacturer: Marimo Craft Series: No Series",
-   "status": "available",
+   "status": "sold-out",
    "price": 62.99,
    "currency": "CAD",
    "compareAtPrice": null,
@@ -133752,7 +133752,7 @@
    "confirmStock": null,
    "createdAt": "2026-11-20T10:06:35Z",
    "description": "Manufacturer: MegaHouse Series: Demon Slayer: Kimetsu no Yaiba",
-   "status": "available",
+   "status": "sold-out",
    "price": 59.99,
    "currency": "CAD",
    "compareAtPrice": null,
@@ -151531,10 +151531,10 @@
    "newArrival": null,
    "featured": null,
    "hot": null,
-   "confirmStock": true,
+   "confirmStock": null,
    "createdAt": "2026-11-20T10:25:02Z",
    "description": "Manufacturer: TOYZEROPLUS Series: LuLu The Piggy",
-   "status": "available",
+   "status": "sold-out",
    "price": 121.99,
    "currency": "CAD",
    "compareAtPrice": null,
