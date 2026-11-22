@@ -202,6 +202,13 @@ function isSupplierBlindBox(p: CommerceProduct): boolean {
 const products: CommerceProduct[] = withFeatureOverrides(
   withReadableHandles(catalog.products.map(normalize)),
 ).filter((p) => !isSupplierBlindBox(p));
+/**
+ * Supplier (Plamod) items that are sold out stay reachable by URL but are left out of
+ * category pages, search, home sections and the sitemap (Nov 21 2026).
+ */
+const listed: CommerceProduct[] = products.filter(
+  (p) => !(p.supplierFeed && p.status === "sold-out"),
+);
 const byHandle = new Map<string, CommerceProduct>();
 for (const p of products) {
   byHandle.set(p.handle, p);
@@ -218,7 +225,7 @@ for (const [oldHandle, current] of Object.entries(RENAMED_HANDLES)) {
 }
 
 export function getSaleProducts(): CommerceProduct[] {
-  return products.filter((p) => p.compareAtPrice && p.compareAtPrice > p.price);
+  return listed.filter((p) => p.compareAtPrice && p.compareAtPrice > p.price);
 }
 
 /**
@@ -229,8 +236,8 @@ export function getSaleProducts(): CommerceProduct[] {
 export function getFeaturedProducts(limit = 8): CommerceProduct[] {
   const soldOutLast = (a: CommerceProduct, b: CommerceProduct) =>
     Number(a.status === "sold-out") - Number(b.status === "sold-out");
-  const tagged = products.filter((p) => p.featured).sort(soldOutLast);
-  const fill = products.filter((p) => !p.featured && p.status !== "sold-out");
+  const tagged = listed.filter((p) => p.featured).sort(soldOutLast);
+  const fill = listed.filter((p) => !p.featured && p.status !== "sold-out");
   return [...tagged, ...fill].slice(0, limit);
 }
 
@@ -239,9 +246,9 @@ export function getNewArrivals(limit = 8): CommerceProduct[] {
   const byNewest = (a: CommerceProduct, b: CommerceProduct) =>
     (b.createdAt ?? "").localeCompare(a.createdAt ?? "");
   const inStock = (p: CommerceProduct) => p.status === "available" || p.status === "last-one";
-  const fresh = products.filter((p) => p.newArrival && inStock(p)).sort(byNewest);
+  const fresh = listed.filter((p) => p.newArrival && inStock(p)).sort(byNewest);
   // Nothing new yet (or no createdAt in an older snapshot): newest in-stock instead.
-  const pool = fresh.length ? fresh : products.filter(inStock).sort(byNewest);
+  const pool = fresh.length ? fresh : listed.filter(inStock).sort(byNewest);
   // A different random set on every visit (Fisher–Yates on a copy).
   const picks = [...pool];
   for (let i = picks.length - 1; i > 0; i--) {
@@ -252,7 +259,7 @@ export function getNewArrivals(limit = 8): CommerceProduct[] {
 }
 
 export function getAllProducts(): CommerceProduct[] {
-  return products;
+  return listed;
 }
 
 /** Finds a product by its readable handle or its original Shopify handle. */
@@ -271,7 +278,7 @@ export function getProductsByIds(ids: string[]): CommerceProduct[] {
  * in-stock listings (not the Plamod supplier feed), Gundam first.
  */
 export function getHotProducts(limit = 3): CommerceProduct[] {
-  const inStock = products.filter((p) => p.status === "available" || p.status === "last-one");
+  const inStock = listed.filter((p) => p.status === "available" || p.status === "last-one");
   const tagged = inStock.filter((p) => p.hot);
   const own = inStock
     .filter((p) => !p.hot && !p.supplierFeed)
@@ -284,7 +291,7 @@ export function getHotProducts(limit = 3): CommerceProduct[] {
 
 export function getCategories(): CommerceCategory[] {
   return CATEGORY_ORDER.map((name) => {
-    const items = products.filter((p) => p.category === name);
+    const items = listed.filter((p) => p.category === name);
     return {
       name,
       slug: categorySlug(name),
@@ -304,12 +311,12 @@ export function getCategoryBySlug(slug: string): CommerceCategory | undefined {
 }
 
 export function getProductsByCategorySlug(slug: string): CommerceProduct[] {
-  return products.filter((p) => p.categorySlug === slug);
+  return listed.filter((p) => p.categorySlug === slug);
 }
 
 export function getSeries(): CommerceSeries[] {
   const map = new Map<string, CommerceProduct[]>();
-  for (const p of products) {
+  for (const p of listed) {
     if (!p.series) continue;
     const list = map.get(p.series) ?? [];
     list.push(p);
@@ -322,7 +329,7 @@ export function getSeries(): CommerceSeries[] {
 
 export function getVendors(): CommerceVendor[] {
   const map = new Map<string, CommerceProduct[]>();
-  for (const p of products) {
+  for (const p of listed) {
     if (!p.vendor) continue;
     const list = map.get(p.vendor) ?? [];
     list.push(p);
@@ -333,18 +340,18 @@ export function getVendors(): CommerceVendor[] {
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export function getSubcategories(scope: CommerceProduct[] = products): string[] {
+export function getSubcategories(scope: CommerceProduct[] = listed): string[] {
   return [
     ...new Set(scope.map((p) => p.subcategory).filter((v): v is string => Boolean(v))),
   ].sort();
 }
 
 export function getGundamProducts(): CommerceProduct[] {
-  return products.filter((p) => p.franchise === "Gundam");
+  return listed.filter((p) => p.franchise === "Gundam");
 }
 
 export function getPreorderProducts(): CommerceProduct[] {
-  return products.filter((p) => p.status === "preorder");
+  return listed.filter((p) => p.status === "preorder");
 }
 
 /** Lower-case and drop punctuation/spaces so "RX-78", "rx 78" and "rx78" all match. */
@@ -377,7 +384,7 @@ export function searchProducts(query: string): CommerceProduct[] {
   const aliasHit = SEARCH_ALIASES[raw];
   const terms = raw.split(/\s+/).filter(Boolean);
   const scored: { p: CommerceProduct; score: number }[] = [];
-  for (const p of products) {
+  for (const p of listed) {
     const fields = [
       p.title,
       p.vendor,
@@ -420,7 +427,7 @@ export function searchProducts(query: string): CommerceProduct[] {
 }
 
 export function getRelatedProducts(product: CommerceProduct, limit = 4): CommerceProduct[] {
-  const pool = products.filter((p) => p.id !== product.id);
+  const pool = listed.filter((p) => p.id !== product.id);
   const score = (p: CommerceProduct) => {
     if (product.series && p.series === product.series) return 3;
     if (p.category === product.category) return 2;
