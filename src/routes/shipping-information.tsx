@@ -59,7 +59,8 @@ function ShippingPage() {
 
         <Block title="Shipping rates">
           <p>
-            Standard shipping anywhere in Canada is a flat CA$15, sent by Canada Post with tracking.
+            Shipping is calculated live at checkout by Canada Post, based on your parcel's weight and
+            destination. Choose from Regular Parcel, Expedited Parcel or Xpresspost — all tracked.
             Orders of CA$300 or more ship free.
           </p>
         </Block>
