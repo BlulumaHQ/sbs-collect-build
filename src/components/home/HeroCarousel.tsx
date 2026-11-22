@@ -12,8 +12,14 @@ import { FramedImage } from "@/components/commerce/FramedImage";
  *   hot      — shelf photo, live in-stock cards (Shopify tag `hot`, else the shop's own stock)
  *   preorder — Levi + Godzilla cards on navy
  */
-type SlideKind = "brand" | "hot" | "preorder";
+type SlideKind = "sale" | "brand" | "hot" | "preorder";
+
+/** Black Friday: 15% off everything (Shopify automatic discount) until Nov 30, 11:59 PM Vancouver. */
+const SALE_ENDS = Date.parse("2026-12-01T08:00:00Z");
+const SALE_ON = Date.now() < SALE_ENDS;
+
 const SLIDES: { kind: SlideKind; background: string }[] = [
+  ...(SALE_ON ? [{ kind: "sale" as const, background: "#7A1620" }] : []),
   { kind: "brand", background: "#141414" },
   { kind: "hot", background: "#111111" },
   { kind: "preorder", background: "#172026" },
@@ -50,6 +56,40 @@ function Cta({
     >
       {label} <span aria-hidden="true">→</span>
     </Link>
+  );
+}
+
+function SaleSlide({ active, first }: { active: boolean; first: boolean }) {
+  const Title = first ? "h2" : "p";
+  return (
+    <>
+      <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_85%_40%,#A51D2A_0%,#7A1620_45%,#3D0B10_100%)]" />
+      <p
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-6 top-1/2 hidden -translate-y-1/2 select-none font-display text-[360px] font-bold leading-none tracking-[-0.06em] text-transparent [-webkit-text-stroke:2px_rgba(255,255,255,0.22)] lg:block xl:text-[440px]"
+      >
+        15%
+      </p>
+      <div className="container-sbs relative flex h-full items-center pb-10">
+        <div className="flex max-w-[680px] flex-col gap-5 lg:gap-6">
+          <Eyebrow>Black Friday · Ends Nov 30</Eyebrow>
+          <Title className="font-display text-[44px] font-bold uppercase leading-[0.92] tracking-[-0.02em] text-white sm:text-6xl lg:text-[88px]">
+            Black Friday Sale
+          </Title>
+          <p className="font-display text-[40px] font-bold uppercase leading-none tracking-[-0.02em] text-white sm:text-5xl lg:text-[64px]">
+            15% off <span className="text-[#FFD7DB]">everything</span>
+          </p>
+          <p className="max-w-[520px] text-base leading-relaxed text-white/85 lg:text-xl">
+            Gunpla, figures, tools and pre-orders. No code needed — 15% comes off automatically at
+            checkout.
+          </p>
+          <div className="flex flex-wrap gap-3 pt-1">
+            <Cta to="/shop" label="Shop the sale" variant="white" active={active} />
+            <Cta to="/gundam" label="Shop Gunpla" variant="ghost" active={active} />
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -279,7 +319,9 @@ export function HeroCarousel({ hot }: { hot: CommerceProduct[] }) {
               }`}
               style={{ backgroundColor: slide.background }}
             >
-              {slide.kind === "brand" ? (
+              {slide.kind === "sale" ? (
+                <SaleSlide active={active} first={i === 0} />
+              ) : slide.kind === "brand" ? (
                 <BrandSlide active={active} first={i === 0} />
               ) : slide.kind === "hot" ? (
                 <HotSlide active={active} hot={hot} />
