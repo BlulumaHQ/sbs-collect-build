@@ -59,8 +59,8 @@ function ShippingPage() {
 
         <Block title="Shipping rates">
           <p>
-            Shipping is calculated at checkout based on your package size, weight and destination.
-            Faster options such as Canada Post Expedited or UPS Standard are available at checkout.
+            Standard shipping anywhere in Canada is a flat CA$15, sent by Canada Post with tracking.
+            Orders of CA$300 or more ship free.
           </p>
         </Block>
 
