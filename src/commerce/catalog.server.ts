@@ -192,11 +192,13 @@ function withFeatureOverrides(list: CommerceProduct[]): CommerceProduct[] {
 
 /**
  * Plamod sells blind boxes only as full packs (e.g. 6 per pack), so single boxes from the
- * supplier feed can't be ordered. Hide them; Yu-Wei's own blind-box listings stay (Nov 21 2026).
+ * supplier feed can't be ordered. Hide those; the sync's full-set listings ("— Sealed Case
+ * of N") and Yu-Wei's own blind-box listings stay (Nov 23 2026).
  */
 function isSupplierBlindBox(p: CommerceProduct): boolean {
   const h = p.shopifyHandle ?? p.handle;
-  return p.category === "Blind Boxes" && h.startsWith("plamod-");
+  if (p.category !== "Blind Boxes" || !h.startsWith("plamod-")) return false;
+  return !/—\s*(Sealed Case|Pack) of \d+/i.test(p.title);
 }
 
 const products: CommerceProduct[] = withFeatureOverrides(

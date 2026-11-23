@@ -36,7 +36,7 @@ const QUERY = `query Products($cursor: String) {
     nodes {
       id handle title vendor productType tags availableForSale createdAt
       category { name }
-      description
+      descriptionHtml
       featuredImage { url }
       staffPick: metafield(namespace: "custom", key: "staff_pick") { value }
       images(first: 10) { nodes { url } }
@@ -50,6 +50,24 @@ const QUERY = `query Products($cursor: String) {
     }
   }
 }`;
+
+/** Shopify description HTML -> plain text that keeps line breaks (<br>, </p>, </li>). */
+function htmlToText(html) {
+  return (html ?? "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(p|div|li|h[1-6])>/gi, "\n")
+    .replace(/<li[^>]*>/gi, "- ")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
 
 function tagValue(tags, key) {
   const prefix = `${key}:`;
@@ -112,7 +130,7 @@ export function mapProduct(node, shopName = "", previous = new Map()) {
     confirmStock: tags.some((t) => t.toLowerCase() === "confirm-stock") || null,
     createdAt: node.createdAt ?? null,
     // Plain-text product description from Shopify (trimmed to keep the snapshot lean)
-    description: (node.description ?? "").replace(/\s+\n/g, "\n").trim().slice(0, 2000) || null,
+    description: htmlToText(node.descriptionHtml).slice(0, 2000) || null,
     status: tags.some((t) => t.toLowerCase() === "preorder")
       ? "preorder"
       : available
