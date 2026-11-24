@@ -40,6 +40,8 @@ export const fetchCatalogPage = createServerFn({ method: "GET" })
 
 export interface SiteSummary {
   categories: CommerceCategory[];
+  /** All in-stock products tagged new-arrival (menus link to /shop?new=1). */
+  newArrivals: number;
   gundam: {
     total: number;
     grades: Record<string, number>;
@@ -68,6 +70,7 @@ export const fetchSiteSummary = createServerFn({ method: "GET" }).handler(
         count,
         image: "",
       })),
+      newArrivals: catalog.getAllProducts().filter((p) => p.newArrival).length,
       gundam: {
         total: g.length,
         grades: tally("grade"),

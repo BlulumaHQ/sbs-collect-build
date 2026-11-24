@@ -7,9 +7,11 @@ import {
   SubcategoryLink,
 } from "./taxonomy";
 import { categorySlug } from "@/commerce/adapter";
+import { useSiteSummary } from "@/commerce/site-summary";
 
 export function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
   const DIRECT_CATEGORIES = useDirectCategories();
+  const newArrivals = useSiteSummary().newArrivals;
   return (
     <div className="border-t border-border bg-card">
       <div className="container-sbs grid gap-8 py-10 lg:grid-cols-[200px_1fr_1fr_1fr_240px]">
@@ -23,6 +25,16 @@ export function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
           >
             Shop All
           </Link>
+          {newArrivals > 0 ? (
+            <Link
+              to="/shop"
+              search={{ sort: "featured", new: true }}
+              onClick={onNavigate}
+              className="flex items-baseline justify-between gap-3 text-sm font-medium text-sbs-red hover:underline"
+            >
+              New Arrivals <span className="micro-sm text-muted-foreground">{newArrivals}</span>
+            </Link>
+          ) : null}
           <Link
             to="/preorders"
             search={{ sort: "featured" }}

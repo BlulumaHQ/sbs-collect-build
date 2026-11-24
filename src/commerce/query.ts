@@ -3,8 +3,16 @@ import type { ShopSearch } from "@/commerce/search-schema";
 import { CATEGORY_ORDER } from "@/commerce/adapter";
 import { GUNPLA_GRADES, GUNDAM_SERIES } from "@/commerce/attributes";
 
-export function sortProducts(products: CommerceProduct[], sort: ShopSearch["sort"]) {
+export function sortProducts(
+  products: CommerceProduct[],
+  sort: ShopSearch["sort"],
+  newestFirst = false,
+) {
   const list = [...products];
+  if (sort === "featured" && newestFirst) {
+    // New Arrivals view: most recently listed first.
+    return list.sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""));
+  }
   switch (sort) {
     case "price-asc":
       return list.sort((a, b) => a.price - b.price);
@@ -51,6 +59,8 @@ export interface Facets {
   scales: FacetOption[];
   subcategories: FacetOption[];
   statuses: FacetOption[];
+  /** Products tagged new-arrival, counted against every other active filter. */
+  newArrivals: number;
   vendors: FacetOption[];
   series: FacetOption[];
   priceBands: { min: number; max: number; count: number }[];
@@ -92,6 +102,7 @@ export function computeFacets(scope: CommerceProduct[], search: Partial<ShopSear
   const forScale = without("scale");
   const forSub = without("subcategory");
   const forStatus = without("status");
+  const forNew = without("new");
   const forVendor = without("vendor");
   const forSeries = without("series");
   const forPrice = without("minPrice", "maxPrice");
@@ -111,6 +122,7 @@ export function computeFacets(scope: CommerceProduct[], search: Partial<ShopSear
       value,
       count,
     })),
+    newArrivals: forNew.filter((p) => p.newArrival).length,
     vendors: sorted(tally(forVendor.map((p) => p.vendor))),
     series: sorted(tally(forSeries.map((p) => p.series))),
     priceBands: PRICE_BANDS.map((b) => ({
@@ -132,7 +144,7 @@ export interface CatalogPage {
 }
 
 export function paginate(scope: CommerceProduct[], search: ShopSearch): CatalogPage {
-  const results = sortProducts(filterProducts(scope, search), search.sort);
+  const results = sortProducts(filterProducts(scope, search), search.sort, Boolean(search.new));
   const pageCount = Math.max(1, Math.ceil(results.length / PAGE_SIZE));
   const page = Math.min(Math.max(1, search.page ?? 1), pageCount);
   return {

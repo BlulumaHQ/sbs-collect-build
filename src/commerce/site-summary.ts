@@ -3,6 +3,7 @@ import type { SiteSummary } from "@/commerce/api";
 
 const EMPTY: SiteSummary = {
   categories: [],
+  newArrivals: 0,
   gundam: {
     total: 0,
     grades: {},

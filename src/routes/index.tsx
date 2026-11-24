@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { fetchHome } from "@/commerce/api";
-import { useVisibleCategories } from "@/commerce/site-summary";
+import { useSiteSummary, useVisibleCategories } from "@/commerce/site-summary";
 import { CATEGORY_ARTWORK } from "@/commerce/artwork";
 import { SBSBuildRail } from "@/components/SBSBuildRail";
 import { ProductGrid } from "@/components/commerce/ProductGrid";
@@ -149,6 +149,7 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const { hot, featured, newArrivals, preorders, onSale, total } = Route.useLoaderData();
   const categories = useVisibleCategories();
+  const newCount = useSiteSummary().newArrivals;
   const homeSeries = HOME_SERIES.map((entry) => ({
     ...entry,
     image: entry.override ?? entry.fallback,
@@ -221,10 +222,10 @@ function HomePage() {
               </div>
               <Link
                 to="/shop"
-                search={{ sort: "featured", new: true }}
+                search={newCount > 0 ? { sort: "featured", new: true } : { sort: "featured" }}
                 className="micro text-sbs-red hover:underline"
               >
-                All new arrivals
+                {newCount > 0 ? "All new arrivals" : "Shop all"}
               </Link>
             </div>
             <div className="mt-9">
@@ -349,7 +350,6 @@ function HomePage() {
       <RecentlyViewed index="10" />
 
       {/* NEWSLETTER */}
-
     </>
   );
 }

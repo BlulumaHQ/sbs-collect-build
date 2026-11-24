@@ -47,10 +47,13 @@ function ShopPage() {
         <div className="mt-6">
           <SBSBuildRail index="01" label="Catalogue" />
         </div>
-        <h1 className="mt-5 font-display text-4xl md:text-6xl">All Products</h1>
+        <h1 className="mt-5 font-display text-4xl md:text-6xl">
+          {search.new ? "New Arrivals" : "All Products"}
+        </h1>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          Browse the complete Secret Builders Society catalogue across figures, model kits, plush,
-          blind boxes, hobby supplies, character goods, and apparel.
+          {search.new
+            ? "Fresh on the shelf: kits and figures added in the last 30 days, newest first."
+            : "Browse the complete Secret Builders Society catalogue across figures, model kits, plush, blind boxes, hobby supplies, character goods, and apparel."}
         </p>
 
         <div className="mt-10">

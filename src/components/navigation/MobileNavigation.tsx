@@ -29,7 +29,7 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
   const [shopOpen, setShopOpen] = useState(true);
   const [gundamOpen, setGundamOpen] = useState(false);
   const PRIMARY_CATEGORIES = usePrimaryCategories();
-  const gundam = useSiteSummary().gundam;
+  const { gundam, newArrivals } = useSiteSummary();
   const dialogRef = useDialog<HTMLDivElement>(open, onClose);
   if (!open) return null;
 
@@ -48,7 +48,12 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
             alt="Secret Builders Society"
             className="h-9 w-[170px] object-contain"
           />
-          <button type="button" data-autofocus onClick={onClose} className="micro inline-flex min-h-11 min-w-11 items-center justify-center px-3 -mr-3 text-muted-foreground">
+          <button
+            type="button"
+            data-autofocus
+            onClick={onClose}
+            className="micro inline-flex min-h-11 min-w-11 items-center justify-center px-3 -mr-3 text-muted-foreground"
+          >
             Close
           </button>
         </div>
@@ -73,6 +78,17 @@ export function MobileNavigation({ open, onClose }: { open: boolean; onClose: ()
               >
                 All Products
               </Link>
+              {newArrivals > 0 ? (
+                <Link
+                  to="/shop"
+                  search={{ sort: "featured", new: true }}
+                  onClick={onClose}
+                  className="flex items-baseline justify-between py-1.5 text-[15px] font-medium text-sbs-red"
+                >
+                  New Arrivals
+                  <span className="micro-sm text-muted-foreground">{newArrivals}</span>
+                </Link>
+              ) : null}
               {PRIMARY_CATEGORIES.map((category) => (
                 <Link
                   key={category.slug}

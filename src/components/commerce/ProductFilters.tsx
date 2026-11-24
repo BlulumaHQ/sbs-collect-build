@@ -211,8 +211,16 @@ export function ProductFilters({
         </FilterGroup>
       ) : null}
 
-      {statuses.length > 1 ? (
+      {statuses.length > 1 || facets.newArrivals > 0 ? (
         <FilterGroup title="Availability">
+          {facets.newArrivals > 0 || search.new ? (
+            <Option
+              label="NEW ARRIVALS"
+              count={facets.newArrivals}
+              active={Boolean(search.new)}
+              onClick={() => toggle("new", true)}
+            />
+          ) : null}
           {statuses.map(({ value: status, count }) => (
             <Option
               key={status}

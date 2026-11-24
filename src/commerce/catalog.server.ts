@@ -70,14 +70,6 @@ function clean(value: string | null | undefined): string | undefined {
   return trimmed ? trimmed : undefined;
 }
 
-/** New arrival window: created in Shopify within 30 days of the catalogue snapshot. */
-const NEW_ARRIVAL_DAYS = 30;
-function isRecent(createdAt: string | null | undefined): boolean {
-  if (!createdAt) return false;
-  const ref = Date.parse(catalog.generatedAt ?? "") || Date.now();
-  return ref - Date.parse(createdAt) <= NEW_ARRIVAL_DAYS * 86_400_000;
-}
-
 function normalize(p: RawProduct): CommerceProduct {
   const subcategory = clean(p.subcategory);
   const isGundam =
@@ -94,11 +86,10 @@ function normalize(p: RawProduct): CommerceProduct {
     grade: deriveGrade({ grade: p.grade, title: p.title, category: p.category, subcategory }),
     scale: deriveScale({ scale: p.scale, title: p.title }),
     gundamSeries: deriveGundamSeries({ gundamSeries: p.gundamSeries, title: p.title, isGundam }),
-    // Pre-orders are never "new arrivals" — nothing has arrived yet.
-    newArrival:
-      p.status !== "preorder" && (p.newArrival === true || isRecent(p.createdAt))
-        ? true
-        : undefined,
+    // Only the Shopify tag `new-arrival` counts: the Plamod sync adds it to newly listed / just
+    // arrived items and removes it after 30 days. (Creation date can't be used — the whole
+    // catalogue was imported on the same day.) Pre-orders are never new arrivals.
+    newArrival: p.status !== "preorder" && p.newArrival === true ? true : undefined,
     createdAt: clean(p.createdAt),
     description: clean(p.description),
     featured: p.featured === true ? true : undefined,
@@ -243,7 +234,7 @@ export function getFeaturedProducts(limit = 8): CommerceProduct[] {
   return [...tagged, ...fill].slice(0, limit);
 }
 
-/** Home "New Arrivals": newest first (tag `new-arrival` or created in the last 30 days). */
+/** Home "New Arrivals": in-stock products tagged `new-arrival` (random pick). */
 export function getNewArrivals(limit = 8): CommerceProduct[] {
   const byNewest = (a: CommerceProduct, b: CommerceProduct) =>
     (b.createdAt ?? "").localeCompare(a.createdAt ?? "");
