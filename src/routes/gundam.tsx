@@ -91,14 +91,6 @@ function GundamPage() {
           );
         })}
       </nav>
-      {activeLabel ? (
-        <p className="mt-4 text-sm text-muted-foreground" aria-live="polite">
-          Showing: <span className="font-medium text-foreground">{activeLabel}</span>{" "}
-          <Link to="/gundam" search={{ sort: "featured" }} className="ml-2 text-sbs-red underline">
-            Clear filters
-          </Link>
-        </p>
-      ) : null}
 
       <div className="mt-10">
         <CatalogueBrowser
