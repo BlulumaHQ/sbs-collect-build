@@ -13,13 +13,17 @@ import { FramedImage } from "./FramedImage";
 export function ProductCard({
   product,
   eager = false,
+  hideNewBadge = false,
 }: {
   product: CommerceProduct;
   eager?: boolean;
+  /** New Arrivals views: every card is new, so the NEW badge would just be noise. */
+  hideNewBadge?: boolean;
 }) {
   const { addItem } = useCart();
   const purchasable = canBuy(product);
-  const badge = getBadge(product);
+  const rawBadge = getBadge(product);
+  const badge = hideNewBadge && rawBadge === "new" ? null : rawBadge;
   const hover = product.images[1];
   const onSale = Boolean(product.compareAtPrice && product.compareAtPrice > product.price);
 

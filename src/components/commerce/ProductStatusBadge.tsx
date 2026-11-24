@@ -5,6 +5,8 @@ const TONE: Record<BadgeKind, string> = {
   sale: "bg-sbs-red text-white",
   preorder: "bg-sbs-amber text-charcoal",
   "sold-out": "bg-charcoal text-white",
+  // Quieter than SALE: white with a thin charcoal outline.
+  new: "bg-white text-charcoal ring-1 ring-inset ring-charcoal",
 };
 
 export function ProductStatusBadge({ badge }: { badge: BadgeKind }) {

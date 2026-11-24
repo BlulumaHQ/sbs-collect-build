@@ -6,10 +6,12 @@ export function ProductGrid({
   products,
   emptyMessage = "No products in this section yet.",
   columns = 4,
+  hideNewBadge = false,
 }: {
   products: CommerceProduct[];
   emptyMessage?: string;
   columns?: 3 | 4;
+  hideNewBadge?: boolean;
 }) {
   if (products.length === 0) {
     return <EmptyState title={emptyMessage} />;
@@ -18,7 +20,7 @@ export function ProductGrid({
   return (
     <div className={`grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-5 ${lg}`}>
       {products.map((product, i) => (
-        <ProductCard key={product.id} product={product} eager={i < 4} />
+        <ProductCard key={product.id} product={product} eager={i < 4} hideNewBadge={hideNewBadge} />
       ))}
     </div>
   );

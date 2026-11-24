@@ -1,6 +1,6 @@
 export type ProductStatus = "available" | "last-one" | "preorder" | "sold-out";
 
-export type BadgeKind = "sale" | "preorder" | "sold-out";
+export type BadgeKind = "sale" | "preorder" | "sold-out" | "new";
 
 export interface CommerceProduct {
   id: string;

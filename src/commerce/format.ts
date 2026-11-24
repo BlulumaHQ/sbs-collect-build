@@ -69,6 +69,8 @@ export function getBadge(product: CommerceProduct): BadgeKind | null {
   if (product.status === "sold-out") return "sold-out";
   if (product.status === "preorder") return "preorder";
   if (product.compareAtPrice && product.compareAtPrice > product.price) return "sale";
+  // Lowest priority: only when no other badge applies (one badge per card).
+  if (product.newArrival) return "new";
   return null;
 }
 
@@ -76,6 +78,7 @@ export const BADGE_LABEL: Record<BadgeKind, string> = {
   sale: "SALE",
   preorder: "PREORDER",
   "sold-out": "SOLD OUT",
+  new: "NEW",
 };
 
 export function discountPercent(product: CommerceProduct): number | null {

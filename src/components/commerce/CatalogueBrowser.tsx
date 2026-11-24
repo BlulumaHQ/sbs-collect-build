@@ -21,7 +21,9 @@ export function CatalogueBrowser({
   showCategoryFilter?: boolean;
 }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const filterDialogRef = useDialog<HTMLDivElement>(mobileFiltersOpen, () => setMobileFiltersOpen(false));
+  const filterDialogRef = useDialog<HTMLDivElement>(mobileFiltersOpen, () =>
+    setMobileFiltersOpen(false),
+  );
 
   const { items, total, page, pageCount, facets } = data;
 
@@ -59,7 +61,11 @@ export function CatalogueBrowser({
           </div>
         </div>
 
-        {total === 0 && emptyState ? emptyState : <ProductGrid products={items} />}
+        {total === 0 && emptyState ? (
+          emptyState
+        ) : (
+          <ProductGrid products={items} hideNewBadge={Boolean(search.new)} />
+        )}
         {pageCount > 1 ? (
           <Pagination
             page={page}

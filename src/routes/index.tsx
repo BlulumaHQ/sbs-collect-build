@@ -229,7 +229,7 @@ function HomePage() {
               </Link>
             </div>
             <div className="mt-9">
-              <ProductGrid products={newArrivals} />
+              <ProductGrid products={newArrivals} hideNewBadge />
             </div>
           </div>
         </section>
