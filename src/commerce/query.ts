@@ -2,6 +2,7 @@ import type { CommerceProduct } from "@/types/commerce";
 import type { ShopSearch } from "@/commerce/search-schema";
 import { CATEGORY_ORDER } from "@/commerce/adapter";
 import { GUNPLA_GRADES, GUNDAM_SERIES } from "@/commerce/attributes";
+import { matches } from "@/commerce/multi";
 
 export function sortProducts(
   products: CommerceProduct[],
@@ -22,6 +23,13 @@ export function sortProducts(
       return list.sort((a, b) => a.title.localeCompare(b.title));
     case "name-desc":
       return list.sort((a, b) => b.title.localeCompare(a.title));
+    case "newest":
+      // New arrivals first, then most recently created in Shopify.
+      return list.sort(
+        (a, b) =>
+          Number(Boolean(b.newArrival)) - Number(Boolean(a.newArrival)) ||
+          (b.createdAt ?? "").localeCompare(a.createdAt ?? ""),
+      );
     default:
       // "Featured": products tagged `featured` in Shopify first, then the rest in catalogue order.
       return list.sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
@@ -31,13 +39,14 @@ export function sortProducts(
 export function filterProducts(products: CommerceProduct[], search: ShopSearch) {
   return products.filter((p) => {
     if (search.category && p.categorySlug !== search.category) return false;
-    if (search.subcategory && p.subcategory !== search.subcategory) return false;
-    if (search.status && p.status !== search.status) return false;
-    if (search.vendor && p.vendor !== search.vendor) return false;
-    if (search.series && p.series !== search.series) return false;
-    if (search.grade && p.grade !== search.grade) return false;
-    if (search.scale && p.scale !== search.scale) return false;
-    if (search.gseries && p.gundamSeries !== search.gseries) return false;
+    // Multi-select groups: any chosen value matches (OR within a group, AND across groups).
+    if (!matches(search.subcategory, p.subcategory)) return false;
+    if (!matches(search.status, p.status)) return false;
+    if (!matches(search.vendor, p.vendor)) return false;
+    if (!matches(search.series, p.series)) return false;
+    if (!matches(search.grade, p.grade)) return false;
+    if (!matches(search.scale, p.scale)) return false;
+    if (!matches(search.gseries, p.gundamSeries)) return false;
     if (search.sale && !(p.compareAtPrice && p.compareAtPrice > p.price)) return false;
     if (search.new && !p.newArrival) return false;
     if (search.minPrice !== undefined && p.price < search.minPrice) return false;

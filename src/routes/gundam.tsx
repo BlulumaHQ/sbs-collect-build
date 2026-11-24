@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { hasValue, toggleValue, values } from "@/commerce/multi";
 import { fetchCatalogPage } from "@/commerce/api";
 import { GUNPLA_GRADES, gradeName, gundamSeriesName } from "@/commerce/attributes";
 import { validateShopSearch, type ShopSearch } from "@/commerce/search-schema";
@@ -38,10 +39,10 @@ function GundamPage() {
   const onChange = (next: ShopSearch) => navigate({ to: ".", search: next });
 
   const activeLabel = [
-    search.grade ? gradeName(search.grade) : null,
-    search.gseries ? gundamSeriesName(search.gseries) : null,
-    search.status === "available" ? "in stock" : null,
-    search.status === "preorder" ? "preorder" : null,
+    ...values(search.grade).map(gradeName),
+    ...values(search.gseries).map(gundamSeriesName),
+    hasValue(search.status, "available") ? "in stock" : null,
+    hasValue(search.status, "preorder") ? "preorder" : null,
     search.sale ? "on sale" : null,
     search.new ? "new arrival" : null,
   ]
@@ -66,15 +67,16 @@ function GundamPage() {
 
       <nav aria-label="Shop by grade" className="mt-8 flex flex-wrap gap-2">
         {GUNPLA_GRADES.map((g) => {
-          const active = search.grade === g.code;
+          const active = hasValue(search.grade, g.code);
           return (
             <Link
               key={g.code}
               to="/gundam"
               search={(prev) => {
                 const next = { ...prev, sort: prev.sort ?? "featured" } as ShopSearch;
-                if (active) delete next.grade;
-                else next.grade = g.code;
+                const grade = toggleValue(prev.grade, g.code);
+                if (grade) next.grade = grade;
+                else delete next.grade;
                 return next;
               }}
               aria-pressed={active}

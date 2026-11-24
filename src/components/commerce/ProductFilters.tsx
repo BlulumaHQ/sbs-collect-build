@@ -10,6 +10,7 @@ const FILTER_STATUS_LABEL: Record<string, string> = {
   "sold-out": "SOLD OUT",
 };
 import { categorySlug } from "@/commerce/adapter";
+import { hasValue, toggleValue } from "@/commerce/multi";
 import { GUNPLA_GRADES, GUNDAM_SERIES } from "@/commerce/attributes";
 
 const VISIBLE_OPTIONS = 8;
@@ -44,11 +45,14 @@ function Option({
   active,
   count,
   onClick,
+  multi = false,
 }: {
   label: string;
   active: boolean;
   count?: number;
   onClick: () => void;
+  /** Several options in this group can be on at once: show a tick box. */
+  multi?: boolean;
 }) {
   return (
     <button
@@ -61,7 +65,29 @@ function Option({
           : "text-charcoal/85 hover:bg-charcoal/5 hover:text-sbs-red"
       }`}
     >
-      <span className="truncate">{label}</span>
+      <span className="flex min-w-0 items-center gap-2.5">
+        {multi ? (
+          <span
+            aria-hidden
+            className={`flex size-4 shrink-0 items-center justify-center border transition-colors duration-200 ${
+              active ? "border-sbs-red bg-sbs-red text-white" : "border-charcoal/40 bg-white"
+            }`}
+          >
+            {active ? (
+              <svg
+                viewBox="0 0 12 12"
+                className="size-3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M2.5 6.2 5 8.5l4.5-5" />
+              </svg>
+            ) : null}
+          </span>
+        ) : null}
+        <span className="truncate">{label}</span>
+      </span>
       {count !== undefined ? <span className="micro text-muted-foreground">{count}</span> : null}
     </button>
   );
@@ -82,6 +108,15 @@ export function ProductFilters({
     const next: ShopSearch = { ...search };
     if (search[key] === value) delete next[key];
     else next[key] = value;
+    onChange(next);
+  };
+
+  type MultiKey = "grade" | "gseries" | "scale" | "subcategory" | "status" | "vendor" | "series";
+  const toggleMulti = (key: MultiKey, value: string) => {
+    const next: ShopSearch = { ...search };
+    const v = toggleValue(search[key], value);
+    if (v) next[key] = v;
+    else delete next[key];
     onChange(next);
   };
 
@@ -162,8 +197,9 @@ export function ProductFilters({
                   : `${code} · ${label(GUNPLA_GRADES, code)?.name ?? ""}`
               }
               count={count}
-              active={search.grade === code}
-              onClick={() => toggle("grade", code)}
+              active={hasValue(search.grade, code)}
+              onClick={() => toggleMulti("grade", code)}
+              multi
             />
           ))}
         </FilterGroup>
@@ -176,8 +212,9 @@ export function ProductFilters({
               key={code}
               label={label(GUNDAM_SERIES, code)?.name ?? code}
               count={count}
-              active={search.gseries === code}
-              onClick={() => toggle("gseries", code)}
+              active={hasValue(search.gseries, code)}
+              onClick={() => toggleMulti("gseries", code)}
+              multi
             />
           ))}
         </FilterGroup>
@@ -190,8 +227,9 @@ export function ProductFilters({
               key={scale}
               label={scale}
               count={count}
-              active={search.scale === scale}
-              onClick={() => toggle("scale", scale)}
+              active={hasValue(search.scale, scale)}
+              onClick={() => toggleMulti("scale", scale)}
+              multi
             />
           ))}
         </FilterGroup>
@@ -204,8 +242,9 @@ export function ProductFilters({
               key={sub}
               label={sub}
               count={count}
-              active={search.subcategory === sub}
-              onClick={() => toggle("subcategory", sub)}
+              active={hasValue(search.subcategory, sub)}
+              onClick={() => toggleMulti("subcategory", sub)}
+              multi
             />
           ))}
         </FilterGroup>
@@ -226,8 +265,9 @@ export function ProductFilters({
               key={status}
               label={FILTER_STATUS_LABEL[status] ?? status}
               count={count}
-              active={search.status === status}
-              onClick={() => toggle("status", status)}
+              active={hasValue(search.status, status)}
+              onClick={() => toggleMulti("status", status)}
+              multi
             />
           ))}
         </FilterGroup>
@@ -240,8 +280,9 @@ export function ProductFilters({
               key={vendor}
               label={vendor}
               count={count}
-              active={search.vendor === vendor}
-              onClick={() => toggle("vendor", vendor)}
+              active={hasValue(search.vendor, vendor)}
+              onClick={() => toggleMulti("vendor", vendor)}
+              multi
             />
           ))}
         </FilterGroup>
@@ -254,8 +295,9 @@ export function ProductFilters({
               key={series}
               label={series}
               count={count}
-              active={search.series === series}
-              onClick={() => toggle("series", series)}
+              active={hasValue(search.series, series)}
+              onClick={() => toggleMulti("series", series)}
+              multi
             />
           ))}
         </FilterGroup>

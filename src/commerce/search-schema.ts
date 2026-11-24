@@ -19,7 +19,14 @@ export interface ShopSearch {
   page?: number | undefined;
 }
 
-const SORT_KEYS: SortKey[] = ["featured", "price-asc", "price-desc", "name-asc", "name-desc"];
+const SORT_KEYS: SortKey[] = [
+  "featured",
+  "newest",
+  "price-asc",
+  "price-desc",
+  "name-asc",
+  "name-desc",
+];
 
 function str(value: unknown): string | undefined {
   return typeof value === "string" && value.trim() !== "" ? value : undefined;

@@ -1,7 +1,8 @@
-export type SortKey = "featured" | "price-asc" | "price-desc" | "name-asc" | "name-desc";
+export type SortKey = "featured" | "newest" | "price-asc" | "price-desc" | "name-asc" | "name-desc";
 
 export const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: "featured", label: "Featured" },
+  { value: "newest", label: "Newest" },
   { value: "price-asc", label: "Price: Low to High" },
   { value: "price-desc", label: "Price: High to Low" },
   { value: "name-asc", label: "Name: A–Z" },

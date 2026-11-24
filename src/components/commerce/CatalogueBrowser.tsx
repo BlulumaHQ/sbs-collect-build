@@ -4,6 +4,7 @@ import type { CatalogPage } from "@/commerce/query";
 import { ProductGrid } from "./ProductGrid";
 import { SortControl } from "./SortControl";
 import { ProductFilters } from "./ProductFilters";
+import { ActiveFilters, activeChips } from "./ActiveFilters";
 import { useDialog } from "@/lib/use-dialog";
 
 export function CatalogueBrowser({
@@ -53,6 +54,7 @@ export function CatalogueBrowser({
               className="micro min-h-11 border border-border px-5 py-2 lg:hidden"
             >
               Filter
+              {activeChips(search).length ? ` (${activeChips(search).length})` : ""}
             </button>
             <SortControl
               value={search.sort}
@@ -60,6 +62,8 @@ export function CatalogueBrowser({
             />
           </div>
         </div>
+
+        <ActiveFilters search={search} onChange={onChange} />
 
         {total === 0 && emptyState ? (
           emptyState
