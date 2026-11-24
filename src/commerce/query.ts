@@ -143,7 +143,10 @@ export function computeFacets(scope: CommerceProduct[], search: Partial<ShopSear
 
 export const PAGE_SIZE = 48;
 
-/** One page of a catalogue view: what the browser actually receives. */
+/**
+ * A catalogue view as the browser receives it. "Load More" list: `page` N means the first
+ * N × PAGE_SIZE results (cumulative), so ?page=3 restores the same list after "Back".
+ */
 export interface CatalogPage {
   items: CommerceProduct[];
   total: number;
@@ -157,7 +160,7 @@ export function paginate(scope: CommerceProduct[], search: ShopSearch): CatalogP
   const pageCount = Math.max(1, Math.ceil(results.length / PAGE_SIZE));
   const page = Math.min(Math.max(1, search.page ?? 1), pageCount);
   return {
-    items: results.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+    items: results.slice(0, page * PAGE_SIZE),
     total: results.length,
     page,
     pageCount,

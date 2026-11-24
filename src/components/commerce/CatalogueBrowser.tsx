@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import type { ShopSearch } from "@/commerce/search-schema";
 import type { CatalogPage } from "@/commerce/query";
 import { ProductGrid } from "./ProductGrid";
@@ -21,6 +22,7 @@ export function CatalogueBrowser({
   onChange: (next: ShopSearch) => void;
   showCategoryFilter?: boolean;
 }) {
+  const navigate = useNavigate();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const filterDialogRef = useDialog<HTMLDivElement>(mobileFiltersOpen, () =>
     setMobileFiltersOpen(false),
@@ -45,7 +47,6 @@ export function CatalogueBrowser({
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
           <p className="micro text-muted-foreground">
             {total} {total === 1 ? "product" : "products"}
-            {pageCount > 1 ? ` · page ${page} of ${pageCount}` : ""}
           </p>
           <div className="flex items-center gap-3">
             <button
@@ -71,13 +72,14 @@ export function CatalogueBrowser({
           <ProductGrid products={items} hideNewBadge={Boolean(search.new)} />
         )}
         {pageCount > 1 ? (
-          <Pagination
+          <LoadMore
+            shown={items.length}
+            total={total}
             page={page}
             pageCount={pageCount}
-            onPage={(p) => {
-              onChange({ ...search, page: p > 1 ? p : undefined });
-              if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
+            onMore={(p) =>
+              navigate({ to: ".", search: { ...search, page: p } as never, resetScroll: false })
+            }
           />
         ) : null}
       </div>
@@ -118,60 +120,47 @@ export function CatalogueBrowser({
 }
 
 /** Numbered pages with first/last and neighbours, e.g. ‹ 1 … 4 5 6 … 20 ›. */
-export function Pagination({
+/**
+ * "Load More" (Baymard: browses more products than numbered pages). Shows progress
+ * ("48 of 3,821") and keeps the scroll position; the page number stays in the URL.
+ */
+export function LoadMore({
+  shown,
+  total,
   page,
   pageCount,
-  onPage,
+  onMore,
 }: {
+  shown: number;
+  total: number;
   page: number;
   pageCount: number;
-  onPage: (page: number) => void;
+  onMore: (page: number) => void;
 }) {
-  const pages = [...new Set([1, page - 1, page, page + 1, pageCount])]
-    .filter((p) => p >= 1 && p <= pageCount)
-    .sort((a, b) => a - b);
-  const cls = "micro flex h-11 min-w-11 items-center justify-center border px-3 transition-colors";
+  const loading = useRouterState({ select: (s) => s.status === "pending" });
+  if (total <= 0) return null;
+  const pct = Math.min(100, Math.round((shown / total) * 100));
   return (
-    <nav aria-label="Pagination" className="mt-10 flex flex-wrap items-center justify-center gap-2">
-      <button
-        type="button"
-        disabled={page <= 1}
-        onClick={() => onPage(page - 1)}
-        className={`${cls} border-border hover:border-sbs-red disabled:opacity-40`}
-        aria-label="Previous page"
-      >
-        ‹
-      </button>
-      {pages.map((p, i) => (
-        <span key={p} className="flex items-center gap-2">
-          {i > 0 && p - pages[i - 1]! > 1 ? (
-            <span className="micro text-muted-foreground" aria-hidden="true">
-              …
-            </span>
-          ) : null}
-          <button
-            type="button"
-            onClick={() => onPage(p)}
-            aria-current={p === page ? "page" : undefined}
-            className={`${cls} ${
-              p === page
-                ? "border-sbs-red bg-sbs-red text-white"
-                : "border-border hover:border-sbs-red hover:text-sbs-red"
-            }`}
-          >
-            {p}
-          </button>
-        </span>
-      ))}
-      <button
-        type="button"
-        disabled={page >= pageCount}
-        onClick={() => onPage(page + 1)}
-        className={`${cls} border-border hover:border-sbs-red disabled:opacity-40`}
-        aria-label="Next page"
-      >
-        ›
-      </button>
-    </nav>
+    <div className="mt-10 flex flex-col items-center gap-4">
+      <p className="micro text-muted-foreground">
+        Showing {shown.toLocaleString()} of {total.toLocaleString()}
+      </p>
+      <div className="h-[3px] w-48 bg-border" aria-hidden>
+        <div
+          className="h-full bg-sbs-red transition-[width] duration-500"
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      {page < pageCount ? (
+        <button
+          type="button"
+          disabled={loading}
+          onClick={() => onMore(page + 1)}
+          className="micro min-h-12 min-w-56 border border-charcoal bg-white px-8 text-charcoal transition-colors duration-200 hover:border-sbs-red hover:bg-sbs-red hover:text-white disabled:opacity-60"
+        >
+          {loading ? "Loading…" : "Load more"}
+        </button>
+      ) : null}
+    </div>
   );
 }
