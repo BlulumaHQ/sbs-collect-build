@@ -112,6 +112,23 @@ export function CatalogueBrowser({
               </button>
             </div>
             {filters}
+            <div className="sticky bottom-0 -mx-5 -mb-5 mt-4 flex gap-3 border-t border-border bg-card p-4">
+              <button
+                type="button"
+                disabled={activeChips(search).length === 0}
+                onClick={() => onChange({ sort: search.sort, page: undefined })}
+                className="micro min-h-12 flex-1 border border-charcoal text-charcoal disabled:border-border disabled:text-muted-foreground"
+              >
+                Reset all
+              </button>
+              <button
+                type="button"
+                onClick={() => setMobileFiltersOpen(false)}
+                className="micro min-h-12 flex-[2] bg-charcoal text-white"
+              >
+                Show {total.toLocaleString()} {total === 1 ? "product" : "products"}
+              </button>
+            </div>
           </div>
         </div>
       ) : null}

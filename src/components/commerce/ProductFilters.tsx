@@ -15,7 +15,16 @@ import { GUNPLA_GRADES, GUNDAM_SERIES } from "@/commerce/attributes";
 
 const VISIBLE_OPTIONS = 8;
 
-function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
+function FilterGroup({
+  title,
+  children,
+  onReset,
+}: {
+  title: string;
+  children: React.ReactNode;
+  /** Shown when this group has a selection: clears just this group. */
+  onReset?: (() => void) | undefined;
+}) {
   const items = Children.toArray(children);
   const [expanded, setExpanded] = useState(false);
   // Keep the list open if the chosen option sits below the fold.
@@ -25,7 +34,19 @@ function FilterGroup({ title, children }: { title: string; children: React.React
   const showAll = expanded || activeHidden || items.length <= VISIBLE_OPTIONS + 2;
   return (
     <div className="border-b border-border py-4">
-      <h3 className="micro mb-2 text-muted-foreground">{title}</h3>
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <h3 className="micro text-muted-foreground">{title}</h3>
+        {onReset ? (
+          <button
+            type="button"
+            onClick={onReset}
+            className="micro min-h-9 px-1 text-sbs-red hover:underline"
+            aria-label={`Reset ${title}`}
+          >
+            Reset
+          </button>
+        ) : null}
+      </div>
       <div className="flex flex-col">{showAll ? items : items.slice(0, VISIBLE_OPTIONS)}</div>
       {items.length > VISIBLE_OPTIONS + 2 && !activeHidden ? (
         <button
@@ -120,6 +141,15 @@ export function ProductFilters({
     onChange(next);
   };
 
+  const resetKeys = (...keys: (keyof ShopSearch)[]) => {
+    if (!keys.some((k) => search[k] !== undefined)) return undefined;
+    return () => {
+      const next: ShopSearch = { ...search };
+      for (const k of keys) delete next[k];
+      onChange(next);
+    };
+  };
+
   const label = <T extends { code: string; name: string }>(list: readonly T[], code: string) =>
     list.find((x) => x.code === code);
   const grades = facets.grades;
@@ -161,19 +191,18 @@ export function ProductFilters({
     <div>
       <div className="flex items-center justify-between border-b border-charcoal/25 pb-3">
         <h2 className="micro text-foreground">Filters</h2>
-        {hasActive ? (
-          <button
-            type="button"
-            onClick={() => onChange({ sort: search.sort })}
-            className="micro text-sbs-red"
-          >
-            Clear
-          </button>
-        ) : null}
+        <button
+          type="button"
+          disabled={!hasActive}
+          onClick={() => onChange({ sort: search.sort })}
+          className="micro min-h-9 border border-charcoal px-3 text-charcoal transition-colors duration-200 hover:border-sbs-red hover:bg-sbs-red hover:text-white disabled:cursor-default disabled:border-border disabled:text-muted-foreground disabled:hover:bg-transparent"
+        >
+          Reset all
+        </button>
       </div>
 
       {showCategoryFilter && categoriesInScope.length > 1 ? (
-        <FilterGroup title="Category">
+        <FilterGroup title="Category" onReset={resetKeys("category")}>
           {categoriesInScope.map(({ value: name, count }) => (
             <Option
               key={name}
@@ -187,7 +216,7 @@ export function ProductFilters({
       ) : null}
 
       {grades.length > 0 ? (
-        <FilterGroup title="Grade">
+        <FilterGroup title="Grade" onReset={resetKeys("grade")}>
           {grades.map(({ value: code, count }) => (
             <Option
               key={code}
@@ -206,7 +235,7 @@ export function ProductFilters({
       ) : null}
 
       {gundamSeries.length > 0 ? (
-        <FilterGroup title="Gundam Series">
+        <FilterGroup title="Gundam Series" onReset={resetKeys("gseries")}>
           {gundamSeries.map(({ value: code, count }) => (
             <Option
               key={code}
@@ -221,7 +250,7 @@ export function ProductFilters({
       ) : null}
 
       {scales.length > 0 ? (
-        <FilterGroup title="Scale">
+        <FilterGroup title="Scale" onReset={resetKeys("scale")}>
           {scales.map(({ value: scale, count }) => (
             <Option
               key={scale}
@@ -236,7 +265,7 @@ export function ProductFilters({
       ) : null}
 
       {subcategories.length > 0 ? (
-        <FilterGroup title="Subcategory">
+        <FilterGroup title="Subcategory" onReset={resetKeys("subcategory")}>
           {subcategories.map(({ value: sub, count }) => (
             <Option
               key={sub}
@@ -251,7 +280,7 @@ export function ProductFilters({
       ) : null}
 
       {statuses.length > 1 || facets.newArrivals > 0 ? (
-        <FilterGroup title="Availability">
+        <FilterGroup title="Availability" onReset={resetKeys("status", "new")}>
           {facets.newArrivals > 0 || search.new ? (
             <Option
               label="NEW ARRIVALS"
@@ -274,7 +303,7 @@ export function ProductFilters({
       ) : null}
 
       {vendors.length > 1 ? (
-        <FilterGroup title="Maker">
+        <FilterGroup title="Maker" onReset={resetKeys("vendor")}>
           {vendors.map(({ value: vendor, count }) => (
             <Option
               key={vendor}
@@ -289,7 +318,7 @@ export function ProductFilters({
       ) : null}
 
       {seriesList.length > 1 ? (
-        <FilterGroup title="Series">
+        <FilterGroup title="Series" onReset={resetKeys("series")}>
           {seriesList.map(({ value: series, count }) => (
             <Option
               key={series}
@@ -304,7 +333,7 @@ export function ProductFilters({
       ) : null}
 
       {priceBands.length > 1 ? (
-        <FilterGroup title="Price">
+        <FilterGroup title="Price" onReset={resetKeys("minPrice", "maxPrice")}>
           {priceBands.map((band) => {
             const active = search.minPrice === band.min && search.maxPrice === band.max;
             return (
