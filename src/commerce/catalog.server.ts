@@ -91,7 +91,7 @@ function normalize(p: RawProduct): CommerceProduct {
     // catalogue was imported on the same day.) Pre-orders are never new arrivals.
     newArrival: p.status !== "preorder" && p.newArrival === true ? true : undefined,
     createdAt: clean(p.createdAt),
-    description: clean(p.description),
+    description: stripPastRelease(clean(p.description)),
     featured: p.featured === true ? true : undefined,
     // Supplier placeholders like "No Series" are not real series.
     series: /^(no series|none|n\/a|others?)$/i.test(clean(p.series) ?? "")
@@ -105,7 +105,7 @@ function normalize(p: RawProduct): CommerceProduct {
     packSize: p.packSize ?? undefined,
     sku: clean(p.sku),
     upc: clean(p.upc),
-    estimatedRelease: formatRelease(clean(p.estimatedRelease)),
+    estimatedRelease: formatRelease(upcomingMonth(clean(p.estimatedRelease))),
     preorderDeadline: clean(p.preorderDeadline),
     staffPick: clean(p.staffPick),
     hot: p.hot === true ? true : undefined,
@@ -215,6 +215,35 @@ const RENAMED_HANDLES: Record<string, string> = {
 for (const [oldHandle, current] of Object.entries(RENAMED_HANDLES)) {
   const p = byHandle.get(current);
   if (p && !byHandle.has(oldHandle)) byHandle.set(oldHandle, p);
+}
+
+
+/** Current month in Vancouver, "YYYY-MM". */
+function thisMonth(): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Vancouver" })
+    .format(new Date())
+    .slice(0, 7);
+}
+
+/**
+ * Restock pre-orders carry the kit's ORIGINAL release month from Plamod (e.g. 2020-01).
+ * A ship month already in the past is not a ship date — drop it.
+ */
+function upcomingMonth(value: string | undefined): string | undefined {
+  const m = value?.match(/^(\d{4}-\d{2})/);
+  if (m?.[1] && m[1] < thisMonth()) return undefined;
+  return value;
+}
+
+/** Same rule for the "Expected release: 2020-01" line inside old Plamod descriptions. */
+function stripPastRelease(text: string | undefined): string | undefined {
+  if (!text) return text;
+  const now = thisMonth();
+  return text
+    .replace(/\n*- Expected release: (\d{4}-\d{2})[^\n]*/g, (line, month: string) =>
+      month < now ? "\n\n- Expected release: Restock - date to be confirmed" : line,
+    )
+    .trim();
 }
 
 export function getSaleProducts(): CommerceProduct[] {

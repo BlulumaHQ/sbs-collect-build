@@ -91,9 +91,9 @@ export function ProductCard({
               </span>
             ) : null}
           </div>
-          {product.status === "preorder" && product.estimatedRelease ? (
+          {product.status === "preorder" ? (
             <span className="text-[11px] font-medium uppercase tracking-[0.08em] text-amber-700">
-              Ships {product.estimatedRelease}
+              {product.estimatedRelease ? `Ships ${product.estimatedRelease}` : "Restock pre-order"}
             </span>
           ) : null}
         </div>
