@@ -69,6 +69,24 @@ function htmlToText(html) {
     .trim();
 }
 
+// Restock pre-orders carry the kit's ORIGINAL Plamod release month (e.g. 2020-01), which is not a
+// ship date. Clean it here (GitHub Actions has a real clock; a Worker's module-level clock is 1970).
+const THIS_MONTH = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Vancouver" })
+  .format(new Date())
+  .slice(0, 7);
+
+function upcomingMonth(value) {
+  const m = value?.match(/^(\d{4}-\d{2})/);
+  return m && m[1] < THIS_MONTH ? null : value;
+}
+
+function stripPastRelease(text) {
+  if (!text) return text;
+  return text.replace(/- Expected release: (\d{4}-\d{2})[^\n]*/g, (line, month) =>
+    month < THIS_MONTH ? "- Expected release: Restock - date to be confirmed" : line,
+  );
+}
+
 function tagValue(tags, key) {
   const prefix = `${key}:`;
   const tag = tags.find((t) => t.toLowerCase().startsWith(prefix));
@@ -130,7 +148,7 @@ export function mapProduct(node, shopName = "", previous = new Map()) {
     confirmStock: tags.some((t) => t.toLowerCase() === "confirm-stock") || null,
     createdAt: node.createdAt ?? null,
     // Plain-text product description from Shopify (trimmed to keep the snapshot lean)
-    description: htmlToText(node.descriptionHtml).slice(0, 2000) || null,
+    description: stripPastRelease(htmlToText(node.descriptionHtml).slice(0, 2000)) || null,
     status: tags.some((t) => t.toLowerCase() === "preorder")
       ? "preorder"
       : available
@@ -147,7 +165,7 @@ export function mapProduct(node, shopName = "", previous = new Map()) {
     // image:full | image:cover | image:top — manual photo framing override
     imageFit: tagValue(tags, "image")?.toLowerCase() ?? null,
     // Pre-order details: release:2027-02  preorder-deadline:2026-12-15
-    estimatedRelease: tagValue(tags, "release"),
+    estimatedRelease: upcomingMonth(tagValue(tags, "release")),
     preorderDeadline: tagValue(tags, "preorder-deadline"),
     // Store manager note — product metafield custom.staff_pick (Storefront access on)
     staffPick: node.staffPick?.value?.trim() || null,
